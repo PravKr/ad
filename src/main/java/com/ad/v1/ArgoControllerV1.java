@@ -52,7 +52,7 @@ public class ArgoControllerV1 {
 
     @RequestMapping(value = "/argos", method = RequestMethod.GET)
     @ResponseBody
-    public String getArgos() {
+    public Object getArgos() {
         return "[\n" +
                 "    {\n" +
                 "        \"id\": \"id\",\n" +
