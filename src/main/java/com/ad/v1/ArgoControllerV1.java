@@ -25,7 +25,7 @@ public class ArgoControllerV1 {
 
     @RequestMapping(value = "/argo/{type}", method = RequestMethod.GET)
     @ResponseBody
-    public String getArgosByType(@PathVariable String type) {
+    public Object getArgosByType(@PathVariable String type) {
         return "[\n" +
                 "    {\n" +
                 "        \"id\": \"id\",\n" +
