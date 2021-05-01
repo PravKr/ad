@@ -40,6 +40,8 @@ public class EntitiesController {
         return entityMap;
     }
 
+
+
     @RequestMapping(value = "/entities/import", method = RequestMethod.POST)
     @ResponseBody
     public void importSelectedEntities(@RequestBody List<Argo> argoList) {
@@ -77,5 +79,18 @@ public class EntitiesController {
     public void addToCart(@RequestBody Set<String> entityGkeySet,
                                @PathVariable String entity) {
         cartDao.saveToCart(entityGkeySet, entity);
+    }
+
+    @RequestMapping(value = "/entities/removeFromCart/{entity}", method = RequestMethod.POST)
+    @ResponseBody
+    public void removeFromCart(@RequestBody Set<String> entityGkeySet,
+                          @PathVariable String entity) {
+        cartDao.removeFromCart(entityGkeySet, entity);
+    }
+
+    @RequestMapping(value = "/entities/cart", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Set<Object>> cart() {
+        return cartDao.getEntitiesFromCartWithDetails();
     }
 }
