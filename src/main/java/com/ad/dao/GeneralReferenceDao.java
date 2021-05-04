@@ -33,9 +33,9 @@ public class GeneralReferenceDao extends EntitiesDao {
                     genralRef.setRefCreated(ele.getAttributeValue("refCreated"));
                     extensionList.add(genralRef);
                     String xmlFile = ENTITY_XML_DIR + File.separator + ENTITY_NAME + File.separator + elementIndex + XML_EXTENSION;
-                    saveDataToFS(xmlFile, xmlUtil1.convertToString(ele, true));
+                    saveDataToFS(xmlFile, xmlUtil1.convertToString(ele, true), Boolean.FALSE);
                     String jsonFile = ENTITY_JSON_DIR + File.separator + ENTITY_NAME + File.separator + elementIndex + JSON_EXTENSION;
-                    saveDataToFS(jsonFile, genralRef);
+                    saveDataToFS(jsonFile, genralRef, Boolean.FALSE);
                 }
             }
         } catch (Exception e1) {
@@ -44,6 +44,6 @@ public class GeneralReferenceDao extends EntitiesDao {
         inEntityMap.put(ENTITY_NAME, extensionList);
     }
 
-    private static final String ENTITY_NAME = "General Reference";
+    private static final String ENTITY_NAME = "GeneralReference";
     private static final Logger LOGGER = LoggerFactory.getLogger(GeneralReferenceDao.class);
 }

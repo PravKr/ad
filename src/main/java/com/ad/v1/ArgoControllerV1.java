@@ -11,7 +11,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:5000", maxAge = 3600)
 @Controller
-@RequestMapping("v1/ad")
+@RequestMapping("ad/v1")
 public class ArgoControllerV1 {
 
     @Autowired

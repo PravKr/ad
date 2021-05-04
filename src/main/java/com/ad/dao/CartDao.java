@@ -17,16 +17,16 @@ public class CartDao extends EntitiesDao {
         if(set != null) {
             entityGkeySet.addAll(set);
         }
-        saveDataToFS(dataFile, entityGkeySet);
+        saveDataToFS(dataFile, entityGkeySet, Boolean.FALSE);
     }
 
     public void removeFromCart(Set<String> entityGkeySet, String entity) {
         String dataFile = CART_DIR + File.separator + entity + ".json";
         Set<String> set = getDataFromFS(dataFile, Set.class);
         if(set != null) {
-            entityGkeySet.remove(set);
+            set.removeAll(entityGkeySet);
         }
-        saveDataToFS(dataFile, entityGkeySet);
+        saveDataToFS(dataFile, set, Boolean.TRUE);
     }
 
     public Map<String, Set<String>> getEntitiesFromCart() {

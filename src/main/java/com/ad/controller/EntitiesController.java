@@ -1,5 +1,6 @@
 package com.ad.controller;
 
+import com.ad.dao.ArgoDao;
 import com.ad.dao.CartDao;
 import com.ad.models.Argo;
 import com.ad.models.BaseEntity;
@@ -29,23 +30,25 @@ public class EntitiesController {
     CartDao cartDao;
 
     @Autowired
+    ArgoDao argoDao;
+
+    @Autowired
     HttpServletRequest requestHeader;
 
-    @RequestMapping(value = "/entities", method = RequestMethod.GET)
+    @RequestMapping(value = "/entities/{id}", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, List<BaseEntity>> getAllEntities(@RequestBody Argo inArgo) {
+    public Map<String, List<BaseEntity>> getAllEntities(@PathVariable String id) {
         //requestHeader.authenticate();
         Map<String, List<BaseEntity>> entityMap = new HashMap<>();
-        operationHandler.startExport(inArgo, entityMap);
+        Argo argo = argoDao.getArgo("export", id);
+        operationHandler.startExport(argo, entityMap);
         return entityMap;
     }
 
-
-
     @RequestMapping(value = "/entities/import", method = RequestMethod.POST)
     @ResponseBody
-    public void importSelectedEntities(@RequestBody List<Argo> argoList) {
-        operationHandler.importt(argoList);
+    public void importSelectedEntities(@RequestBody List<String> argoIdList) {
+        operationHandler.importt(argoIdList);
     }
 
     @RequestMapping(value = "/entities/export", method = RequestMethod.POST)
@@ -63,8 +66,8 @@ public class EntitiesController {
 
     @RequestMapping(value = "/entities/exportandimport", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<byte[]> exportAndImportSelectedEntities(@RequestBody List<Argo> argoList) {
-        String xml = operationHandler.exportAndImport(argoList);
+    public ResponseEntity<byte[]> exportAndImportSelectedEntities(@RequestBody List<String> argoIdList) {
+        String xml = operationHandler.exportAndImport(argoIdList);
         byte[] isr = xml.getBytes();
         HttpHeaders respHeaders = new HttpHeaders();
         respHeaders.setContentLength(isr.length);

@@ -17,19 +17,19 @@ public class ArgoController {
     @Autowired
     ArgoDao argoDao;
 
-    @RequestMapping(value = "/argo/{type}", method = RequestMethod.POST)
+    @RequestMapping(value = "/add/argo/{type}", method = RequestMethod.POST)
     @ResponseBody
     public Argo addArgo(@RequestBody Argo argo, @PathVariable String type) {
         return argoDao.addArgo(type, argo);
     }
 
-    @RequestMapping(value = "/argo/{type}", method = RequestMethod.GET)
+    @RequestMapping(value = "/argo/{type}", method = RequestMethod.POST)
     @ResponseBody
     public List<Argo> getArgosByType(@PathVariable String type) {
         return argoDao.getAllArgo(type);
     }
 
-    @RequestMapping(value = "/argos", method = RequestMethod.GET)
+    @RequestMapping(value = "/argos", method = RequestMethod.POST)
     @ResponseBody
     public List<Argo> getArgos() {
         List<Argo> allArgoList = new ArrayList<>();

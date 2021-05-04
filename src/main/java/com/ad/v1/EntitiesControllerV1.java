@@ -20,7 +20,7 @@ import java.util.Set;
 
 @CrossOrigin(origins = "http://localhost:5000", maxAge = 3600)
 @Controller
-@RequestMapping("v1/ad")
+@RequestMapping("ad/v1")
 public class EntitiesControllerV1 {
     @Autowired
     OperationHandler operationHandler;
@@ -31,9 +31,9 @@ public class EntitiesControllerV1 {
     @Autowired
     HttpServletRequest requestHeader;
 
-    @RequestMapping(value = "/entities", method = RequestMethod.GET)
+    @RequestMapping(value = "/entities/{id}", method = RequestMethod.POST)
     @ResponseBody
-    public Object getAllEntities(@RequestBody Argo inArgo) {
+    public Object getAllEntities(@PathVariable String id) {
                return "{\n" +
                 "    \"Digital Asset\": [\n" +
                 "        {\n" +
@@ -240,7 +240,7 @@ public class EntitiesControllerV1 {
 
     @RequestMapping(value = "/entities/import", method = RequestMethod.POST)
     @ResponseBody
-    public void importSelectedEntities(@RequestBody List<Argo> argoList) {
+    public void importSelectedEntities(@RequestBody List<String> argoList) {
         operationHandler.importt(argoList);
     }
 
@@ -259,7 +259,7 @@ public class EntitiesControllerV1 {
 
     @RequestMapping(value = "/entities/exportandimport", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<byte[]> exportAndImportSelectedEntities(@RequestBody List<Argo> argoList) {
+    public ResponseEntity<byte[]> exportAndImportSelectedEntities(@RequestBody List<String> argoList) {
         String xml = operationHandler.exportAndImport(argoList);
         byte[] isr = xml.getBytes();
         HttpHeaders respHeaders = new HttpHeaders();

@@ -76,7 +76,7 @@ public class BaseDao {
         return null;
     }
 
-    public <T> boolean saveDataToFS(String fileName,T t){
+    public <T> boolean saveDataToFS(String fileName,T t, boolean isTruncate){
         boolean isSuccess=false;
         String fullFileName=dataDir.concat("/").concat(fileName);
         try {
@@ -85,7 +85,11 @@ public class BaseDao {
             if(!parentFile.exists()){
                 parentFile.mkdirs();
             }
-            Files.write(Paths.get(fullFileName),data.getBytes(),StandardOpenOption.CREATE);
+            if(isTruncate) {
+                Files.write(Paths.get(fullFileName),data.getBytes(),StandardOpenOption.TRUNCATE_EXISTING);
+            } else{
+                Files.write(Paths.get(fullFileName),data.getBytes(),StandardOpenOption.CREATE);
+            }
             isSuccess=true;
         } catch (IOException e) {
             e.printStackTrace();

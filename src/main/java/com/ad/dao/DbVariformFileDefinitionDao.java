@@ -34,9 +34,9 @@ public class DbVariformFileDefinitionDao extends EntitiesDao {
                     dbVariform.setCreator(ele.getAttributeValue("cfgvar-creator"));
                     dbVariformList.add(dbVariform);
                     String xmlFile = ENTITY_XML_DIR + File.separator + ENTITY_NAME + File.separator + elementIndex + XML_EXTENSION;
-                    saveDataToFS(xmlFile, xmlUtil1.convertToString(ele, true));
+                    saveDataToFS(xmlFile, xmlUtil1.convertToString(ele, true), Boolean.FALSE);
                     String jsonFile = ENTITY_JSON_DIR + File.separator + ENTITY_NAME + File.separator + elementIndex + JSON_EXTENSION;
-                    saveDataToFS(jsonFile, dbVariform);
+                    saveDataToFS(jsonFile, dbVariform, Boolean.FALSE);
                 }
             }
         } catch (Exception e1) {
@@ -45,6 +45,6 @@ public class DbVariformFileDefinitionDao extends EntitiesDao {
         inEntityMap.put(ENTITY_NAME, dbVariformList);
     }
 
-    private static final String ENTITY_NAME = "Database Backed Variform";
+    private static final String ENTITY_NAME = "DatabaseBackedVariform";
     private static final Logger LOGGER = LoggerFactory.getLogger(DbVariformFileDefinitionDao.class);
 }

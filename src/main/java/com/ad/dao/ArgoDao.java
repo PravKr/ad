@@ -16,8 +16,13 @@ public class ArgoDao extends BaseDao {
 
     public Argo addArgo(String type, Argo argo) {
         String dataFile = ARGO_DIR + "/" + type+"/" + argo.getId()+".json";
-        saveDataToFS(dataFile, argo);
+        saveDataToFS(dataFile, argo, Boolean.FALSE);
         return argo;
+    }
+
+    public Argo getArgo(String inType, String inId) {
+        String dataFile = ARGO_DIR + "/" + inType+"/" + inId +".json";
+        return getDataFromFS(dataFile, Argo.class);
     }
 
     public List<Argo> getAllArgo(String type){

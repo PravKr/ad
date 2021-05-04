@@ -34,9 +34,9 @@ public class ExtensionDao extends EntitiesDao {
                     extension.setIsEnabled(ele.getAttributeValue("is-enabled"));
                     extensionList.add(extension);
                     String dataFile = ENTITY_XML_DIR + File.separator + ENTITY_NAME + File.separator + elementIndex + XML_EXTENSION;
-                    saveDataToFS(dataFile, xmlUtil1.convertToString(ele, true));
+                    saveDataToFS(dataFile, xmlUtil1.convertToString(ele, true), Boolean.FALSE);
                     String jsonFile = ENTITY_JSON_DIR + File.separator + ENTITY_NAME + File.separator + elementIndex + JSON_EXTENSION;
-                    saveDataToFS(jsonFile, extension);
+                    saveDataToFS(jsonFile, extension, Boolean.FALSE);
                 }
             }
         } catch (Exception e1) {
@@ -46,6 +46,6 @@ public class ExtensionDao extends EntitiesDao {
         inEntityMap.put(ENTITY_NAME, extensionList);
     }
 
-    private static final String ENTITY_NAME = "Code Extension";
+    private static final String ENTITY_NAME = "CodeExtension";
     private static final Logger LOGGER = LoggerFactory.getLogger(ExtensionDao.class);
 }

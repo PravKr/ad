@@ -40,6 +40,9 @@ public class OperationHandler {
     @Autowired
     XMLUtil xmlUtil;
 
+    @Autowired
+    ArgoDao argoDao;
+
 
     @Value("${entities}")
     public String entities;
@@ -72,10 +75,11 @@ public class OperationHandler {
         LOGGER.info("Export is ended");
     }
 
-    public void importt(List<Argo> argoList) {
+    public void importt(List<String> inArgoList) {
         List<String> allEntities = importEntityDao.getListOfEntities();
         String importXml = xmlUtil.convertListToSNX(allEntities);
-        for(Argo argo: argoList) {
+        for(String argoId: inArgoList) {
+            Argo argo = argoDao.getArgo("import", argoId);
             startImport(argo, importXml);
         }
     }
@@ -85,10 +89,11 @@ public class OperationHandler {
         return xmlUtil.convertListToSNX(allEntities);
     }
 
-    public String exportAndImport(List<Argo> argoList) {
+    public String exportAndImport(List<String> inArgoIdList) {
         List<String> allEntities = importEntityDao.getListOfEntities();
         String importXml = xmlUtil.convertListToSNX(allEntities);
-        for(Argo argo: argoList) {
+        for(String argoId: inArgoIdList) {
+            Argo argo = argoDao.getArgo("import", argoId);
             startImport(argo, importXml);
         }
         return importXml;

@@ -33,9 +33,9 @@ public class DigitalAssetDao extends EntitiesDao {
                     digitalAsset.setFormat(ele.getAttributeValue("format"));
                     digitalAssetList.add(digitalAsset);
                     String xmlFile = ENTITY_XML_DIR + File.separator + ENTITY_NAME + File.separator + elementIndex + XML_EXTENSION;
-                    saveDataToFS(xmlFile, xmlUtil1.convertToString(ele, true));
+                    saveDataToFS(xmlFile, xmlUtil1.convertToString(ele, true), Boolean.FALSE);
                     String jsonFile = ENTITY_JSON_DIR + File.separator + ENTITY_NAME + File.separator + elementIndex + JSON_EXTENSION;
-                    saveDataToFS(jsonFile, digitalAsset);
+                    saveDataToFS(jsonFile, digitalAsset, Boolean.FALSE);
                 }
             }
         } catch (Exception e1) {
@@ -45,6 +45,6 @@ public class DigitalAssetDao extends EntitiesDao {
         inEntityMap.put(ENTITY_NAME, digitalAssetList);
     }
 
-    private static final String ENTITY_NAME = "Digital Asset";
+    private static final String ENTITY_NAME = "DigitalAsset";
     private static final Logger LOGGER = LoggerFactory.getLogger(DigitalAssetDao.class);
 }
