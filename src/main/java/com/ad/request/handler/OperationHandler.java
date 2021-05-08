@@ -118,7 +118,9 @@ public class OperationHandler {
         LOGGER.info("Import is ended");
     }
 
-    private void convertToSpecificDao(String inResponse, String inEntity, Map<String, List<BaseEntity>> inEntityMap) {
+    private void convertToSpecificDao(String inResponse,
+                                      String inEntity,
+                                      Map<String, List<BaseEntity>> inEntityMap) {
         try {
              EntitiesDao entitiesDao = (EntitiesDao) applicationContext.getBean(inEntity + "Dao");
             entitiesDao.convertXMLtoJSON(inResponse, inEntityMap);

@@ -1,5 +1,7 @@
 package com.ad.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class GeneralReference extends BaseEntity {
     private long gkey;
     private String refType;
@@ -7,6 +9,8 @@ public class GeneralReference extends BaseEntity {
     private String refValue1;
     private String refCreator;
     private String refCreated;
+    @JsonProperty("is-checked")
+    private boolean isChecked;
 
     public long getGkey() {
         return gkey;
@@ -56,6 +60,14 @@ public class GeneralReference extends BaseEntity {
         this.refCreated = refCreated;
     }
 
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
+    }
+
     @Override
     public String toString() {
         return "GeneralReference{" +
@@ -65,6 +77,7 @@ public class GeneralReference extends BaseEntity {
                 ", refValue1='" + refValue1 + '\'' +
                 ", refCreator='" + refCreator + '\'' +
                 ", refCreated='" + refCreated + '\'' +
+                ", isChecked=" + isChecked +
                 '}';
     }
 }

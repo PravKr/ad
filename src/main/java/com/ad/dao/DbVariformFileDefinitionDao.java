@@ -9,9 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Component("DbVariformFileDefinitionDao")
 public class DbVariformFileDefinitionDao extends EntitiesDao {
@@ -32,10 +30,11 @@ public class DbVariformFileDefinitionDao extends EntitiesDao {
                     dbVariform.setEnabled(ele.getAttributeValue("cfgvar-enabled"));
                     dbVariform.setVariformIds(ele.getAttributeValue("cfgvar-variform-ids"));
                     dbVariform.setCreator(ele.getAttributeValue("cfgvar-creator"));
+                    dbVariform.setChecked(Boolean.FALSE);
                     dbVariformList.add(dbVariform);
-                    String xmlFile = ENTITY_XML_DIR + File.separator + ENTITY_NAME + File.separator + elementIndex + XML_EXTENSION;
+                    String xmlFile = controllerr.ENTITY_XML_DIR + File.separator + ENTITY_NAME + File.separator + elementIndex + XML_EXTENSION;
                     saveDataToFS(xmlFile, xmlUtil1.convertToString(ele, true), Boolean.FALSE);
-                    String jsonFile = ENTITY_JSON_DIR + File.separator + ENTITY_NAME + File.separator + elementIndex + JSON_EXTENSION;
+                    String jsonFile = controllerr.ENTITY_JSON_DIR + File.separator + ENTITY_NAME + File.separator + elementIndex + JSON_EXTENSION;
                     saveDataToFS(jsonFile, dbVariform, Boolean.FALSE);
                 }
             }
@@ -43,6 +42,17 @@ public class DbVariformFileDefinitionDao extends EntitiesDao {
             LOGGER.error("Error generating export report map" + e1.getMessage());
         }
         inEntityMap.put(ENTITY_NAME, dbVariformList);
+    }
+
+    public List<BaseEntity> allRecordsFromEntity(){
+        String jsonFile = controllerr.ENTITY_JSON_DIR + File.separator + ENTITY_NAME;
+        List<String> allFiles = getAllFileNames(jsonFile);
+        List<BaseEntity> records = new ArrayList<>();
+        for(String file: allFiles) {
+            DatabaseVariform databaseVariform = getDataFromFS(jsonFile + File.separator + file, DatabaseVariform.class);
+            records.add(databaseVariform);
+        }
+        return records;
     }
 
     private static final String ENTITY_NAME = "DatabaseBackedVariform";

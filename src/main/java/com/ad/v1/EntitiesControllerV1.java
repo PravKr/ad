@@ -1,6 +1,7 @@
 package com.ad.v1;
 
 import com.ad.dao.CartDao;
+import com.ad.dao.EntitiesDao;
 import com.ad.models.Argo;
 import com.ad.models.BaseEntity;
 import com.ad.request.handler.OperationHandler;
@@ -34,209 +35,24 @@ public class EntitiesControllerV1 {
     @RequestMapping(value = "/entities/{id}", method = RequestMethod.POST)
     @ResponseBody
     public Object getAllEntities(@PathVariable String id) {
-               return "{\n" +
-                "    \"Digital Asset\": [\n" +
-                "        {\n" +
-                "            \"gkey\": 1,\n" +
-                "            \"name\": \"ShowGkeyTableViewCommand\",\n" +
-                "            \"short-description\": \"ShowGkeyTableViewCommand\",\n" +
-                "            \"is-pre-deployed\": \"N\",\n" +
-                "            \"format\": \"GROOVY\"\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"gkey\": 2,\n" +
-                "            \"name\": \"ShowGkeyTableViewCommand1\",\n" +
-                "            \"short-description\": \"ShowGkeyTableViewCommand1\",\n" +
-                "            \"is-pre-deployed\": \"N\",\n" +
-                "            \"format\": \"GROOVY\"\n" +
-                "        }\n" +
-                "    ],\n" +
-                "    \"General Reference\": [\n" +
-                "        {\n" +
-                "            \"gkey\": 1,\n" +
-                "            \"refType\": \"AUTO_DEPLOY\",\n" +
-                "            \"refId1\": \"RESOURCE_PROPERTIES_PATH\",\n" +
-                "            \"refValue1\": \"C:\\\\My Place\\\\Task\\\\Auto deploy Tool\\\\Test_15_April\",\n" +
-                "            \"refCreator\": \"admin\",\n" +
-                "            \"refCreated\": \"2021-04-15T11:42:40\"\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"gkey\": 2,\n" +
-                "            \"refType\": \"AUTO_DEPLOY_TEST\",\n" +
-                "            \"refId1\": \"AUTO_DEPLOY_TEST\",\n" +
-                "            \"refValue1\": \"AUTO_DEPLOY_TEST\",\n" +
-                "            \"refCreator\": \"admin\",\n" +
-                "            \"refCreated\": \"2021-04-15T11:42:40\"\n" +
-                "        }\n" +
-                "    ],\n" +
-                "    \"Code Extension\": [\n" +
-                "        {\n" +
-                "            \"gkey\": 1,\n" +
-                "            \"name\": \"SnxArgoGroovyJobDefinitionExporter\",\n" +
-                "            \"scope\": null,\n" +
-                "            \"type\": \"BEAN_PROTOTYPE\",\n" +
-                "            \"language\": \"GROOVY\",\n" +
-                "            \"is-enabled\": \"Y\"\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"gkey\": 2,\n" +
-                "            \"name\": \"SnxExtensionExporter\",\n" +
-                "            \"scope\": null,\n" +
-                "            \"type\": \"BEAN_PROTOTYPE\",\n" +
-                "            \"language\": \"GROOVY\",\n" +
-                "            \"is-enabled\": \"Y\"\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"gkey\": 3,\n" +
-                "            \"name\": \"GenericExportProcessor\",\n" +
-                "            \"scope\": \"OPR1\",\n" +
-                "            \"type\": \"GROOVY_WS_CODE_EXTENSION\",\n" +
-                "            \"language\": \"GROOVY\",\n" +
-                "            \"is-enabled\": \"Y\"\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"gkey\": 4,\n" +
-                "            \"name\": \"SnxExtensionImporter\",\n" +
-                "            \"scope\": null,\n" +
-                "            \"type\": \"BEAN_PROTOTYPE\",\n" +
-                "            \"language\": \"GROOVY\",\n" +
-                "            \"is-enabled\": \"Y\"\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"gkey\": 5,\n" +
-                "            \"name\": \"SnxArgoGroovyJobDefinitionImporter\",\n" +
-                "            \"scope\": null,\n" +
-                "            \"type\": \"BEAN_PROTOTYPE\",\n" +
-                "            \"language\": \"GROOVY\",\n" +
-                "            \"is-enabled\": \"Y\"\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"gkey\": 6,\n" +
-                "            \"name\": \"SnxGeneralReferenceImporter\",\n" +
-                "            \"scope\": null,\n" +
-                "            \"type\": \"BEAN_PROTOTYPE\",\n" +
-                "            \"language\": \"GROOVY\",\n" +
-                "            \"is-enabled\": \"Y\"\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"gkey\": 7,\n" +
-                "            \"name\": \"GenericImportProcessor\",\n" +
-                "            \"scope\": \"OPR1\",\n" +
-                "            \"type\": \"GROOVY_WS_CODE_EXTENSION\",\n" +
-                "            \"language\": \"GROOVY\",\n" +
-                "            \"is-enabled\": \"Y\"\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"gkey\": 8,\n" +
-                "            \"name\": \"SnxDbVariformFileDefinitionExporter\",\n" +
-                "            \"scope\": null,\n" +
-                "            \"type\": \"BEAN_PROTOTYPE\",\n" +
-                "            \"language\": \"GROOVY\",\n" +
-                "            \"is-enabled\": \"Y\"\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"gkey\": 9,\n" +
-                "            \"name\": \"SnxDbVariformFileDefinitionImporter\",\n" +
-                "            \"scope\": null,\n" +
-                "            \"type\": \"BEAN_PROTOTYPE\",\n" +
-                "            \"language\": \"GROOVY\",\n" +
-                "            \"is-enabled\": \"Y\"\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"gkey\": 10,\n" +
-                "            \"name\": \"SnxNoticeRequestImporter\",\n" +
-                "            \"scope\": null,\n" +
-                "            \"type\": \"BEAN_PROTOTYPE\",\n" +
-                "            \"language\": \"GROOVY\",\n" +
-                "            \"is-enabled\": \"Y\"\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"gkey\": 11,\n" +
-                "            \"name\": \"AutoDeployTestELI1\",\n" +
-                "            \"scope\": \"OPR1\",\n" +
-                "            \"type\": \"ENTITY_LIFECYCLE_INTERCEPTION\",\n" +
-                "            \"language\": \"GROOVY\",\n" +
-                "            \"is-enabled\": \"Y\"\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"gkey\": 12,\n" +
-                "            \"name\": \"AutoDeployTest2\",\n" +
-                "            \"scope\": \"OPR1\",\n" +
-                "            \"type\": \"ENTITY_LIFECYCLE_INTERCEPTION\",\n" +
-                "            \"language\": \"GROOVY\",\n" +
-                "            \"is-enabled\": \"Y\"\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"gkey\": 13,\n" +
-                "            \"name\": \"SABICUIBeanSeeder\",\n" +
-                "            \"scope\": null,\n" +
-                "            \"type\": \"SERVER_UI_TIER_LIFECYCLE\",\n" +
-                "            \"language\": \"GROOVY\",\n" +
-                "            \"is-enabled\": \"Y\"\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"gkey\": 14,\n" +
-                "            \"name\": \"SABICGateReportController\",\n" +
-                "            \"scope\": null,\n" +
-                "            \"type\": \"BEAN_PROTOTYPE\",\n" +
-                "            \"language\": \"GROOVY\",\n" +
-                "            \"is-enabled\": \"Y\"\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"gkey\": 15,\n" +
-                "            \"name\": \"SABICGateReportFormCommand\",\n" +
-                "            \"scope\": null,\n" +
-                "            \"type\": \"FORM_SUBMISSION_INTERCEPTION\",\n" +
-                "            \"language\": \"GROOVY\",\n" +
-                "            \"is-enabled\": \"Y\"\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"gkey\": 16,\n" +
-                "            \"name\": \"SABICGateTransactionTranFun\",\n" +
-                "            \"scope\": null,\n" +
-                "            \"type\": \"TRANSACTED_BUSINESS_FUNCTION\",\n" +
-                "            \"language\": \"GROOVY\",\n" +
-                "            \"is-enabled\": \"Y\"\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"gkey\": 17,\n" +
-                "            \"name\": \"SnxGeneralReferenceExporter\",\n" +
-                "            \"scope\": null,\n" +
-                "            \"type\": \"BEAN_PROTOTYPE\",\n" +
-                "            \"language\": \"GROOVY\",\n" +
-                "            \"is-enabled\": \"Y\"\n" +
-                "        }\n" +
-                "    ],\n" +
-                "    \"Database Backed Variform\": [\n" +
-                "        {\n" +
-                "            \"gkey\": 1,\n" +
-                "            \"cfgvar-name\": \"CUSTOM_FORM_PREANNOUNCEMENT\",\n" +
-                "            \"cfgvar-description\": \"CUSTOM_FORM_PREANNOUNCEMENT\",\n" +
-                "            \"cfgvar-enabled\": \"Y\",\n" +
-                "            \"cfgvar-variform-ids\": \"|CUSTOM_FORM_PREANNOUNCEMENT|\",\n" +
-                "            \"cfgvar-creator\": \"admin\"\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"gkey\": 2,\n" +
-                "            \"cfgvar-name\": \"CUSTOM_INSPECTOR_VESSEL_VISIT\",\n" +
-                "            \"cfgvar-description\": \"Added Custom Menu - Lashing\",\n" +
-                "            \"cfgvar-enabled\": \"Y\",\n" +
-                "            \"cfgvar-variform-ids\": \"|INSPECTOR_VESSEL_VISIT|\",\n" +
-                "            \"cfgvar-creator\": \"admin\"\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"gkey\": 3,\n" +
-                "            \"cfgvar-name\": \"CUSTOM_FORM_CUSTOMGATEREPORTS\",\n" +
-                "            \"cfgvar-description\": \"CUSTOM_FORM_CUSTOMGATEREPORTS\",\n" +
-                "            \"cfgvar-enabled\": \"Y\",\n" +
-                "            \"cfgvar-variform-ids\": \"|CUSTOM_FORM_CUSTOMGATEREPORTS|\",\n" +
-                "            \"cfgvar-creator\": \"admin\"\n" +
-                "        }\n" +
-                "    ]\n" +
-                "}";
+               return "[\n" +
+                       "    \"CodeExtension\",\n" +
+                       "    \"GeneralReference\",\n" +
+                       "    \"DatabaseBackedVariform\",\n" +
+                       "    \"GroovyPlugins\"\n" +
+                       "]";
     }
 
-
+    /*@RequestMapping(value = "/{systemId}/{entityName}", method = RequestMethod.POST)
+    @ResponseBody
+    public Object getEntityRecords(@PathVariable String systemId, @PathVariable String entityName) {
+        return "[\n" +
+                "    \"CodeExtension\",\n" +
+                "    \"GeneralReference\",\n" +
+                "    \"DatabaseBackedVariform\",\n" +
+                "    \"GroovyPlugins\"\n" +
+                "]";
+    }*/
 
     @RequestMapping(value = "/entities/import", method = RequestMethod.POST)
     @ResponseBody

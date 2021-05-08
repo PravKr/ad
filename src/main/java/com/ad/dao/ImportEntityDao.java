@@ -1,5 +1,6 @@
 package com.ad.dao;
 
+import com.ad.models.BaseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,11 +20,15 @@ public class ImportEntityDao extends EntitiesDao {
         List<String> allEntities = new ArrayList<>();
         Map<String, Set<String>> inEntityMap = cartDao.getEntitiesFromCart();
         for (Map.Entry<String, Set<String>> entry : inEntityMap.entrySet()) {
-            String dataFile = ENTITY_XML_DIR + File.separator + entry.getKey() + File.separator;
+            String dataFile = controllerr.ENTITY_XML_DIR + File.separator + entry.getKey() + File.separator;
             for (String elementIndex: entry.getValue()) {
                 allEntities.add(getDataFromFS(dataFile + elementIndex + XML_EXTENSION, String.class)/*getFileContentById(dataFile + elementIndex + ".txt")*/);
             }
         }
         return allEntities;
+    }
+
+    public List<BaseEntity> allRecordsFromEntity(){
+        return null;
     }
 }

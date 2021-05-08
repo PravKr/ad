@@ -12,6 +12,8 @@ public class DigitalAsset extends BaseEntity{
     private String isPreDeployed;
     @JsonProperty("format")
     private String format;
+    @JsonProperty("is-checked")
+    private boolean isChecked;
 
     public long getGkey() {
         return gkey;
@@ -53,6 +55,14 @@ public class DigitalAsset extends BaseEntity{
         this.format = format;
     }
 
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
+    }
+
     @Override
     public String toString() {
         return "DigitalAsset{" +
@@ -61,6 +71,7 @@ public class DigitalAsset extends BaseEntity{
                 ", shortDescription='" + shortDescription + '\'' +
                 ", isPreDeployed='" + isPreDeployed + '\'' +
                 ", format='" + format + '\'' +
+                ", isChecked=" + isChecked +
                 '}';
     }
 }

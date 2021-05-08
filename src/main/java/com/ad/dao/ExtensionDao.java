@@ -9,9 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Component("ExtensionDao")
 public class ExtensionDao extends EntitiesDao {
@@ -32,10 +30,11 @@ public class ExtensionDao extends EntitiesDao {
                     extension.setType(ele.getAttributeValue("type"));
                     extension.setLanguage(ele.getAttributeValue("language"));
                     extension.setIsEnabled(ele.getAttributeValue("is-enabled"));
+                    extension.setChecked(Boolean.FALSE);
                     extensionList.add(extension);
-                    String dataFile = ENTITY_XML_DIR + File.separator + ENTITY_NAME + File.separator + elementIndex + XML_EXTENSION;
+                    String dataFile = controllerr.ENTITY_XML_DIR + File.separator + ENTITY_NAME + File.separator + elementIndex + XML_EXTENSION;
                     saveDataToFS(dataFile, xmlUtil1.convertToString(ele, true), Boolean.FALSE);
-                    String jsonFile = ENTITY_JSON_DIR + File.separator + ENTITY_NAME + File.separator + elementIndex + JSON_EXTENSION;
+                    String jsonFile = controllerr.ENTITY_JSON_DIR + File.separator + ENTITY_NAME + File.separator + elementIndex + JSON_EXTENSION;
                     saveDataToFS(jsonFile, extension, Boolean.FALSE);
                 }
             }
@@ -44,6 +43,17 @@ public class ExtensionDao extends EntitiesDao {
             e1.printStackTrace();
         }
         inEntityMap.put(ENTITY_NAME, extensionList);
+    }
+
+    public List<BaseEntity> allRecordsFromEntity(){
+        String jsonFile = controllerr.ENTITY_JSON_DIR + File.separator + ENTITY_NAME;
+        List<String> allFiles = getAllFileNames(jsonFile);
+        List<BaseEntity> records = new ArrayList<>();
+        for(String file: allFiles) {
+            Extension extension = getDataFromFS(jsonFile + File.separator + file, Extension.class);
+            records.add(extension);
+        }
+        return records;
     }
 
     private static final String ENTITY_NAME = "CodeExtension";

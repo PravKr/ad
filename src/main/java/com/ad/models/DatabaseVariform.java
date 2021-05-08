@@ -4,21 +4,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class DatabaseVariform extends BaseEntity {
     private long gkey;
-
     @JsonProperty("cfgvar-name")
     private String name;
-
     @JsonProperty("cfgvar-description")
     private String description;
-
     @JsonProperty("cfgvar-enabled")
     private String enabled;
-
     @JsonProperty("cfgvar-variform-ids")
     private String variformIds;
-
     @JsonProperty("cfgvar-creator")
     private String creator;
+    @JsonProperty("is-checked")
+    private Boolean isChecked;
 
     public long getGkey() {
         return gkey;
@@ -66,6 +63,14 @@ public class DatabaseVariform extends BaseEntity {
 
     public void setCreator(String creator) {
         this.creator = creator;
+    }
+
+    public Boolean getChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(Boolean checked) {
+        isChecked = checked;
     }
 
     @Override

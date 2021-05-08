@@ -1,15 +1,16 @@
 package com.ad.dao;
 
 import com.ad.models.BaseEntity;
+import com.ad.models.DatabaseVariform;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.io.File;
+import java.util.*;
+
 @Component("ExtensionTriggerDao")
 public class ExtensionTriggerDao extends EntitiesDao {
 
@@ -41,5 +42,17 @@ public class ExtensionTriggerDao extends EntitiesDao {
         inEntityMap.put("Code Extension", extensionList);
     }
 
+    public List<BaseEntity> allRecordsFromEntity(){
+        String jsonFile = controllerr.ENTITY_JSON_DIR + File.separator + ENTITY_NAME;
+        List<String> allFiles = getAllFileNames(jsonFile);
+        List<BaseEntity> records = new ArrayList<>();
+        for(String file: allFiles) {
+            DatabaseVariform databaseVariform = getDataFromFS(jsonFile + File.separator + file, DatabaseVariform.class);
+            records.add(databaseVariform);
+        }
+        return records;
+    }
+
+    private static final String ENTITY_NAME = "ExtensionTrigger";
     private static final Logger LOGGER = LoggerFactory.getLogger(ExtensionTriggerDao.class);
 }

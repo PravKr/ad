@@ -9,9 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 @Component("GeneralReferenceDao")
 public class GeneralReferenceDao extends EntitiesDao {
 
@@ -31,10 +30,11 @@ public class GeneralReferenceDao extends EntitiesDao {
                     genralRef.setRefValue1(ele.getAttributeValue("refValue1"));
                     genralRef.setRefCreator(ele.getAttributeValue("refCreator"));
                     genralRef.setRefCreated(ele.getAttributeValue("refCreated"));
+                    genralRef.setChecked(Boolean.FALSE);
                     extensionList.add(genralRef);
-                    String xmlFile = ENTITY_XML_DIR + File.separator + ENTITY_NAME + File.separator + elementIndex + XML_EXTENSION;
+                    String xmlFile = controllerr.ENTITY_XML_DIR + File.separator + ENTITY_NAME + File.separator + elementIndex + XML_EXTENSION;
                     saveDataToFS(xmlFile, xmlUtil1.convertToString(ele, true), Boolean.FALSE);
-                    String jsonFile = ENTITY_JSON_DIR + File.separator + ENTITY_NAME + File.separator + elementIndex + JSON_EXTENSION;
+                    String jsonFile = controllerr.ENTITY_JSON_DIR + File.separator + ENTITY_NAME + File.separator + elementIndex + JSON_EXTENSION;
                     saveDataToFS(jsonFile, genralRef, Boolean.FALSE);
                 }
             }
@@ -42,6 +42,17 @@ public class GeneralReferenceDao extends EntitiesDao {
             LOGGER.error("Error generating export report map" + e1.getMessage());
         }
         inEntityMap.put(ENTITY_NAME, extensionList);
+    }
+
+    public List<BaseEntity> allRecordsFromEntity(){
+        String jsonFile = controllerr.ENTITY_JSON_DIR + File.separator + ENTITY_NAME;
+        List<String> allFiles = getAllFileNames(jsonFile);
+        List<BaseEntity> records = new ArrayList<>();
+        for(String file: allFiles) {
+            GeneralReference generalReference = getDataFromFS(jsonFile + File.separator + file, GeneralReference.class);
+            records.add(generalReference);
+        }
+        return records;
     }
 
     private static final String ENTITY_NAME = "GeneralReference";

@@ -1,5 +1,6 @@
 package com.ad.dao;
 
+import com.ad.controller.Controllerr;
 import com.ad.util.DateUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,6 +30,9 @@ public class BaseDao {
 
     @Autowired
     public DateUtil dateUtil;
+
+    @Autowired
+    Controllerr controllerr;
 
     ObjectMapper objectMapper = new ObjectMapper();
 
@@ -85,11 +89,8 @@ public class BaseDao {
             if(!parentFile.exists()){
                 parentFile.mkdirs();
             }
-            if(isTruncate) {
-                Files.write(Paths.get(fullFileName),data.getBytes(),StandardOpenOption.TRUNCATE_EXISTING);
-            } else{
-                Files.write(Paths.get(fullFileName),data.getBytes(),StandardOpenOption.CREATE);
-            }
+            Files.write(Paths.get(fullFileName),data.getBytes(),
+                    isTruncate ? StandardOpenOption.TRUNCATE_EXISTING : StandardOpenOption.CREATE);
             isSuccess=true;
         } catch (IOException e) {
             e.printStackTrace();

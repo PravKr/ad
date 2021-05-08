@@ -14,6 +14,8 @@ public class Extension extends BaseEntity {
     private String language;
     @JsonProperty("is-enabled")
     private String isEnabled;
+    @JsonProperty("is-checked")
+    private Boolean isChecked;
 
     public long getGkey() {
         return gkey;
@@ -63,14 +65,24 @@ public class Extension extends BaseEntity {
         this.isEnabled = isEnabled;
     }
 
+    public Boolean getChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(Boolean checked) {
+        isChecked = checked;
+    }
+
     @Override
     public String toString() {
         return "Extension{" +
-                "name='" + name + '\'' +
+                "gkey=" + gkey +
+                ", name='" + name + '\'' +
                 ", scope='" + scope + '\'' +
                 ", type='" + type + '\'' +
                 ", language='" + language + '\'' +
                 ", isEnabled='" + isEnabled + '\'' +
+                ", isChecked=" + isChecked +
                 '}';
     }
 }

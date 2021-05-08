@@ -9,14 +9,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Component("DigitalAssetDao")
 public class DigitalAssetDao extends EntitiesDao {
 
-    public void convertXMLtoJSON(String inResponse,  Map<String, List<BaseEntity>> inEntityMap) {
+    public void convertXMLtoJSON(String inResponse, Map<String, List<BaseEntity>> inEntityMap) {
         List<BaseEntity> digitalAssetList = new ArrayList<>();
         try {
             Document document = xmlUtil1.stringToXmlDocument(inResponse);
@@ -31,10 +29,11 @@ public class DigitalAssetDao extends EntitiesDao {
                     digitalAsset.setShortDescription(ele.getAttributeValue("short-description"));
                     digitalAsset.setIsPreDeployed(ele.getAttributeValue("is-pre-deployed"));
                     digitalAsset.setFormat(ele.getAttributeValue("format"));
+                    digitalAsset.setChecked(Boolean.FALSE);
                     digitalAssetList.add(digitalAsset);
-                    String xmlFile = ENTITY_XML_DIR + File.separator + ENTITY_NAME + File.separator + elementIndex + XML_EXTENSION;
+                    String xmlFile = controllerr.ENTITY_XML_DIR + File.separator + ENTITY_NAME + File.separator + elementIndex + XML_EXTENSION;
                     saveDataToFS(xmlFile, xmlUtil1.convertToString(ele, true), Boolean.FALSE);
-                    String jsonFile = ENTITY_JSON_DIR + File.separator + ENTITY_NAME + File.separator + elementIndex + JSON_EXTENSION;
+                    String jsonFile = controllerr.ENTITY_JSON_DIR + File.separator + ENTITY_NAME + File.separator + elementIndex + JSON_EXTENSION;
                     saveDataToFS(jsonFile, digitalAsset, Boolean.FALSE);
                 }
             }
@@ -45,6 +44,17 @@ public class DigitalAssetDao extends EntitiesDao {
         inEntityMap.put(ENTITY_NAME, digitalAssetList);
     }
 
-    private static final String ENTITY_NAME = "DigitalAsset";
+    public List<BaseEntity> allRecordsFromEntity(){
+        String jsonFile = controllerr.ENTITY_JSON_DIR + File.separator + ENTITY_NAME;
+        List<String> allFiles = getAllFileNames(jsonFile);
+        List<BaseEntity> records = new ArrayList<>();
+        for(String file: allFiles) {
+            DigitalAsset digitalAsset = getDataFromFS(jsonFile + File.separator + file, DigitalAsset.class);
+            records.add(digitalAsset);
+        }
+        return records;
+    }
+
+    private static final String ENTITY_NAME = "GroovyPlugins";
     private static final Logger LOGGER = LoggerFactory.getLogger(DigitalAssetDao.class);
 }
