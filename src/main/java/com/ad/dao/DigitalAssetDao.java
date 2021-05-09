@@ -29,7 +29,6 @@ public class DigitalAssetDao extends EntitiesDao {
                     digitalAsset.setShortDescription(ele.getAttributeValue("short-description"));
                     digitalAsset.setIsPreDeployed(ele.getAttributeValue("is-pre-deployed"));
                     digitalAsset.setFormat(ele.getAttributeValue("format"));
-                    digitalAsset.setChecked(Boolean.FALSE);
                     digitalAssetList.add(digitalAsset);
                     String xmlFile = controllerr.ENTITY_XML_DIR + File.separator + ENTITY_NAME + File.separator + elementIndex + XML_EXTENSION;
                     saveDataToFS(xmlFile, xmlUtil1.convertToString(ele, true), Boolean.FALSE);

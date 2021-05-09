@@ -102,20 +102,30 @@ public class EntitiesController {
 
     @RequestMapping(value = "/{systemId}/addToCart/{entity}", method = RequestMethod.POST)
     @ResponseBody
-    public void addToCart(@PathVariable String systemId,
+    public Object addToCart(@PathVariable String systemId,
                           @RequestBody Set<String> entityGkeySet,
                           @PathVariable String entity) {
         controllerr.intilizeDataDir(requestHeader, systemId);
-        cartDao.saveToCart(entityGkeySet, entity);
+        boolean isSaved = cartDao.saveToCart(entityGkeySet, entity);
+        if(isSaved) {
+            return "Added to Cart";
+        } else {
+            return "Problem while adding to cart";
+        }
     }
 
     @RequestMapping(value = "/{systemId}/removeFromCart/{entity}", method = RequestMethod.POST)
     @ResponseBody
-    public void removeFromCart(@PathVariable String systemId,
+    public Object removeFromCart(@PathVariable String systemId,
                                @RequestBody Set<String> entityGkeySet,
                                 @PathVariable String entity) {
         controllerr.intilizeDataDir(requestHeader, systemId);
-        cartDao.removeFromCart(entityGkeySet, entity);
+        boolean isSaved = cartDao.removeFromCart(entityGkeySet, entity);
+        if(isSaved) {
+            return "Added to Cart";
+        } else {
+            return "Problem while adding to cart";
+        }
     }
 
     @RequestMapping(value = "/{systemId}/cart", method = RequestMethod.POST)

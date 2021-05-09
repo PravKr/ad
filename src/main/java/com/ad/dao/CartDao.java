@@ -9,22 +9,22 @@ import java.util.*;
 @Component
 public class CartDao extends EntitiesDao {
 
-    public void saveToCart(Set<String> entityGkeySet, String entity) {
+    public boolean saveToCart(Set<String> entityGkeySet, String entity) {
         String dataFile = controllerr.CART_DIR + File.separator + entity + ".json";
         Set<String> set = getDataFromFS(dataFile, Set.class);
         if(set != null) {
             entityGkeySet.addAll(set);
         }
-        saveDataToFS(dataFile, entityGkeySet, Boolean.FALSE);
+        return saveDataToFS(dataFile, entityGkeySet, Boolean.FALSE);
     }
 
-    public void removeFromCart(Set<String> entityGkeySet, String entity) {
+    public boolean removeFromCart(Set<String> entityGkeySet, String entity) {
         String dataFile = controllerr.CART_DIR + File.separator + entity + ".json";
         Set<String> set = getDataFromFS(dataFile, Set.class);
         if(set != null) {
             set.removeAll(entityGkeySet);
         }
-        saveDataToFS(dataFile, set, Boolean.TRUE);
+        return saveDataToFS(dataFile, set, Boolean.TRUE);
     }
 
     public Map<String, Set<String>> getEntitiesFromCart() {

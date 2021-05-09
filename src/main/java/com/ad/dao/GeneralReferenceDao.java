@@ -30,7 +30,6 @@ public class GeneralReferenceDao extends EntitiesDao {
                     genralRef.setRefValue1(ele.getAttributeValue("refValue1"));
                     genralRef.setRefCreator(ele.getAttributeValue("refCreator"));
                     genralRef.setRefCreated(ele.getAttributeValue("refCreated"));
-                    genralRef.setChecked(Boolean.FALSE);
                     extensionList.add(genralRef);
                     String xmlFile = controllerr.ENTITY_XML_DIR + File.separator + ENTITY_NAME + File.separator + elementIndex + XML_EXTENSION;
                     saveDataToFS(xmlFile, xmlUtil1.convertToString(ele, true), Boolean.FALSE);
