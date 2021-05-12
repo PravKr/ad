@@ -28,8 +28,6 @@ public class DbVariformFileDefinitionDao extends EntitiesDao {
                     dbVariform.setName(ele.getAttributeValue("cfgvar-name"));
                     dbVariform.setDescription(ele.getAttributeValue("cfgvar-description"));
                     dbVariform.setEnabled(ele.getAttributeValue("cfgvar-enabled"));
-                    dbVariform.setVariformIds(ele.getAttributeValue("cfgvar-variform-ids"));
-                    dbVariform.setCreator(ele.getAttributeValue("cfgvar-creator"));
                     dbVariformList.add(dbVariform);
                     String xmlFile = controllerr.ENTITY_XML_DIR + File.separator + ENTITY_NAME + File.separator + elementIndex + XML_EXTENSION;
                     saveDataToFS(xmlFile, xmlUtil1.convertToString(ele, true), Boolean.FALSE);

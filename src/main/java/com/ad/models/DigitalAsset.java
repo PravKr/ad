@@ -10,8 +10,6 @@ public class DigitalAsset extends BaseEntity{
     private String shortDescription;
     @JsonProperty("is-pre-deployed")
     private String isPreDeployed;
-    @JsonProperty("format")
-    private String format;
 
     public long getGkey() {
         return gkey;
@@ -45,22 +43,13 @@ public class DigitalAsset extends BaseEntity{
         this.isPreDeployed = isPreDeployed;
     }
 
-    public String getFormat() {
-        return format;
-    }
-
-    public void setFormat(String format) {
-        this.format = format;
-    }
-
     @Override
     public String toString() {
         return "DigitalAsset{" +
                 "gkey=" + gkey +
                 ", id='" + id + '\'' +
                 ", shortDescription='" + shortDescription + '\'' +
-                ", isPreDeployed='" + isPreDeployed + '\'' +
-                ", format='" + format +
+                ", isPreDeployed='" + isPreDeployed +
                 '}';
     }
 }

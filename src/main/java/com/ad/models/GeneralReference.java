@@ -7,8 +7,6 @@ public class GeneralReference extends BaseEntity {
     private String refType;
     private String refId1;
     private String refValue1;
-    private String refCreator;
-    private String refCreated;
 
     public long getGkey() {
         return gkey;
@@ -42,31 +40,13 @@ public class GeneralReference extends BaseEntity {
         this.refValue1 = refValue1;
     }
 
-    public String getRefCreator() {
-        return refCreator;
-    }
-
-    public void setRefCreator(String refCreator) {
-        this.refCreator = refCreator;
-    }
-
-    public String getRefCreated() {
-        return refCreated;
-    }
-
-    public void setRefCreated(String refCreated) {
-        this.refCreated = refCreated;
-    }
-
     @Override
     public String toString() {
         return "GeneralReference{" +
                 "gkey=" + gkey +
                 ", refType='" + refType + '\'' +
                 ", refId1='" + refId1 + '\'' +
-                ", refValue1='" + refValue1 + '\'' +
-                ", refCreator='" + refCreator + '\'' +
-                ", refCreated='" + refCreated +
+                ", refValue1='" + refValue1 +
                 '}';
     }
 }

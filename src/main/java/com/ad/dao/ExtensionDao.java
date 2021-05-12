@@ -28,8 +28,6 @@ public class ExtensionDao extends EntitiesDao {
                     extension.setName(ele.getAttributeValue("name"));
                     extension.setScope(ele.getAttributeValue("scope"));
                     extension.setType(ele.getAttributeValue("type"));
-                    extension.setLanguage(ele.getAttributeValue("language"));
-                    extension.setIsEnabled(ele.getAttributeValue("is-enabled"));
                     extensionList.add(extension);
                     String dataFile = controllerr.ENTITY_XML_DIR + File.separator + ENTITY_NAME + File.separator + elementIndex + XML_EXTENSION;
                     saveDataToFS(dataFile, xmlUtil1.convertToString(ele, true), Boolean.FALSE);

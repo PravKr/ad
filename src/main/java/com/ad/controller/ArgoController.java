@@ -32,6 +32,13 @@ public class ArgoController {
         return argoDao.addArgo(type, argo);
     }
 
+    @RequestMapping(value = "/remove/argo/{type}", method = RequestMethod.POST)
+    @ResponseBody
+    public Argo removeArgo(@RequestBody Argo argo, @PathVariable String type) {
+        controllerr.intilizeDataDir(requestHeader);
+        return argoDao.addArgo(type, argo);
+    }
+
     @RequestMapping(value = "/argo/{type}", method = RequestMethod.POST)
     @ResponseBody
     public List<Argo> getArgosByType(@PathVariable String type) {

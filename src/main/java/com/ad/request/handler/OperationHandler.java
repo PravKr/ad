@@ -3,6 +3,7 @@ package com.ad.request.handler;
 import com.ad.dao.*;
 import com.ad.models.Argo;
 import com.ad.models.BaseEntity;
+import com.ad.util.FileUtil;
 import com.ad.util.XMLUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +40,9 @@ public class OperationHandler {
 
     @Autowired
     XMLUtil xmlUtil;
+
+    @Autowired
+    FileUtil fileUtil;
 
     @Autowired
     ArgoDao argoDao;
@@ -108,7 +112,7 @@ public class OperationHandler {
         soapCallHandler.initilizeTopology(inArgo);
         HashMap<String, String> soapRequestMap = new HashMap<>();
         soapRequestMap.put(CODE_EXTENSION, SNX_IMPORT_PROCESSOR);
-        soapRequestMap.put(ENTITY_NAME, inImportXml);
+        soapRequestMap.put(ENTITY_NAME, fileUtil.encodeXml(inImportXml));
         String response = soapCallHandler.executeSoapCall(soapRequestMap);
         if(response != null) {
             LOGGER.info("Import successful");

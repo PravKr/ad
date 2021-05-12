@@ -10,10 +10,6 @@ public class DatabaseVariform extends BaseEntity {
     private String description;
     @JsonProperty("cfgvar-enabled")
     private String enabled;
-    @JsonProperty("cfgvar-variform-ids")
-    private String variformIds;
-    @JsonProperty("cfgvar-creator")
-    private String creator;
 
     public long getGkey() {
         return gkey;
@@ -47,22 +43,6 @@ public class DatabaseVariform extends BaseEntity {
         this.enabled = enabled;
     }
 
-    public String getVariformIds() {
-        return variformIds;
-    }
-
-    public void setVariformIds(String variformIds) {
-        this.variformIds = variformIds;
-    }
-
-    public String getCreator() {
-        return creator;
-    }
-
-    public void setCreator(String creator) {
-        this.creator = creator;
-    }
-
     @Override
     public String toString() {
         return "DatabaseVariform{" +
@@ -70,8 +50,6 @@ public class DatabaseVariform extends BaseEntity {
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", enabled='" + enabled + '\'' +
-                ", variformIds='" + variformIds + '\'' +
-                ", creator='" + creator + '\'' +
                 '}';
     }
 }
