@@ -16,19 +16,19 @@ public class Controllerr {
     public String ENTITY_XML_DIR;
     public String ENTITY_JSON_DIR;
 
-    public void intilizeDataDir(HttpServletRequest requestHeader, String systemId) {
+    public void intilizeDataDir(HttpServletRequest requestHeader, String systemId, String type) {
         String auth = requestHeader.getHeader("Authorization");
         if(auth == null) {
             ARGO_DIR = "argo";
-            CART_DIR = systemId + File.separator + "cart";
-            ENTITY_XML_DIR = systemId + File.separator + "entities/xml";
-            ENTITY_JSON_DIR = systemId + File.separator + "entities/json";
+            CART_DIR = systemId + File.separator + type + File.separator + "cart";
+            ENTITY_XML_DIR = systemId + File.separator + type + File.separator + "entities/xml";
+            ENTITY_JSON_DIR = systemId + File.separator + type + File.separator + "entities/json";
         } else {
             String encodedUserPass = auth.substring("Basic ".length());
-            ARGO_DIR = encodedUserPass + File.separator + "argo";
-            CART_DIR = encodedUserPass + File.separator + systemId + File.separator + "cart";
-            ENTITY_XML_DIR = encodedUserPass + File.separator + systemId + File.separator + "entities/xml";
-            ENTITY_JSON_DIR = encodedUserPass + File.separator + systemId + File.separator + "entities/json";
+            ARGO_DIR = encodedUserPass + File.separator + type + File.separator + "argo";
+            CART_DIR = encodedUserPass + File.separator + systemId + File.separator + type + File.separator + "cart";
+            ENTITY_XML_DIR = encodedUserPass + File.separator + systemId + File.separator + type + File.separator + "entities/xml";
+            ENTITY_JSON_DIR = encodedUserPass + File.separator + systemId + File.separator + type + File.separator + "entities/json";
         }
     }
 

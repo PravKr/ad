@@ -1,5 +1,6 @@
 package com.ad.util;
 
+import com.ad.models.Argo;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.jdom.*;
 import org.jdom.input.SAXBuilder;
@@ -15,7 +16,9 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /*
  * XMLUtil
@@ -30,6 +33,14 @@ import java.util.List;
  */
 @Component
 public class XMLUtil {
+
+    static List<String> entitiesWhichHaveScope;
+    static {
+        entitiesWhichHaveScope = new ArrayList<>();
+        entitiesWhichHaveScope.add("CodeExtension");
+        entitiesWhichHaveScope.add("DatabaseBackedVariform");
+        entitiesWhichHaveScope.add("ExtensionTrigger");
+    }
 
     /**
      * Convert Document to String
@@ -167,11 +178,29 @@ public class XMLUtil {
      * Export the SNX from spcific entity exporter
      * @return String
      */
-    public String convertListToSNX(List<String> inEntityItem) {
+    public String convertListToSNX(Map<String, List<String>> inEntityMap, Argo inArgo) {
         Element root = createRootElement(E_ROOT, SNX_SCHEMA_URL);
 
-        for(String entity: inEntityItem) {
-            root.addContent(convertToElement(entity));
+        if(inArgo == null) {
+            for(Map.Entry<String, List<String>> entry: inEntityMap.entrySet()){
+                for(String entity: entry.getValue()) {
+                    root.addContent(convertToElement(entity));
+                }
+            }
+        } else {
+            for(Map.Entry<String, List<String>> entry: inEntityMap.entrySet()){
+                if(entitiesWhichHaveScope.contains(entry.getKey())) {
+                    for(String entity: entry.getValue()) {
+                        Element element = (Element) convertToElement(entity);
+                        resolveScope(element, inArgo);
+                        root.addContent(element);
+                    }
+                } else {
+                    for(String entity: entry.getValue()) {
+                        root.addContent(convertToElement(entity));
+                    }
+                }
+            }
         }
 
         String exportedXML = null;
@@ -180,6 +209,23 @@ public class XMLUtil {
         }
 
         return ensureHeader(exportedXML);
+    }
+
+    public void resolveScope(Element inElement, Argo inArgo) {
+        String scope = inElement.getAttributeValue("scope");
+        if(scope == null) {
+            return;
+        }
+        long countSlash = scope.chars().filter(ch -> ch == '/').count();
+        String newScope = null;
+        if(countSlash == 0) {
+            newScope = inArgo.getOperator();
+        } else if(countSlash == 1) {
+            newScope = inArgo.getOperator() + "/" + inArgo.getComplex();
+        } else if(countSlash == 2) {
+            newScope = inArgo.getOperator() + "/" + inArgo.getComplex() + "/" + inArgo.getFacility();
+        }
+        inElement.setAttribute("scope", newScope);
     }
 
     /**

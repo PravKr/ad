@@ -47,35 +47,42 @@ public class EntitiesController {
         daoMap.put("GroovyPlugins", "DigitalAssetDao");
     }
 
-    @RequestMapping(value = "/{systemId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/{type}/{systemId}", method = RequestMethod.POST)
     @ResponseBody
-    public Set<String> getAllEntities(@PathVariable String systemId) {
-        controllerr.intilizeDataDir(requestHeader, systemId);
+    public Set<String> getAllEntities(@PathVariable String type,
+                                      @PathVariable String systemId) {
+        controllerr.intilizeDataDir(requestHeader, systemId, type);
         Map<String, List<BaseEntity>> entityMap = new HashMap<>();
-        Argo argo = argoDao.getArgo("export", systemId);
+        Argo argo = argoDao.getArgo(type, systemId);
         operationHandler.startExport(argo, entityMap);
         return entityMap.keySet();
     }
 
-    @RequestMapping(value = "/{systemId}/{entityName}", method = RequestMethod.POST)
+    @RequestMapping(value = "/{type}/{systemId}/{entityName}", method = RequestMethod.POST)
     @ResponseBody
-    public List<BaseEntity> getEntityRecords(@PathVariable String systemId, @PathVariable String entityName) {
-        controllerr.intilizeDataDir(requestHeader, systemId);
+    public List<BaseEntity> getEntityRecords(@PathVariable String type,
+                                             @PathVariable String systemId,
+                                             @PathVariable String entityName) {
+        controllerr.intilizeDataDir(requestHeader, systemId, type);
         EntitiesDao entitiesDao = (EntitiesDao) applicationContext.getBean(daoMap.get(entityName));
         return entitiesDao.allRecordsFromEntity();
     }
 
-    @RequestMapping(value = "/{systemId}/import", method = RequestMethod.POST)
+    @RequestMapping(value = "/{type}/{systemId}/import", method = RequestMethod.POST)
     @ResponseBody
-    public void importSelectedEntities(@PathVariable String systemId, @RequestBody List<String> argoIdList) {
-        controllerr.intilizeDataDir(requestHeader, systemId);
+    public void importSelectedEntities(@PathVariable String type,
+                                       @PathVariable String systemId,
+                                       @RequestBody List<String> argoIdList) {
+        controllerr.intilizeDataDir(requestHeader, systemId, type);
         operationHandler.importt(argoIdList);
+
     }
 
-    @RequestMapping(value = "/{systemId}/export", method = RequestMethod.POST)
+    @RequestMapping(value = "/{type}/{systemId}/export", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<byte[]> exportSelectedEntities(@PathVariable String systemId) {
-        controllerr.intilizeDataDir(requestHeader, systemId);
+    public ResponseEntity<byte[]> exportSelectedEntities(@PathVariable String type,
+                                                         @PathVariable String systemId) {
+        controllerr.intilizeDataDir(requestHeader, systemId, type);
         String xml = operationHandler.export();
         byte[] isr = xml.getBytes();
         HttpHeaders respHeaders = new HttpHeaders();
@@ -86,10 +93,12 @@ public class EntitiesController {
         return new ResponseEntity<byte[]>(isr, respHeaders, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/{systemId}/exportandimport", method = RequestMethod.POST)
+    @RequestMapping(value = "/{type}/{systemId}/exportandimport", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<byte[]> exportAndImportSelectedEntities(@PathVariable String systemId, @RequestBody List<String> argoIdList) {
-        controllerr.intilizeDataDir(requestHeader, systemId);
+    public ResponseEntity<byte[]> exportAndImportSelectedEntities(@PathVariable String type,
+                                                                  @PathVariable String systemId,
+                                                                  @RequestBody List<String> argoIdList) {
+        controllerr.intilizeDataDir(requestHeader, systemId, type);
         String xml = operationHandler.exportAndImport(argoIdList);
         byte[] isr = xml.getBytes();
         HttpHeaders respHeaders = new HttpHeaders();
@@ -100,12 +109,13 @@ public class EntitiesController {
         return new ResponseEntity<byte[]>(isr, respHeaders, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/{systemId}/addToCart/{entity}", method = RequestMethod.POST)
+    @RequestMapping(value = "/{type}/{systemId}/addToCart/{entity}", method = RequestMethod.POST)
     @ResponseBody
-    public Object addToCart(@PathVariable String systemId,
+    public Object addToCart(@PathVariable String type,
+                            @PathVariable String systemId,
                           @RequestBody Set<String> entityGkeySet,
                           @PathVariable String entity) {
-        controllerr.intilizeDataDir(requestHeader, systemId);
+        controllerr.intilizeDataDir(requestHeader, systemId, type);
         boolean isSaved = cartDao.saveToCart(entityGkeySet, entity);
         if(isSaved) {
             return "Added to Cart";
@@ -114,12 +124,13 @@ public class EntitiesController {
         }
     }
 
-    @RequestMapping(value = "/{systemId}/removeFromCart/{entity}", method = RequestMethod.POST)
+    @RequestMapping(value = "/{type}/{systemId}/removeFromCart/{entity}", method = RequestMethod.POST)
     @ResponseBody
-    public Object removeFromCart(@PathVariable String systemId,
+    public Object removeFromCart(@PathVariable String type,
+                                 @PathVariable String systemId,
                                @RequestBody Set<String> entityGkeySet,
                                 @PathVariable String entity) {
-        controllerr.intilizeDataDir(requestHeader, systemId);
+        controllerr.intilizeDataDir(requestHeader, systemId, type);
         boolean isSaved = cartDao.removeFromCart(entityGkeySet, entity);
         if(isSaved) {
             return "Added to Cart";
@@ -128,10 +139,11 @@ public class EntitiesController {
         }
     }
 
-    @RequestMapping(value = "/{systemId}/cart", method = RequestMethod.POST)
+    @RequestMapping(value = "/{type}/{systemId}/cart", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Set<Object>> cart(@PathVariable String systemId) {
-        controllerr.intilizeDataDir(requestHeader, systemId);
+    public Map<String, Set<Object>> cart(@PathVariable String type,
+                                         @PathVariable String systemId) {
+        controllerr.intilizeDataDir(requestHeader, systemId, type);
         return cartDao.getEntitiesFromCartWithDetails();
     }
 }

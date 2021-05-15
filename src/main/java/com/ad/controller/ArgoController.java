@@ -1,9 +1,10 @@
 package com.ad.controller;
 
+import com.ad.constants.OperationContants;
 import com.ad.dao.ArgoDao;
 import com.ad.models.Argo;
+import com.ad.request.handler.OperationHandler;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +26,18 @@ public class ArgoController {
     @Autowired
     Controllerr controllerr;
 
+    @Autowired
+    OperationHandler operationHandler;
+
+    @RequestMapping(value = "/ping/argo/{type}/{id}", method = RequestMethod.POST)
+    @ResponseBody
+    public String ping(@PathVariable String type,
+                       @PathVariable String id) {
+        controllerr.intilizeDataDir(requestHeader);
+        Argo argo = argoDao.getArgo(type, id);
+        return operationHandler.ping(argo);
+    }
+
     @RequestMapping(value = "/add/argo/{type}", method = RequestMethod.POST)
     @ResponseBody
     public Argo addArgo(@RequestBody Argo argo, @PathVariable String type) {
@@ -32,11 +45,16 @@ public class ArgoController {
         return argoDao.addArgo(type, argo);
     }
 
-    @RequestMapping(value = "/remove/argo/{type}", method = RequestMethod.POST)
+    @RequestMapping(value = "/remove/argo/{type}/{id}", method = RequestMethod.POST)
     @ResponseBody
-    public Argo removeArgo(@RequestBody Argo argo, @PathVariable String type) {
+    public String removeArgo(@PathVariable String type,
+                           @PathVariable String id) {
         controllerr.intilizeDataDir(requestHeader);
-        return argoDao.addArgo(type, argo);
+        if(argoDao.removeArgo(type, id)){
+            return "System removed successfully";
+        } else {
+            return "Some problem happend";
+        }
     }
 
     @RequestMapping(value = "/argo/{type}", method = RequestMethod.POST)
@@ -51,8 +69,8 @@ public class ArgoController {
     public List<Argo> getArgos() {
         controllerr.intilizeDataDir(requestHeader);
         List<Argo> allArgoList = new ArrayList<>();
-        allArgoList.addAll(argoDao.getAllArgo("import"));
-        allArgoList.addAll(argoDao.getAllArgo("export"));
+        allArgoList.addAll(argoDao.getAllArgo(OperationContants.IMPORT_STRING));
+        allArgoList.addAll(argoDao.getAllArgo(OperationContants.EXPORT_STRING));
         return allArgoList;
     }
 }

@@ -1,5 +1,6 @@
 package com.ad.request.handler;
 
+import com.ad.constants.OperationContants;
 import com.ad.dao.*;
 import com.ad.models.Argo;
 import com.ad.models.BaseEntity;
@@ -47,11 +48,24 @@ public class OperationHandler {
     @Autowired
     ArgoDao argoDao;
 
-
     @Value("${entities}")
     public String entities;
 
     private static List<String> errorList = new ArrayList<>();
+
+    /**
+     * To Start the Import
+     */
+    public String ping(Argo inArgo) {
+        LOGGER.info("Import is started");
+        soapCallHandler.initilizeTopology(inArgo);
+        String response = soapCallHandler.ping(new HashMap<>());
+        LOGGER.error(response);
+        if(response != null) {
+            return "Successfull";
+        }
+        return "Not successfull";
+    }
 
     /**
      * To Export the selected component
@@ -80,24 +94,25 @@ public class OperationHandler {
     }
 
     public void importt(List<String> inArgoList) {
-        List<String> allEntities = importEntityDao.getListOfEntities();
-        String importXml = xmlUtil.convertListToSNX(allEntities);
+        Map<String, List<String>> allEntities = importEntityDao.getListOfEntities();
         for(String argoId: inArgoList) {
-            Argo argo = argoDao.getArgo("import", argoId);
+            Argo argo = argoDao.getArgo(OperationContants.IMPORT_STRING, argoId);
+            String importXml = xmlUtil.convertListToSNX(allEntities, argo);
             startImport(argo, importXml);
         }
     }
 
     public String export() {
-        List<String> allEntities = importEntityDao.getListOfEntities();
-        return xmlUtil.convertListToSNX(allEntities);
+        Map<String, List<String>> allEntities = importEntityDao.getListOfEntities();
+        return xmlUtil.convertListToSNX(allEntities, null);
     }
 
     public String exportAndImport(List<String> inArgoIdList) {
-        List<String> allEntities = importEntityDao.getListOfEntities();
-        String importXml = xmlUtil.convertListToSNX(allEntities);
+        Map<String, List<String>> allEntities = importEntityDao.getListOfEntities();
+        String importXml = null;
         for(String argoId: inArgoIdList) {
-            Argo argo = argoDao.getArgo("import", argoId);
+            Argo argo = argoDao.getArgo(OperationContants.IMPORT_STRING, argoId);
+            importXml = xmlUtil.convertListToSNX(allEntities, argo);
             startImport(argo, importXml);
         }
         return importXml;
@@ -143,8 +158,5 @@ public class OperationHandler {
     private static final String SNX_IMPORT_PROCESSOR = "GenericImportProcessor";
     private static final String ENTITY_NAME = "entity-name";
     private static final String ENTITY_ITEM = "entity-item";
-    private static final String IMPORT_OPERATION = "import";
-    private static final String EXPORT_OPERATION = "export";
-    private static final String EXPORT_IMPORT_OPERATION = "exportandimport";
     private static final Logger LOGGER = LoggerFactory.getLogger(OperationHandler.class);
 }

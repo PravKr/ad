@@ -64,8 +64,21 @@ public class SoapCallHandler {
      * @param soapMap
      * @return
      */
+    public String ping(Map<String,String> soapMap) {
+        readSoapXMLFile("classpath:ping.txt");
+        substituteVariables(soapMap);
+        prepareSoapRequest();
+        postSoapMessage();
+        return extractResponse();
+    }
+
+    /**
+     * To execute Soap Call
+     * @param soapMap
+     * @return
+     */
     public String executeSoapCall(Map<String,String> soapMap) {
-        readSoapXMLFile();
+        readSoapXMLFile("classpath:groovy-extension.txt");
         substituteVariables(soapMap);
         prepareSoapRequest();
         postSoapMessage();
@@ -75,9 +88,9 @@ public class SoapCallHandler {
     /**
      * To read Soap xml
      */
-    private void readSoapXMLFile() {
+    private void readSoapXMLFile(String inSoapFormat) {
         //Read xml file
-        File file = fileUtil.getFileFromResource("classpath:groovy-extension.txt");
+        File file = fileUtil.getFileFromResource(inSoapFormat);
         if (file != null) {
             try {
                 soapRequestFileContent = FileUtils.readFileToString(file);

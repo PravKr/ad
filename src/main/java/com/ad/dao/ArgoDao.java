@@ -17,15 +17,16 @@ public class ArgoDao extends BaseDao {
     public Argo addArgo(String type, Argo argo) {
         String dataFile = controllerr.ARGO_DIR + "/" + type+"/" + argo.getId()+".json";
         //argo.setId(argo.getSystemName().replaceAll(" ", ""));
+        argo.setSystemType(type);
         saveDataToFS(dataFile, argo, Boolean.FALSE);
         return argo;
     }
 
-    public Argo removeArgo(String type, Argo argo) {
-        String dataFile = controllerr.ARGO_DIR + "/" + type+"/" + argo.getId()+".json";
+    public boolean removeArgo(String type, String id) {
+        String dataFile = controllerr.ARGO_DIR + "/" + type+"/" + id +".json";
         //argo.setId(argo.getSystemName().replaceAll(" ", ""));
         deleteDataFromFs(dataFile);
-        return argo;
+        return true;
     }
 
     public Argo getArgo(String inType, String inId) {

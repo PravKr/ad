@@ -2,6 +2,7 @@ package com.ad.models;
 
 public class Argo extends BaseEntity {
     private String id;
+    private String systemType;
     private String systemName;
     private String endPoint;
     private String username;
@@ -17,6 +18,14 @@ public class Argo extends BaseEntity {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getSystemType() {
+        return systemType;
+    }
+
+    public void setSystemType(String systemType) {
+        this.systemType = systemType;
     }
 
     public String getSystemName() {
@@ -87,6 +96,7 @@ public class Argo extends BaseEntity {
     public String toString() {
         return "Argo{" +
                 "id='" + id + '\'' +
+                ", systemType='" + systemType + '\'' +
                 ", systemName='" + systemName + '\'' +
                 ", endPoint='" + endPoint + '\'' +
                 ", username='" + username + '\'' +

@@ -1,0 +1,18 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:arg="http://www.navis.com/services/argoservice">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <arg:genericInvoke>
+         <arg:scopeCoordinateIdsWsType>
+			<operatorId>#operator#</operatorId>
+			<complexId>#complex#</complexId>
+			<facilityId>#facility#</facilityId>
+			<yardId>#yard#</yardId>
+		</arg:scopeCoordinateIdsWsType>
+         <arg:xmlDoc>
+         <![CDATA[
+			<ping />
+		]]>
+		</arg:xmlDoc>
+      </arg:genericInvoke>
+   </soapenv:Body>
+</soapenv:Envelope>
