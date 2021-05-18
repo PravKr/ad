@@ -16,6 +16,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,7 +68,7 @@ public class BaseDao {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        return new ArrayList<>();
     }
 
     public String getFileContentById(String filePath) {
@@ -103,7 +104,18 @@ public class BaseDao {
         try {
             Files.delete((Paths.get(fullFileName)));
         } catch (IOException e) {
-            System.out.println("Paper Not Found!");
+            System.out.println("some problem occured");
+        }
+    }
+
+    public boolean deleteDirFromFs(String fileName){
+        String fullFileName=dataDir.concat("/").concat(fileName);
+        try {
+            FileUtils.deleteDirectory(new File(fullFileName));
+            return Boolean.TRUE;
+        } catch (IOException e) {
+            System.out.println("some problem occured");
+            return Boolean.FALSE;
         }
     }
 

@@ -27,6 +27,20 @@ public class CartDao extends EntitiesDao {
         return saveDataToFS(dataFile, set, Boolean.TRUE);
     }
 
+    public boolean removeAllByEntity(String entity) {
+        String dataFile = controllerr.CART_DIR + File.separator + entity + ".json";
+        Set<String> set = getDataFromFS(dataFile, Set.class);
+        if(set != null) {
+            set.clear();
+        }
+        return saveDataToFS(dataFile, set, Boolean.TRUE);
+    }
+
+    public boolean removeEverytingFromCart() {
+        deleteDirFromFs(controllerr.CART_DIR);
+        return true;
+    }
+
     public Map<String, Set<String>> getEntitiesFromCart() {
         Map<String, Set<String>> inEntityMap = new HashMap<>();
         List<String> allFiles = getAllFileNames(controllerr.CART_DIR);

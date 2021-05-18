@@ -133,9 +133,36 @@ public class EntitiesController {
         controllerr.intilizeDataDir(requestHeader, systemId, type);
         boolean isSaved = cartDao.removeFromCart(entityGkeySet, entity);
         if(isSaved) {
-            return "Added to Cart";
+            return "removed from Cart";
         } else {
-            return "Problem while adding to cart";
+            return "Problem while removing from cart";
+        }
+    }
+
+    @RequestMapping(value = "/{type}/{systemId}/removeByEntityFromCart/{entity}", method = RequestMethod.POST)
+    @ResponseBody
+    public Object removeCartByEntity(@PathVariable String type,
+                                 @PathVariable String systemId,
+                                 @PathVariable String entity) {
+        controllerr.intilizeDataDir(requestHeader, systemId, type);
+        boolean isSaved = cartDao.removeAllByEntity(entity);
+        if(isSaved) {
+            return entity + " removed from Cart";
+        } else {
+            return "some problem came while removing Cart";
+        }
+    }
+
+    @RequestMapping(value = "/{type}/{systemId}/emptyCart", method = RequestMethod.POST)
+    @ResponseBody
+    public Object emptyCart(@PathVariable String type,
+                            @PathVariable String systemId) {
+        controllerr.intilizeDataDir(requestHeader, systemId, type);
+        boolean isSaved = cartDao.removeEverytingFromCart();
+        if(isSaved) {
+            return "Cart is Empty";
+        } else {
+            return "some problem while removing all data from cart";
         }
     }
 
