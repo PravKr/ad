@@ -5,7 +5,9 @@ import com.ad.dao.CartDao;
 import com.ad.dao.EntitiesDao;
 import com.ad.models.Argo;
 import com.ad.models.BaseEntity;
+import com.ad.models.ImportHistory;
 import com.ad.request.handler.OperationHandler;
+import com.ad.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpHeaders;
@@ -37,6 +39,8 @@ public class EntitiesController {
     Controllerr controllerr;
     @Autowired
     ApplicationContext applicationContext;
+    @Autowired
+    DateUtil dateUtil;
 
     static Map<String, String> daoMap;
     static {
@@ -74,7 +78,10 @@ public class EntitiesController {
                                        @PathVariable String systemId,
                                        @RequestBody List<String> argoIdList) {
         controllerr.intilizeDataDir(requestHeader, systemId, type);
-        operationHandler.importt(argoIdList);
+        ImportHistory importHistory = new ImportHistory();
+        importHistory.setExportSystemId(systemId);
+        importHistory.setExportDate(dateUtil.getCurrentIndiaTimeInString());
+        operationHandler.importt(argoIdList, importHistory);
 
     }
 

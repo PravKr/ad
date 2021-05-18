@@ -57,7 +57,7 @@ public class EntitiesControllerV1 {
     @RequestMapping(value = "/entities/import", method = RequestMethod.POST)
     @ResponseBody
     public void importSelectedEntities(@RequestBody List<String> argoList) {
-        operationHandler.importt(argoList);
+        //operationHandler.importt(argoList);
     }
 
     @RequestMapping(value = "/entities/export", method = RequestMethod.POST)

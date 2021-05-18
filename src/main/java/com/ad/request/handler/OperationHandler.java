@@ -4,6 +4,7 @@ import com.ad.constants.OperationContants;
 import com.ad.dao.*;
 import com.ad.models.Argo;
 import com.ad.models.BaseEntity;
+import com.ad.models.ImportHistory;
 import com.ad.util.FileUtil;
 import com.ad.util.XMLUtil;
 import org.slf4j.Logger;
@@ -38,6 +39,9 @@ public class OperationHandler {
 
     @Autowired
     ImportEntityDao importEntityDao;
+
+    @Autowired
+    ImportHistoryDao importHistoryDao;
 
     @Autowired
     XMLUtil xmlUtil;
@@ -93,22 +97,23 @@ public class OperationHandler {
         LOGGER.info("Export is ended");
     }
 
-    public void importt(List<String> inArgoList) {
-        Map<String, List<String>> allEntities = importEntityDao.getListOfEntities();
+    public void importt(List<String> inArgoList, ImportHistory inImportHistory) {
+        Map<String, List<String>> allEntities = importEntityDao.getListOfEntities(inImportHistory);
         for(String argoId: inArgoList) {
             Argo argo = argoDao.getArgo(OperationContants.IMPORT_STRING, argoId);
             String importXml = xmlUtil.convertListToSNX(allEntities, argo);
             startImport(argo, importXml);
+            importHistoryDao.createOrSaveHistory(argo, inImportHistory);
         }
     }
 
     public String export() {
-        Map<String, List<String>> allEntities = importEntityDao.getListOfEntities();
+        Map<String, List<String>> allEntities = importEntityDao.getListOfEntities(null);
         return xmlUtil.convertListToSNX(allEntities, null);
     }
 
     public String exportAndImport(List<String> inArgoIdList) {
-        Map<String, List<String>> allEntities = importEntityDao.getListOfEntities();
+        Map<String, List<String>> allEntities = importEntityDao.getListOfEntities(null);
         String importXml = null;
         for(String argoId: inArgoIdList) {
             Argo argo = argoDao.getArgo(OperationContants.IMPORT_STRING, argoId);
