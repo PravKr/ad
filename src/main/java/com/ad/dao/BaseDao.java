@@ -111,7 +111,7 @@ public class BaseDao {
     public boolean deleteDirFromFs(String fileName){
         String fullFileName=dataDir.concat("/").concat(fileName);
         try {
-            FileUtils.deleteDirectory(new File(fullFileName));
+            FileUtils.cleanDirectory(new File(fullFileName));
             return Boolean.TRUE;
         } catch (IOException e) {
             System.out.println("some problem occured");
