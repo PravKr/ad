@@ -5,6 +5,7 @@ import com.ad.dao.CartDao;
 import com.ad.dao.EntitiesDao;
 import com.ad.models.Argo;
 import com.ad.models.BaseEntity;
+import com.ad.models.ExportHistory;
 import com.ad.models.ImportHistory;
 import com.ad.request.handler.OperationHandler;
 import com.ad.util.DateUtil;
@@ -39,8 +40,6 @@ public class EntitiesController {
     Controllerr controllerr;
     @Autowired
     ApplicationContext applicationContext;
-    @Autowired
-    DateUtil dateUtil;
 
     static Map<String, String> daoMap;
     static {
@@ -79,9 +78,9 @@ public class EntitiesController {
                                        @RequestBody List<String> argoIdList) {
         controllerr.intilizeDataDir(requestHeader, systemId, type);
         ImportHistory importHistory = new ImportHistory();
-        importHistory.setExportSystemId(systemId);
-        importHistory.setExportDate(dateUtil.getCurrentIndiaTimeInString());
-        operationHandler.importt(argoIdList, importHistory);
+        ExportHistory exportHistory = new ExportHistory();
+        controllerr.createImportAndExportHistory(importHistory, exportHistory, argoIdList, systemId);
+        operationHandler.importt(argoIdList, importHistory, exportHistory);
 
     }
 

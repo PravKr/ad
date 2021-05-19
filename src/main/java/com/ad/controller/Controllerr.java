@@ -1,15 +1,23 @@
 package com.ad.controller;
 
+import com.ad.models.ExportHistory;
+import com.ad.models.ImportHistory;
+import com.ad.util.DateUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.util.List;
 
 @Component
 public class Controllerr {
     @Value("${dataDir:/Users/kumarpr/ad/data}")
     public String dataDir;
+
+    @Autowired
+    DateUtil dateUtil;
 
     public String ARGO_DIR;
     public String CART_DIR;
@@ -49,5 +57,18 @@ public class Controllerr {
             ENTITY_XML_DIR = encodedUserPass + File.separator + "entities/xml";
             ENTITY_JSON_DIR = encodedUserPass + File.separator + "entities/json";
         }
+    }
+
+    public void createImportAndExportHistory(ImportHistory inImportHistory,
+                                             ExportHistory inExportHistory,
+                                             List<String> inArgoIdList,
+                                             String systemId) {
+        String dateAndTime = dateUtil.getCurrentIndiaTimeInString();
+        inImportHistory.setExportSystemId(systemId);
+        inImportHistory.setExportDate(dateAndTime);
+
+        inExportHistory.setExportSystemId(systemId);
+        inExportHistory.setExportDate(dateAndTime);
+        inExportHistory.setImportSystemList(inArgoIdList);
     }
 }

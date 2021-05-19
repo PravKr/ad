@@ -4,6 +4,7 @@ import com.ad.constants.OperationContants;
 import com.ad.dao.*;
 import com.ad.models.Argo;
 import com.ad.models.BaseEntity;
+import com.ad.models.ExportHistory;
 import com.ad.models.ImportHistory;
 import com.ad.util.FileUtil;
 import com.ad.util.XMLUtil;
@@ -42,6 +43,9 @@ public class OperationHandler {
 
     @Autowired
     ImportHistoryDao importHistoryDao;
+
+    @Autowired
+    ExportHistoryDao exportHistoryDao;
 
     @Autowired
     XMLUtil xmlUtil;
@@ -97,13 +101,14 @@ public class OperationHandler {
         LOGGER.info("Export is ended");
     }
 
-    public void importt(List<String> inArgoList, ImportHistory inImportHistory) {
+    public void importt(List<String> inArgoList, ImportHistory inImportHistory, ExportHistory inExportHistory) {
         Map<String, List<String>> allEntities = importEntityDao.getListOfEntities(inImportHistory);
         for(String argoId: inArgoList) {
             Argo argo = argoDao.getArgo(OperationContants.IMPORT_STRING, argoId);
             String importXml = xmlUtil.convertListToSNX(allEntities, argo);
             startImport(argo, importXml);
             importHistoryDao.createOrSaveHistory(argo, inImportHistory);
+            exportHistoryDao.createOrSaveHistory(inExportHistory);
         }
     }
 

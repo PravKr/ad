@@ -1,25 +1,15 @@
 package com.ad.controller;
 
-import com.ad.dao.ArgoDao;
-import com.ad.dao.CartDao;
-import com.ad.dao.EntitiesDao;
-import com.ad.dao.ImportHistoryDao;
-import com.ad.models.Argo;
-import com.ad.models.BaseEntity;
-import com.ad.models.ImportHistory;
+import com.ad.constants.OperationContants;
+import com.ad.dao.*;
 import com.ad.request.handler.OperationHandler;
 import com.ad.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -44,13 +34,20 @@ public class HisotryController {
     DateUtil dateUtil;
     @Autowired
     ImportHistoryDao importHistoryDao;
+    @Autowired
+    ExportHistoryDao exportHistoryDao;
 
     @RequestMapping(value = "/{systemType}/{systemId}", method = RequestMethod.POST)
     @ResponseBody
     public List<String> getHistory(@PathVariable String systemType,
                                          @PathVariable String systemId) {
         controllerr.intilizeDataDir(requestHeader, systemId, systemType);
-        return importHistoryDao.getHistory();
+        if(OperationContants.IMPORT_STRING.equalsIgnoreCase(systemType)) {
+            return importHistoryDao.getHistory();
+        } else if(OperationContants.EXPORT_STRING.equalsIgnoreCase(systemType)) {
+            return exportHistoryDao.getHistory();
+        }
+        return null;
     }
 
     @RequestMapping(value = "/{systemType}/{systemId}/{date}", method = RequestMethod.POST)
@@ -59,6 +56,20 @@ public class HisotryController {
                                                     @PathVariable String systemId,
                                                     @PathVariable String date) {
         controllerr.intilizeDataDir(requestHeader, systemId, systemType);
-        return importHistoryDao.getHistoryDate(date);
+        if(OperationContants.IMPORT_STRING.equalsIgnoreCase(systemType)) {
+            return importHistoryDao.getHistoryByDate(date);
+        } else if(OperationContants.EXPORT_STRING.equalsIgnoreCase(systemType)) {
+            return exportHistoryDao.getHistoryByDate(date);
+        }
+        return null;
+    }
+
+    @RequestMapping(value = "/{systemType}/{systemId}/importedSystem/{date}", method = RequestMethod.POST)
+    @ResponseBody
+    public List<String> getImportedSystemByDate(@PathVariable String systemType,
+                                                     @PathVariable String systemId,
+                                                     @PathVariable String date) {
+        controllerr.intilizeDataDir(requestHeader, systemId, systemType);
+        return exportHistoryDao.getImportSystemListByDate(date);
     }
 }
