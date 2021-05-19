@@ -69,6 +69,8 @@ public class Controllerr {
 
         inExportHistory.setExportSystemId(systemId);
         inExportHistory.setExportDate(dateAndTime);
-        inExportHistory.setImportSystemList(inArgoIdList);
+        if(inArgoIdList != null) {
+            inExportHistory.setImportSystemList(inArgoIdList);
+        }
     }
 }

@@ -63,7 +63,7 @@ public class EntitiesControllerV1 {
     @RequestMapping(value = "/entities/export", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<byte[]> exportSelectedEntities() {
-        String xml = operationHandler.export();
+        String xml = operationHandler.export(null, null);
         byte[] isr = xml.getBytes();
         HttpHeaders respHeaders = new HttpHeaders();
         respHeaders.setContentLength(isr.length);
@@ -76,7 +76,7 @@ public class EntitiesControllerV1 {
     @RequestMapping(value = "/entities/exportandimport", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<byte[]> exportAndImportSelectedEntities(@RequestBody List<String> argoList) {
-        String xml = operationHandler.exportAndImport(argoList);
+        String xml = operationHandler.exportAndImport(argoList, null, null);
         byte[] isr = xml.getBytes();
         HttpHeaders respHeaders = new HttpHeaders();
         respHeaders.setContentLength(isr.length);

@@ -89,7 +89,11 @@ public class EntitiesController {
     public ResponseEntity<byte[]> exportSelectedEntities(@PathVariable String type,
                                                          @PathVariable String systemId) {
         controllerr.intilizeDataDir(requestHeader, systemId, type);
-        String xml = operationHandler.export();
+        ImportHistory importHistory = new ImportHistory();
+        ExportHistory exportHistory = new ExportHistory();
+        controllerr.createImportAndExportHistory(importHistory, exportHistory, null, systemId);
+
+        String xml = operationHandler.export(importHistory, exportHistory);
         byte[] isr = xml.getBytes();
         HttpHeaders respHeaders = new HttpHeaders();
         respHeaders.setContentLength(isr.length);
@@ -105,7 +109,10 @@ public class EntitiesController {
                                                                   @PathVariable String systemId,
                                                                   @RequestBody List<String> argoIdList) {
         controllerr.intilizeDataDir(requestHeader, systemId, type);
-        String xml = operationHandler.exportAndImport(argoIdList);
+        ImportHistory importHistory = new ImportHistory();
+        ExportHistory exportHistory = new ExportHistory();
+        controllerr.createImportAndExportHistory(importHistory, exportHistory, argoIdList, systemId);
+        String xml = operationHandler.exportAndImport(argoIdList, importHistory, exportHistory);
         byte[] isr = xml.getBytes();
         HttpHeaders respHeaders = new HttpHeaders();
         respHeaders.setContentLength(isr.length);
