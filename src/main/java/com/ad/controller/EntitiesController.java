@@ -73,14 +73,19 @@ public class EntitiesController {
 
     @RequestMapping(value = "/{type}/{systemId}/import", method = RequestMethod.POST)
     @ResponseBody
-    public void importSelectedEntities(@PathVariable String type,
+    public String importSelectedEntities(@PathVariable String type,
                                        @PathVariable String systemId,
                                        @RequestBody List<String> argoIdList) {
         controllerr.intilizeDataDir(requestHeader, systemId, type);
         ImportHistory importHistory = new ImportHistory();
         ExportHistory exportHistory = new ExportHistory();
         controllerr.createImportAndExportHistory(importHistory, exportHistory, argoIdList, systemId);
-        operationHandler.importt(argoIdList, importHistory, exportHistory);
+        boolean isImported = operationHandler.importt(argoIdList, importHistory, exportHistory);
+        if(isImported) {
+            return "Import Successfull";
+        } else {
+            return "Import is not Successfull";
+        }
 
     }
 

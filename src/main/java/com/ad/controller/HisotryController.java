@@ -93,7 +93,7 @@ public class HisotryController {
 
     @RequestMapping(value = "/{systemType}/{systemId}/{date}/import", method = RequestMethod.POST)
     @ResponseBody
-    public void importSelectedHistoryByDate(@PathVariable String systemType,
+    public String importSelectedHistoryByDate(@PathVariable String systemType,
                                        @PathVariable String systemId,
                                        @PathVariable String date,
                                        @RequestBody List<String> argoIdList) {
@@ -101,7 +101,11 @@ public class HisotryController {
         ImportHistory importHistory = new ImportHistory();
         ExportHistory exportHistory = new ExportHistory();
         controllerr.createImportAndExportHistory(importHistory, exportHistory, argoIdList, systemType);
-        operationHandler.importFromHistory(argoIdList, importHistory, exportHistory, systemType, date);
-
+        boolean isImported = operationHandler.importFromHistory(argoIdList, importHistory, exportHistory, systemType, date);
+        if(isImported) {
+            return "Import Successfull";
+        } else {
+            return "Import is not Successfull";
+        }
     }
 }
