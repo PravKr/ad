@@ -2,6 +2,7 @@ package com.ad.dao;
 
 import com.ad.models.Argo;
 import com.ad.models.BaseEntity;
+import com.ad.models.ExportHistory;
 import com.ad.models.ImportHistory;
 import org.springframework.stereotype.Component;
 
@@ -39,6 +40,30 @@ public class ImportHistoryDao extends EntitiesDao {
 
     public List<String> getHistory() {
         return getAllFileNames(controllerr.HISTORY_DIR);
+    }
+
+    public Map<String, List<String>> getListOfEntitiesHistory(ImportHistory inImportHistory, ExportHistory inExportHistory, String date) {
+        Map<String, List<String>> allEntities = new HashMap<>();
+        String dataFile = controllerr.HISTORY_DIR + File.separator + date;
+        ImportHistory history = getDataFromFS(dataFile, ImportHistory.class);
+        Map<String, Set<String>> inEntityMap = history.getExportedEnitites();
+        if(inImportHistory != null) {
+            inImportHistory.setExportedEnitites(inEntityMap);
+        }
+
+        if(inExportHistory != null) {
+            inExportHistory.setExportedEnitites(inEntityMap);
+        }
+
+        for (Map.Entry<String, Set<String>> entry : inEntityMap.entrySet()) {
+            String xmlDataFile = history.getExportSystemId() + File.separator + "export/entities/xml" + File.separator + entry.getKey() + File.separator;
+            List<String> contents = new ArrayList<>();
+            for (String elementIndex : entry.getValue()) {
+                contents.add(getDataFromFS(xmlDataFile + elementIndex + XML_EXTENSION, String.class));
+            }
+            allEntities.put(entry.getKey(), contents);
+        }
+        return allEntities;
     }
 
     public List<BaseEntity> allRecordsFromEntity(){

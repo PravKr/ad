@@ -43,6 +43,30 @@ public class ExportHistoryDao extends EntitiesDao {
         return inEntityMap;
     }
 
+    public Map<String, List<String>> getListOfEntitiesHistory(ImportHistory inImportHistory, ExportHistory inExportHistory, String date) {
+        Map<String, List<String>> allEntities = new HashMap<>();
+        String dataFile = controllerr.HISTORY_DIR + File.separator + date;
+        ExportHistory history = getDataFromFS(dataFile, ExportHistory.class);
+        Map<String, Set<String>> inEntityMap = history.getExportedEnitites();
+        if(inImportHistory != null) {
+            inImportHistory.setExportedEnitites(inEntityMap);
+        }
+
+        if(inExportHistory != null) {
+            inExportHistory.setExportedEnitites(inEntityMap);
+        }
+
+        for (Map.Entry<String, Set<String>> entry : inEntityMap.entrySet()) {
+            String xmlDataFile = controllerr.ENTITY_JSON_DIR + File.separator + entry.getKey() + File.separator;
+            List<String> contents = new ArrayList<>();
+            for (String elementIndex : entry.getValue()) {
+                contents.add(getDataFromFS(xmlDataFile + elementIndex + XML_EXTENSION, String.class)/*getFileContentById(dataFile + elementIndex + ".txt")*/);
+            }
+            allEntities.put(entry.getKey(), contents);
+        }
+        return allEntities;
+    }
+
     public List<String> getHistory() {
         return getAllFileNames(controllerr.HISTORY_DIR);
     }

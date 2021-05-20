@@ -112,8 +112,41 @@ public class OperationHandler {
         }
     }
 
+    public String importFromHistory(List<String> inArgoList,
+                                    ImportHistory inImportHistory,
+                                    ExportHistory inExportHistory,
+                                    String systemType,
+                                    String date) {
+        Map<String, List<String>> allEntities = new HashMap<>();
+        if(OperationContants.IMPORT_STRING.equalsIgnoreCase(systemType)) {
+            allEntities = importHistoryDao.getListOfEntitiesHistory(inImportHistory, inExportHistory, date);
+        } else if(OperationContants.EXPORT_STRING.equalsIgnoreCase(systemType)) {
+            allEntities = exportHistoryDao.getListOfEntitiesHistory(inImportHistory, inExportHistory, date);
+        }
+        for(String argoId: inArgoList) {
+            Argo argo = argoDao.getArgo(systemType, argoId);
+            String importXml = xmlUtil.convertListToSNX(allEntities, argo);
+            startImport(argo, importXml);
+            importHistoryDao.createOrSaveHistory(argo, inImportHistory);
+            exportHistoryDao.createOrSaveHistory(inExportHistory);
+        }
+
+        return xmlUtil.convertListToSNX(allEntities, null);
+    }
+
     public String export(ImportHistory inImportHistory, ExportHistory inExportHistory) {
         Map<String, List<String>> allEntities = importEntityDao.getListOfEntities(inImportHistory, inExportHistory);
+        return xmlUtil.convertListToSNX(allEntities, null);
+    }
+
+    public String exportFromHistory(ImportHistory inImportHistory, ExportHistory inExportHistory, String systemType, String date) {
+        Map<String, List<String>> allEntities = new HashMap<>();
+        if(OperationContants.IMPORT_STRING.equalsIgnoreCase(systemType)) {
+            allEntities = importHistoryDao.getListOfEntitiesHistory(inImportHistory, inExportHistory, date);
+        } else if(OperationContants.EXPORT_STRING.equalsIgnoreCase(systemType)) {
+            allEntities = exportHistoryDao.getListOfEntitiesHistory(inImportHistory, inExportHistory, date);
+        }
+
         return xmlUtil.convertListToSNX(allEntities, null);
     }
 

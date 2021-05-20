@@ -81,7 +81,7 @@ public class HisotryController {
 
     @RequestMapping(value = "/{systemType}/{systemId}/{date}/export", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<byte[]> exportSelectedEntities(@PathVariable String systemType,
+    public ResponseEntity<byte[]> exportSelectedHistoryDate(@PathVariable String systemType,
                                                          @PathVariable String systemId,
                                                          @PathVariable String date) {
         controllerr.intilizeDataDir(requestHeader, systemId, systemType);
@@ -89,7 +89,7 @@ public class HisotryController {
         ExportHistory exportHistory = new ExportHistory();
         controllerr.createImportAndExportHistory(importHistory, exportHistory, null, systemId);
 
-        String xml = operationHandler.export(importHistory, exportHistory);
+        String xml = operationHandler.exportFromHistory(importHistory, exportHistory, systemType, date);
         byte[] isr = xml.getBytes();
         HttpHeaders respHeaders = new HttpHeaders();
         respHeaders.setContentLength(isr.length);
@@ -97,5 +97,19 @@ public class HisotryController {
         respHeaders.setCacheControl("must-revalidate, post-check=0, pre-check=0");
         respHeaders.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=entities.xml");
         return new ResponseEntity<byte[]>(isr, respHeaders, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{systemType}/{systemId}/{date}/import", method = RequestMethod.POST)
+    @ResponseBody
+    public void importSelectedHistoryByDate(@PathVariable String systemType,
+                                       @PathVariable String systemId,
+                                       @PathVariable String date,
+                                       @RequestBody List<String> argoIdList) {
+        controllerr.intilizeDataDir(requestHeader, systemId, systemType);
+        ImportHistory importHistory = new ImportHistory();
+        ExportHistory exportHistory = new ExportHistory();
+        controllerr.createImportAndExportHistory(importHistory, exportHistory, argoIdList, systemType);
+        operationHandler.importFromHistory(argoIdList, importHistory, exportHistory, systemType, date);
+
     }
 }
