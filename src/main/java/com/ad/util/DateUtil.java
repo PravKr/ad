@@ -48,6 +48,6 @@ public class DateUtil {
         }
     }
 
-    private static final String PATTERN_1 = "yyyyMMddhhmma";
+    private static final String PATTERN_1 = "yyyy-MM-dd-hh-mm-a";
     private static final String PATTERN_2 = "dd/MM/yyyy hh:mma";
 }

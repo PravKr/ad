@@ -15,13 +15,13 @@ public class ImportHistoryDao extends EntitiesDao {
 
     public void createOrSaveHistory(Argo inArgo, ImportHistory inImportHistory) {
         String importHistoryFile =
-                inArgo.getId() + File.separator + "import" + File.separator + HISTORY_PATH + File.separator + inImportHistory.getExportDate() + ".json";
+                inArgo.getId() + File.separator + "import" + File.separator + HISTORY_PATH + File.separator + inImportHistory.getExportDate() + JSON_EXTENSION;
         saveDataToFS(importHistoryFile, inImportHistory, Boolean.FALSE);
     }
 
     public Map<String, Set<Object>> getHistoryByDate(String date) {
         Map<String, Set<Object>> inEntityMap = new HashMap<>();
-        String dataFile = controllerr.HISTORY_DIR + File.separator + date;
+        String dataFile = controllerr.HISTORY_DIR + File.separator + addExtensionToFile(date);
         ImportHistory history = getDataFromFS(dataFile, ImportHistory.class);
         for(Map.Entry<String, Set<String>> entry: history.getExportedEnitites().entrySet()) {
             Set<Object> baseEntitySet = new HashSet<>();
@@ -39,12 +39,12 @@ public class ImportHistoryDao extends EntitiesDao {
     }
 
     public List<String> getHistory() {
-        return getAllFileNames(controllerr.HISTORY_DIR);
+        return removeExtensionFromFile(getAllFileNames(controllerr.HISTORY_DIR));
     }
 
     public Map<String, List<String>> getListOfEntitiesHistory(ImportHistory inImportHistory, ExportHistory inExportHistory, String date) {
         Map<String, List<String>> allEntities = new HashMap<>();
-        String dataFile = controllerr.HISTORY_DIR + File.separator + date;
+        String dataFile = controllerr.HISTORY_DIR + File.separator + addExtensionToFile(date);
         ImportHistory history = getDataFromFS(dataFile, ImportHistory.class);
         Map<String, Set<String>> inEntityMap = history.getExportedEnitites();
         if(inImportHistory != null) {

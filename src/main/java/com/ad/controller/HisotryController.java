@@ -27,17 +27,9 @@ public class HisotryController {
     @Autowired
     OperationHandler operationHandler;
     @Autowired
-    CartDao cartDao;
-    @Autowired
-    ArgoDao argoDao;
-    @Autowired
     HttpServletRequest requestHeader;
     @Autowired
     Controllerr controllerr;
-    @Autowired
-    ApplicationContext applicationContext;
-    @Autowired
-    DateUtil dateUtil;
     @Autowired
     ImportHistoryDao importHistoryDao;
     @Autowired

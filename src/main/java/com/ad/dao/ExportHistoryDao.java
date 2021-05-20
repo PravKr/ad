@@ -14,19 +14,19 @@ public class ExportHistoryDao extends EntitiesDao {
 
     public void createOrSaveHistory(ExportHistory inExportHistory) {
         String exportHistoryFile =
-                controllerr.HISTORY_DIR + File.separator + inExportHistory.getExportDate() + ".json";
+                controllerr.HISTORY_DIR + File.separator + inExportHistory.getExportDate() + JSON_EXTENSION;
         saveDataToFS(exportHistoryFile, inExportHistory, Boolean.FALSE);
     }
 
     public List<String> getImportSystemListByDate(String date) {
         String exportHistoryFile =
-                controllerr.HISTORY_DIR + File.separator + date + ".json";
+                controllerr.HISTORY_DIR + File.separator + addExtensionToFile(date);
         return getDataFromFS(exportHistoryFile, List.class);
     }
 
     public Map<String, Set<Object>> getHistoryByDate(String date) {
         Map<String, Set<Object>> inEntityMap = new HashMap<>();
-        String dataFile = controllerr.HISTORY_DIR + File.separator + date;
+        String dataFile = controllerr.HISTORY_DIR + File.separator + addExtensionToFile(date);
         ExportHistory history = getDataFromFS(dataFile, ExportHistory.class);
         for(Map.Entry<String, Set<String>> entry: history.getExportedEnitites().entrySet()) {
             Set<Object> baseEntitySet = new HashSet<>();
@@ -45,7 +45,7 @@ public class ExportHistoryDao extends EntitiesDao {
 
     public Map<String, List<String>> getListOfEntitiesHistory(ImportHistory inImportHistory, ExportHistory inExportHistory, String date) {
         Map<String, List<String>> allEntities = new HashMap<>();
-        String dataFile = controllerr.HISTORY_DIR + File.separator + date;
+        String dataFile = controllerr.HISTORY_DIR + File.separator + addExtensionToFile(date);
         ExportHistory history = getDataFromFS(dataFile, ExportHistory.class);
         Map<String, Set<String>> inEntityMap = history.getExportedEnitites();
         if(inImportHistory != null) {
@@ -68,7 +68,7 @@ public class ExportHistoryDao extends EntitiesDao {
     }
 
     public List<String> getHistory() {
-        return getAllFileNames(controllerr.HISTORY_DIR);
+        return removeExtensionFromFile(getAllFileNames(controllerr.HISTORY_DIR));
     }
 
     public List<BaseEntity> allRecordsFromEntity(){
