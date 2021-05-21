@@ -24,8 +24,10 @@ public class ArgoDao extends BaseDao {
 
     public boolean removeArgo(String type, String id) {
         String dataFile = controllerr.ARGO_DIR + "/" + type+"/" + id +".json";
+        String systemFile = id + File.separator + type;
         //argo.setId(argo.getSystemName().replaceAll(" ", ""));
         deleteDataFromFs(dataFile);
+        deleteDirFromFs(systemFile);
         return true;
     }
 

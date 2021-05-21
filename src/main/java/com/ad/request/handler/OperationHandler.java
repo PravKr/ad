@@ -69,10 +69,10 @@ public class OperationHandler {
         soapCallHandler.initilizeTopology(inArgo);
         String response = soapCallHandler.ping(new HashMap<>());
         LOGGER.error(response);
-        if(response != null) {
-            return "Successfull";
+        if(response == null) {
+            return "Not successfull";
         }
-        return "Not successfull";
+        return "Successfull";
     }
 
     /**

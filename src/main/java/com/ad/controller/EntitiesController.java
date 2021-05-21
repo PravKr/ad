@@ -45,6 +45,7 @@ public class EntitiesController {
         daoMap.put("DatabaseBackedVariform", "DbVariformFileDefinitionDao");
         daoMap.put("GeneralReference", "GeneralReferenceDao");
         daoMap.put("GroovyPlugins", "DigitalAssetDao");
+        daoMap.put("EventType", "EventTypeDao");
     }
 
     @RequestMapping(value = "/{type}/{systemId}", method = RequestMethod.POST)
