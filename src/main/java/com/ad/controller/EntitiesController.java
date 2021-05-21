@@ -3,10 +3,7 @@ package com.ad.controller;
 import com.ad.dao.ArgoDao;
 import com.ad.dao.CartDao;
 import com.ad.dao.EntitiesDao;
-import com.ad.models.Argo;
-import com.ad.models.BaseEntity;
-import com.ad.models.ExportHistory;
-import com.ad.models.ImportHistory;
+import com.ad.models.*;
 import com.ad.request.handler.OperationHandler;
 import com.ad.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,6 +66,20 @@ public class EntitiesController {
         controllerr.intilizeDataDir(requestHeader, systemId, type);
         EntitiesDao entitiesDao = (EntitiesDao) applicationContext.getBean(daoMap.get(entityName));
         return entitiesDao.allRecordsFromEntity();
+    }
+
+    @RequestMapping(value = "/{type}/{systemId}/{entityName}/wilecard", method = RequestMethod.POST)
+    @ResponseBody
+    public List<BaseEntity> getEntityRecordsByWhileCardChar(@PathVariable String type,
+                                                            @PathVariable String systemId,
+                                                            @PathVariable String entityName,
+                                                            @RequestBody SearchModel searchModel) {
+        controllerr.intilizeDataDir(requestHeader, systemId, type);
+        EntitiesDao entitiesDao = (EntitiesDao) applicationContext.getBean(daoMap.get(entityName));
+        if(searchModel.getText().isEmpty()) {
+            return entitiesDao.allRecordsFromEntity();
+        }
+        return entitiesDao.allRecordsFromEntityByWildcardChar(searchModel.getText());
     }
 
     @RequestMapping(value = "/{type}/{systemId}/import", method = RequestMethod.POST)

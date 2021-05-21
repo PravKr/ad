@@ -53,6 +53,19 @@ public class ExtensionDao extends EntitiesDao {
         return records;
     }
 
+    public List<BaseEntity> allRecordsFromEntityByWildcardChar(String wildcardString){
+        String jsonFile = controllerr.ENTITY_JSON_DIR + File.separator + ENTITY_NAME;
+        List<String> allFiles = getAllFileNames(jsonFile);
+        List<BaseEntity> records = new ArrayList<>();
+        for(String file: allFiles) {
+            Extension extension = getDataFromFS(jsonFile + File.separator + file, Extension.class);
+            if(isMatch(extension.getName(), wildcardString)) {
+                records.add(extension);
+            }
+        }
+        return records;
+    }
+
     private static final String ENTITY_NAME = "CodeExtension";
     private static final Logger LOGGER = LoggerFactory.getLogger(ExtensionDao.class);
 }

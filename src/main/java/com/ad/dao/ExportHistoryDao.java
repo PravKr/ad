@@ -71,6 +71,10 @@ public class ExportHistoryDao extends EntitiesDao {
         return removeExtensionFromFile(getAllFileNames(controllerr.HISTORY_DIR));
     }
 
+    public List<BaseEntity> allRecordsFromEntityByWildcardChar(String wildcardString){
+        return null;
+    }
+
     public List<BaseEntity> allRecordsFromEntity(){
         return null;
     }

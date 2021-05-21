@@ -73,4 +73,8 @@ public class CartDao extends EntitiesDao {
     public List<BaseEntity> allRecordsFromEntity(){
         return null;
     }
+
+    public List<BaseEntity> allRecordsFromEntityByWildcardChar(String wildcardString){
+        return null;
+    }
 }

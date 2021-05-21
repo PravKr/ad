@@ -37,6 +37,10 @@ public class ImportEntityDao extends EntitiesDao {
         return allEntities;
     }
 
+    public List<BaseEntity> allRecordsFromEntityByWildcardChar(String wildcardString){
+        return null;
+    }
+
     public List<BaseEntity> allRecordsFromEntity(){
         return null;
     }

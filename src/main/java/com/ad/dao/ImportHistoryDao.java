@@ -69,4 +69,8 @@ public class ImportHistoryDao extends EntitiesDao {
     public List<BaseEntity> allRecordsFromEntity(){
         return null;
     }
+
+    public List<BaseEntity> allRecordsFromEntityByWildcardChar(String wildcardString){
+        return null;
+    }
 }

@@ -52,6 +52,19 @@ public class DbVariformFileDefinitionDao extends EntitiesDao {
         return records;
     }
 
+    public List<BaseEntity> allRecordsFromEntityByWildcardChar(String wildcardString){
+        String jsonFile = controllerr.ENTITY_JSON_DIR + File.separator + ENTITY_NAME;
+        List<String> allFiles = getAllFileNames(jsonFile);
+        List<BaseEntity> records = new ArrayList<>();
+        for(String file: allFiles) {
+            DatabaseVariform dbVariform = getDataFromFS(jsonFile + File.separator + file, DatabaseVariform.class);
+            if(isMatch(dbVariform.getName(), wildcardString)) {
+                records.add(dbVariform);
+            }
+        }
+        return records;
+    }
+
     private static final String ENTITY_NAME = "DatabaseBackedVariform";
     private static final Logger LOGGER = LoggerFactory.getLogger(DbVariformFileDefinitionDao.class);
 }

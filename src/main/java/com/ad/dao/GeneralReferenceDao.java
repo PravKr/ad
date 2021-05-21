@@ -52,6 +52,19 @@ public class GeneralReferenceDao extends EntitiesDao {
         return records;
     }
 
+    public List<BaseEntity> allRecordsFromEntityByWildcardChar(String wildcardString){
+        String jsonFile = controllerr.ENTITY_JSON_DIR + File.separator + ENTITY_NAME;
+        List<String> allFiles = getAllFileNames(jsonFile);
+        List<BaseEntity> records = new ArrayList<>();
+        for(String file: allFiles) {
+            GeneralReference generalReference = getDataFromFS(jsonFile + File.separator + file, GeneralReference.class);
+            if(isMatch(generalReference.getRefType(), wildcardString)) {
+                records.add(generalReference);
+            }
+        }
+        return records;
+    }
+
     private static final String ENTITY_NAME = "GeneralReference";
     private static final Logger LOGGER = LoggerFactory.getLogger(GeneralReferenceDao.class);
 }

@@ -53,6 +53,19 @@ public class DigitalAssetDao extends EntitiesDao {
         return records;
     }
 
+    public List<BaseEntity> allRecordsFromEntityByWildcardChar(String wildcardString){
+        String jsonFile = controllerr.ENTITY_JSON_DIR + File.separator + ENTITY_NAME;
+        List<String> allFiles = getAllFileNames(jsonFile);
+        List<BaseEntity> records = new ArrayList<>();
+        for(String file: allFiles) {
+            DigitalAsset generalReference = getDataFromFS(jsonFile + File.separator + file, DigitalAsset.class);
+            if(isMatch(generalReference.getId(), wildcardString)) {
+                records.add(generalReference);
+            }
+        }
+        return records;
+    }
+
     private static final String ENTITY_NAME = "GroovyPlugins";
     private static final Logger LOGGER = LoggerFactory.getLogger(DigitalAssetDao.class);
 }

@@ -53,6 +53,10 @@ public class ExtensionTriggerDao extends EntitiesDao {
         return records;
     }
 
+    public List<BaseEntity> allRecordsFromEntityByWildcardChar(String wildcardString){
+        return null;
+    }
+
     private static final String ENTITY_NAME = "ExtensionTrigger";
     private static final Logger LOGGER = LoggerFactory.getLogger(ExtensionTriggerDao.class);
 }
