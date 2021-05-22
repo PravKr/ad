@@ -23,7 +23,7 @@ import java.util.Set;
 @CrossOrigin(origins = "http://localhost:5000", maxAge = 3600)
 @Controller
 @RequestMapping("ad/history/import")
-public class HisotryController {
+public class ImportHisotryController {
     @Autowired
     OperationHandler operationHandler;
     @Autowired
