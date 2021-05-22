@@ -1,5 +1,6 @@
 package com.ad.controller;
 
+import com.ad.constants.CommonConstants;
 import com.ad.models.ExportHistory;
 import com.ad.models.ImportHistory;
 import com.ad.util.DateUtil;
@@ -24,21 +25,27 @@ public class Controllerr {
     public String ENTITY_XML_DIR;
     public String ENTITY_JSON_DIR;
     public String HISTORY_DIR;
+    public String SYSTEM_DIR;
 
-    public void intilizeDataDir(HttpServletRequest requestHeader, String systemId, String type) {
+    public void intilizeDataDir(HttpServletRequest requestHeader,
+                                String systemId,
+                                String type,
+                                String visitedDate) {
         String auth = requestHeader.getHeader("AAAuthorization");
+        visitedDate = visitedDate == null ? CommonConstants.EMPTY_STRING : visitedDate;
         if(auth == null) {
             ARGO_DIR = "argo";
-            CART_DIR = systemId + File.separator + type + File.separator + "cart";
-            ENTITY_XML_DIR = systemId + File.separator + type + File.separator + "entities/xml";
-            ENTITY_JSON_DIR = systemId + File.separator + type + File.separator + "entities/json";
+            SYSTEM_DIR = systemId;
+            CART_DIR = systemId + File.separator + visitedDate + File.separator + type + File.separator + "cart";
+            ENTITY_XML_DIR = systemId + File.separator + visitedDate + File.separator + type + File.separator + "entities/xml";
+            ENTITY_JSON_DIR = systemId + File.separator + visitedDate + File.separator + type + File.separator + "entities/json";
             HISTORY_DIR = systemId + File.separator + type + File.separator + "history";
         } else {
             String encodedUserPass = auth.substring("Basic ".length());
             ARGO_DIR = encodedUserPass + File.separator + type + File.separator + "argo";
-            CART_DIR = encodedUserPass + File.separator + systemId + File.separator + type + File.separator + "cart";
-            ENTITY_XML_DIR = encodedUserPass + File.separator + systemId + File.separator + type + File.separator + "entities/xml";
-            ENTITY_JSON_DIR = encodedUserPass + File.separator + systemId + File.separator + type + File.separator + "entities/json";
+            CART_DIR = encodedUserPass + File.separator + systemId + File.separator + visitedDate + File.separator + type + File.separator + "cart";
+            ENTITY_XML_DIR = encodedUserPass + File.separator + systemId + File.separator + visitedDate + File.separator + type + File.separator + "entities/xml";
+            ENTITY_JSON_DIR = encodedUserPass + File.separator + systemId + File.separator + visitedDate + File.separator + type + File.separator + "entities/json";
             HISTORY_DIR = encodedUserPass + File.separator + systemId + File.separator + type + File.separator + "history";
         }
     }

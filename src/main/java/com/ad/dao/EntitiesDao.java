@@ -1,11 +1,9 @@
 package com.ad.dao;
 
 import com.ad.models.BaseEntity;
-import com.ad.models.Extension;
 import com.ad.util.XMLUtil;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +23,10 @@ public abstract class EntitiesDao extends BaseDao {
                         stringList.add(string.substring(0, string.indexOf('.')));
                 }
                 return stringList;
+        }
+
+        public String addExtensionToFile(String inFileName) {
+                return inFileName + JSON_EXTENSION;
         }
 
         // Check if a string matches with a given wildcard pattern
@@ -71,10 +73,6 @@ public abstract class EntitiesDao extends BaseDao {
                 // wildcard character, and it doesn't match the current
                 // character in the input string
                 return false;
-        }
-
-        public String addExtensionToFile(String inFileName) {
-                return inFileName + JSON_EXTENSION;
         }
 
         public void convertXMLtoJSON(String inResponse, Map<String, List<BaseEntity>> inEntityMap){}
