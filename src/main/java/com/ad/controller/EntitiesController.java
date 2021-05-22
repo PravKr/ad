@@ -49,34 +49,34 @@ public class EntitiesController {
         daoMap.put("GeneralNotice", "NoticeRequestDao");
     }
 
-    @RequestMapping(value = "/{type}/{systemId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/{systemType}/{systemId}", method = RequestMethod.POST)
     @ResponseBody
-    public Set<String> getAllEntities(@PathVariable String type,
+    public Set<String> getAllEntities(@PathVariable String systemType,
                                       @PathVariable String systemId) {
-        controllerr.intilizeDataDir(requestHeader, systemId, type);
+        controllerr.intilizeDataDir(requestHeader, systemId, systemType);
         Map<String, List<BaseEntity>> entityMap = new HashMap<>();
-        Argo argo = argoDao.getArgo(type, systemId);
+        Argo argo = argoDao.getArgo(systemType, systemId);
         operationHandler.startExport(argo, entityMap);
         return entityMap.keySet();
     }
 
-    @RequestMapping(value = "/{type}/{systemId}/{entityName}", method = RequestMethod.POST)
+    @RequestMapping(value = "/{systemType}/{systemId}/{entityName}", method = RequestMethod.POST)
     @ResponseBody
-    public List<BaseEntity> getEntityRecords(@PathVariable String type,
+    public List<BaseEntity> getEntityRecords(@PathVariable String systemType,
                                              @PathVariable String systemId,
                                              @PathVariable String entityName) {
-        controllerr.intilizeDataDir(requestHeader, systemId, type);
+        controllerr.intilizeDataDir(requestHeader, systemId, systemType);
         EntitiesDao entitiesDao = (EntitiesDao) applicationContext.getBean(daoMap.get(entityName));
         return entitiesDao.allRecordsFromEntity();
     }
 
-    @RequestMapping(value = "/{type}/{systemId}/{entityName}/wildcard", method = RequestMethod.POST)
+    @RequestMapping(value = "/{systemType}/{systemId}/{entityName}/wildcard", method = RequestMethod.POST)
     @ResponseBody
-    public List<BaseEntity> getEntityRecordsByWhileCardChar(@PathVariable String type,
+    public List<BaseEntity> getEntityRecordsByWhileCardChar(@PathVariable String systemType,
                                                             @PathVariable String systemId,
                                                             @PathVariable String entityName,
                                                             @RequestBody SearchModel searchModel) {
-        controllerr.intilizeDataDir(requestHeader, systemId, type);
+        controllerr.intilizeDataDir(requestHeader, systemId, systemType);
         EntitiesDao entitiesDao = (EntitiesDao) applicationContext.getBean(daoMap.get(entityName));
         if(searchModel.getText().isEmpty()) {
             return entitiesDao.allRecordsFromEntity();
@@ -84,12 +84,12 @@ public class EntitiesController {
         return entitiesDao.allRecordsFromEntityByWildcardChar(searchModel.getText());
     }
 
-    @RequestMapping(value = "/{type}/{systemId}/import", method = RequestMethod.POST)
+    @RequestMapping(value = "/{systemType}/{systemId}/import", method = RequestMethod.POST)
     @ResponseBody
-    public String importSelectedEntities(@PathVariable String type,
+    public String importSelectedEntities(@PathVariable String systemType,
                                        @PathVariable String systemId,
                                        @RequestBody List<String> argoIdList) {
-        controllerr.intilizeDataDir(requestHeader, systemId, type);
+        controllerr.intilizeDataDir(requestHeader, systemId, systemType);
         ImportHistory importHistory = new ImportHistory();
         ExportHistory exportHistory = new ExportHistory();
         controllerr.createImportAndExportHistory(importHistory, exportHistory, argoIdList, systemId);
@@ -99,14 +99,13 @@ public class EntitiesController {
         } else {
             return "Import is not Successfull";
         }
-
     }
 
-    @RequestMapping(value = "/{type}/{systemId}/export", method = RequestMethod.POST)
+    @RequestMapping(value = "/{systemType}/{systemId}/export", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<byte[]> exportSelectedEntities(@PathVariable String type,
+    public ResponseEntity<byte[]> exportSelectedEntities(@PathVariable String systemType,
                                                          @PathVariable String systemId) {
-        controllerr.intilizeDataDir(requestHeader, systemId, type);
+        controllerr.intilizeDataDir(requestHeader, systemId, systemType);
         ImportHistory importHistory = new ImportHistory();
         ExportHistory exportHistory = new ExportHistory();
         controllerr.createImportAndExportHistory(importHistory, exportHistory, null, systemId);
@@ -121,12 +120,12 @@ public class EntitiesController {
         return new ResponseEntity<byte[]>(isr, respHeaders, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/{type}/{systemId}/exportandimport", method = RequestMethod.POST)
+    @RequestMapping(value = "/{systemType}/{systemId}/exportandimport", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<byte[]> exportAndImportSelectedEntities(@PathVariable String type,
+    public ResponseEntity<byte[]> exportAndImportSelectedEntities(@PathVariable String systemType,
                                                                   @PathVariable String systemId,
                                                                   @RequestBody List<String> argoIdList) {
-        controllerr.intilizeDataDir(requestHeader, systemId, type);
+        controllerr.intilizeDataDir(requestHeader, systemId, systemType);
         ImportHistory importHistory = new ImportHistory();
         ExportHistory exportHistory = new ExportHistory();
         controllerr.createImportAndExportHistory(importHistory, exportHistory, argoIdList, systemId);
@@ -140,13 +139,13 @@ public class EntitiesController {
         return new ResponseEntity<byte[]>(isr, respHeaders, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/{type}/{systemId}/addToCart/{entity}", method = RequestMethod.POST)
+    @RequestMapping(value = "/{systemType}/{systemId}/addToCart/{entity}", method = RequestMethod.POST)
     @ResponseBody
-    public Object addToCart(@PathVariable String type,
+    public Object addToCart(@PathVariable String systemType,
                             @PathVariable String systemId,
                           @RequestBody Set<String> entityGkeySet,
                           @PathVariable String entity) {
-        controllerr.intilizeDataDir(requestHeader, systemId, type);
+        controllerr.intilizeDataDir(requestHeader, systemId, systemType);
         boolean isSaved = cartDao.saveToCart(entityGkeySet, entity);
         if(isSaved) {
             return "Added to Cart";
@@ -155,13 +154,13 @@ public class EntitiesController {
         }
     }
 
-    @RequestMapping(value = "/{type}/{systemId}/removeFromCart/{entity}", method = RequestMethod.POST)
+    @RequestMapping(value = "/{systemType}/{systemId}/removeFromCart/{entity}", method = RequestMethod.POST)
     @ResponseBody
-    public Object removeFromCart(@PathVariable String type,
+    public Object removeFromCart(@PathVariable String systemType,
                                  @PathVariable String systemId,
                                @RequestBody Set<String> entityGkeySet,
                                 @PathVariable String entity) {
-        controllerr.intilizeDataDir(requestHeader, systemId, type);
+        controllerr.intilizeDataDir(requestHeader, systemId, systemType);
         boolean isSaved = cartDao.removeFromCart(entityGkeySet, entity);
         if(isSaved) {
             return "removed from Cart";
@@ -170,12 +169,12 @@ public class EntitiesController {
         }
     }
 
-    @RequestMapping(value = "/{type}/{systemId}/removeByEntityFromCart/{entity}", method = RequestMethod.POST)
+    @RequestMapping(value = "/{systemType}/{systemId}/removeByEntityFromCart/{entity}", method = RequestMethod.POST)
     @ResponseBody
-    public Object removeCartByEntity(@PathVariable String type,
+    public Object removeCartByEntity(@PathVariable String systemType,
                                  @PathVariable String systemId,
                                  @PathVariable String entity) {
-        controllerr.intilizeDataDir(requestHeader, systemId, type);
+        controllerr.intilizeDataDir(requestHeader, systemId, systemType);
         boolean isSaved = cartDao.removeAllByEntity(entity);
         if(isSaved) {
             return entity + " removed from Cart";
@@ -184,11 +183,11 @@ public class EntitiesController {
         }
     }
 
-    @RequestMapping(value = "/{type}/{systemId}/emptyCart", method = RequestMethod.POST)
+    @RequestMapping(value = "/{systemType}/{systemId}/emptyCart", method = RequestMethod.POST)
     @ResponseBody
-    public Object emptyCart(@PathVariable String type,
+    public Object emptyCart(@PathVariable String systemType,
                             @PathVariable String systemId) {
-        controllerr.intilizeDataDir(requestHeader, systemId, type);
+        controllerr.intilizeDataDir(requestHeader, systemId, systemType);
         boolean isSaved = cartDao.removeEverytingFromCart();
         if(isSaved) {
             return "Cart is Empty";
@@ -197,11 +196,11 @@ public class EntitiesController {
         }
     }
 
-    @RequestMapping(value = "/{type}/{systemId}/cart", method = RequestMethod.POST)
+    @RequestMapping(value = "/{systemType}/{systemId}/cart", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Set<Object>> cart(@PathVariable String type,
+    public Map<String, Set<Object>> cart(@PathVariable String systemType,
                                          @PathVariable String systemId) {
-        controllerr.intilizeDataDir(requestHeader, systemId, type);
+        controllerr.intilizeDataDir(requestHeader, systemId, systemType);
         return cartDao.getEntitiesFromCartWithDetails();
     }
 }
