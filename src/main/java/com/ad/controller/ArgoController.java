@@ -29,39 +29,39 @@ public class ArgoController {
     @Autowired
     OperationHandler operationHandler;
 
-    @RequestMapping(value = "/ping/argo/{type}/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/ping/argo/{systemType}/{systemId}", method = RequestMethod.POST)
     @ResponseBody
-    public String ping(@PathVariable String type,
-                       @PathVariable String id) {
+    public String ping(@PathVariable String systemType,
+                       @PathVariable String systemId) {
         controllerr.intilizeDataDir(requestHeader);
-        Argo argo = argoDao.getArgo(type, id);
+        Argo argo = argoDao.getArgo(systemType, systemId);
         return operationHandler.ping(argo);
     }
 
-    @RequestMapping(value = "/add/argo/{type}", method = RequestMethod.POST)
+    @RequestMapping(value = "/add/argo/{systemType}", method = RequestMethod.POST)
     @ResponseBody
-    public Argo addArgo(@RequestBody Argo argo, @PathVariable String type) {
+    public Argo addArgo(@RequestBody Argo argo, @PathVariable String systemType) {
         controllerr.intilizeDataDir(requestHeader);
-        return argoDao.addArgo(type, argo);
+        return argoDao.addArgo(systemType, argo);
     }
 
-    @RequestMapping(value = "/remove/argo/{type}/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/remove/argo/{systemType}/{systemId}", method = RequestMethod.POST)
     @ResponseBody
-    public String removeArgo(@PathVariable String type,
-                           @PathVariable String id) {
+    public String removeArgo(@PathVariable String systemType,
+                           @PathVariable String systemId) {
         controllerr.intilizeDataDir(requestHeader);
-        if(argoDao.removeArgo(type, id)){
+        if(argoDao.removeArgo(systemType, systemId)){
             return "System removed successfully";
         } else {
             return "Some problem happend";
         }
     }
 
-    @RequestMapping(value = "/argo/{type}", method = RequestMethod.POST)
+    @RequestMapping(value = "/argo/{systemType}", method = RequestMethod.POST)
     @ResponseBody
-    public List<Argo> getArgosByType(@PathVariable String type) {
+    public List<Argo> getArgosBySystemType(@PathVariable String systemType) {
         controllerr.intilizeDataDir(requestHeader);
-        return argoDao.getAllArgo(type);
+        return argoDao.getAllArgo(systemType);
     }
 
     @RequestMapping(value = "/argos", method = RequestMethod.POST)

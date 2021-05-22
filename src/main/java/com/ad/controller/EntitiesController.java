@@ -70,7 +70,7 @@ public class EntitiesController {
         return entitiesDao.allRecordsFromEntity();
     }
 
-    @RequestMapping(value = "/{type}/{systemId}/{entityName}/wilecard", method = RequestMethod.POST)
+    @RequestMapping(value = "/{type}/{systemId}/{entityName}/wildcard", method = RequestMethod.POST)
     @ResponseBody
     public List<BaseEntity> getEntityRecordsByWhileCardChar(@PathVariable String type,
                                                             @PathVariable String systemId,
