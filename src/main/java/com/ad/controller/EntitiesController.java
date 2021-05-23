@@ -44,6 +44,8 @@ public class EntitiesController {
     @Autowired
     DateUtil dateUtil;
 
+    public static String visitNowDate;
+
     static Map<String, String> daoMap;
     static {
         daoMap = new HashMap<>();
@@ -57,9 +59,9 @@ public class EntitiesController {
 
     @RequestMapping(value = "/{systemType}/{systemId}", method = RequestMethod.POST)
     @ResponseBody
-    public List<String> getVisitHistory(@PathVariable String systemType,
+    public Set<String> getVisitHistory(@PathVariable String systemType,
                                       @PathVariable String systemId) {
-        controllerr.intilizeDataDir(requestHeader, systemId, systemType, null);
+        controllerr.intilizeDataDir(requestHeader, systemId, systemType);
         return systemDao.getVisitedHistory();
     }
 
@@ -69,14 +71,16 @@ public class EntitiesController {
                                         @PathVariable String systemId,
                                         @PathVariable String visitDate) {
         if(CommonConstants.VISIT_NOW_STRING.equalsIgnoreCase(visitDate)) {
-            controllerr.intilizeDataDir(requestHeader, systemId, systemType, dateUtil.getCurrentIndiaTimeInString());
+            visitNowDate = dateUtil.getCurrentIndiaTimeInString();
+            controllerr.intilizeDataDir(requestHeader, systemId, systemType, visitNowDate);
+            Map<String, List<BaseEntity>> entityMap = new HashMap<>();
+            Argo argo = argoDao.getArgo(systemType, systemId);
+            operationHandler.startExport(argo, entityMap);
+            return entityMap.keySet();
         } else {
             controllerr.intilizeDataDir(requestHeader, systemId, systemType, visitDate);
+            return systemDao.getEntitiesByDate();
         }
-        Map<String, List<BaseEntity>> entityMap = new HashMap<>();
-        Argo argo = argoDao.getArgo(systemType, systemId);
-        operationHandler.startExport(argo, entityMap);
-        return entityMap.keySet();
     }
 
     @RequestMapping(value = "/{systemType}/{systemId}/{visitDate}/{entityName}", method = RequestMethod.POST)
@@ -85,7 +89,7 @@ public class EntitiesController {
                                              @PathVariable String systemId,
                                              @PathVariable String visitDate,
                                              @PathVariable String entityName) {
-        controllerr.intilizeDataDir(requestHeader, systemId, systemType, visitDate);
+        controllerr.intilizeDataDir(requestHeader, systemId, systemType, getVisitedDate(visitDate));
         EntitiesDao entitiesDao = (EntitiesDao) applicationContext.getBean(daoMap.get(entityName));
         return entitiesDao.allRecordsFromEntity();
     }
@@ -97,7 +101,7 @@ public class EntitiesController {
                                                             @PathVariable String visitDate,
                                                             @PathVariable String entityName,
                                                             @RequestBody SearchModel searchModel) {
-        controllerr.intilizeDataDir(requestHeader, systemId, systemType, visitDate);
+        controllerr.intilizeDataDir(requestHeader, systemId, systemType, getVisitedDate(visitDate));
         EntitiesDao entitiesDao = (EntitiesDao) applicationContext.getBean(daoMap.get(entityName));
         if(searchModel.getText().isEmpty()) {
             return entitiesDao.allRecordsFromEntity();
@@ -111,10 +115,10 @@ public class EntitiesController {
                                        @PathVariable String systemId,
                                          @PathVariable String visitDate,
                                        @RequestBody List<String> argoIdList) {
-        controllerr.intilizeDataDir(requestHeader, systemId, systemType, visitDate);
+        controllerr.intilizeDataDir(requestHeader, systemId, systemType, getVisitedDate(visitDate));
         ImportHistory importHistory = new ImportHistory();
         ExportHistory exportHistory = new ExportHistory();
-        controllerr.createImportAndExportHistory(importHistory, exportHistory, argoIdList, systemId);
+        controllerr.createImportAndExportHistory(importHistory, exportHistory, argoIdList, systemId, visitDate);
         boolean isImported = operationHandler.importt(argoIdList, importHistory, exportHistory);
         if(isImported) {
             return "Import Successfull";
@@ -128,32 +132,12 @@ public class EntitiesController {
     public ResponseEntity<byte[]> exportSelectedEntities(@PathVariable String systemType,
                                                          @PathVariable String systemId,
                                                          @PathVariable String visitDate) {
-        controllerr.intilizeDataDir(requestHeader, systemId, systemType, visitDate);
+        controllerr.intilizeDataDir(requestHeader, systemId, systemType, getVisitedDate(visitDate));
         ImportHistory importHistory = new ImportHistory();
         ExportHistory exportHistory = new ExportHistory();
-        controllerr.createImportAndExportHistory(importHistory, exportHistory, null, systemId);
+        controllerr.createImportAndExportHistory(importHistory, exportHistory, null, systemId, visitDate);
 
         String xml = operationHandler.export(importHistory, exportHistory);
-        byte[] isr = xml.getBytes();
-        HttpHeaders respHeaders = new HttpHeaders();
-        respHeaders.setContentLength(isr.length);
-        respHeaders.setContentType(new MediaType("text", "xml"));
-        respHeaders.setCacheControl("must-revalidate, post-check=0, pre-check=0");
-        respHeaders.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=entities.xml");
-        return new ResponseEntity<byte[]>(isr, respHeaders, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/{systemType}/{systemId}/{visitDate}/exportandimport", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<byte[]> exportAndImportSelectedEntities(@PathVariable String systemType,
-                                                                  @PathVariable String systemId,
-                                                                  @PathVariable String visitDate,
-                                                                  @RequestBody List<String> argoIdList) {
-        controllerr.intilizeDataDir(requestHeader, systemId, systemType, visitDate);
-        ImportHistory importHistory = new ImportHistory();
-        ExportHistory exportHistory = new ExportHistory();
-        controllerr.createImportAndExportHistory(importHistory, exportHistory, argoIdList, systemId);
-        String xml = operationHandler.exportAndImport(argoIdList, importHistory, exportHistory);
         byte[] isr = xml.getBytes();
         HttpHeaders respHeaders = new HttpHeaders();
         respHeaders.setContentLength(isr.length);
@@ -170,7 +154,7 @@ public class EntitiesController {
                             @PathVariable String visitDate,
                           @RequestBody Set<String> entityGkeySet,
                           @PathVariable String entity) {
-        controllerr.intilizeDataDir(requestHeader, systemId, systemType, visitDate);
+        controllerr.intilizeDataDir(requestHeader, systemId, systemType, getVisitedDate(visitDate));
         boolean isSaved = cartDao.saveToCart(entityGkeySet, entity);
         if(isSaved) {
             return "Added to Cart";
@@ -186,7 +170,7 @@ public class EntitiesController {
                                  @PathVariable String visitDate,
                                @RequestBody Set<String> entityGkeySet,
                                 @PathVariable String entity) {
-        controllerr.intilizeDataDir(requestHeader, systemId, systemType, visitDate);
+        controllerr.intilizeDataDir(requestHeader, systemId, systemType, getVisitedDate(visitDate));
         boolean isSaved = cartDao.removeFromCart(entityGkeySet, entity);
         if(isSaved) {
             return "removed from Cart";
@@ -201,7 +185,7 @@ public class EntitiesController {
                                  @PathVariable String systemId,
                                      @PathVariable String visitDate,
                                  @PathVariable String entity) {
-        controllerr.intilizeDataDir(requestHeader, systemId, systemType, visitDate);
+        controllerr.intilizeDataDir(requestHeader, systemId, systemType, getVisitedDate(visitDate));
         boolean isSaved = cartDao.removeAllByEntity(entity);
         if(isSaved) {
             return entity + " removed from Cart";
@@ -215,7 +199,7 @@ public class EntitiesController {
     public Object emptyCart(@PathVariable String systemType,
                             @PathVariable String systemId,
                             @PathVariable String visitDate) {
-        controllerr.intilizeDataDir(requestHeader, systemId, systemType, visitDate);
+        controllerr.intilizeDataDir(requestHeader, systemId, systemType, getVisitedDate(visitDate));
         boolean isSaved = cartDao.removeEverytingFromCart();
         if(isSaved) {
             return "Cart is Empty";
@@ -229,7 +213,11 @@ public class EntitiesController {
     public Map<String, Set<Object>> cart(@PathVariable String systemType,
                                          @PathVariable String systemId,
                                          @PathVariable String visitDate) {
-        controllerr.intilizeDataDir(requestHeader, systemId, systemType, visitDate);
+        controllerr.intilizeDataDir(requestHeader, systemId, systemType, getVisitedDate(visitDate));
         return cartDao.getEntitiesFromCartWithDetails();
+    }
+
+    private String getVisitedDate(String visitDate) {
+        return CommonConstants.VISIT_NOW_STRING.equalsIgnoreCase(visitDate) ? visitNowDate : visitDate;
     }
 }

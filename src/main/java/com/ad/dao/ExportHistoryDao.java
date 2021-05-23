@@ -1,5 +1,6 @@
 package com.ad.dao;
 
+import com.ad.constants.CommonConstants;
 import com.ad.models.Argo;
 import com.ad.models.BaseEntity;
 import com.ad.models.ExportHistory;
@@ -31,6 +32,9 @@ public class ExportHistoryDao extends EntitiesDao {
         for(Map.Entry<String, Set<String>> entry: history.getExportedEnitites().entrySet()) {
             Set<Object> baseEntitySet = new HashSet<>();
             String jsonDataFile = controllerr.ENTITY_JSON_DIR + File.separator + entry.getKey();
+            if(jsonDataFile.contains(CommonConstants.VISIT_DATE_PATTERN)) {
+                jsonDataFile = jsonDataFile.replace(CommonConstants.VISIT_DATE_PATTERN, history.getExportSystemVisitDate());
+            }
             for(String key: entry.getValue()) {
                 String jsonFile = jsonDataFile + File.separator + key + JSON_EXTENSION;
                 Object object = getDataFromFS(jsonFile, Object.class);

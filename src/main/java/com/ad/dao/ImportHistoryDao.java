@@ -1,5 +1,6 @@
 package com.ad.dao;
 
+import com.ad.constants.CommonConstants;
 import com.ad.models.Argo;
 import com.ad.models.BaseEntity;
 import com.ad.models.ExportHistory;
@@ -15,7 +16,7 @@ public class ImportHistoryDao extends EntitiesDao {
 
     public void createOrSaveHistory(Argo inArgo, ImportHistory inImportHistory) {
         String importHistoryFile =
-                inArgo.getId() + File.separator + "import" + File.separator + HISTORY_PATH + File.separator + inImportHistory.getExportDate() + JSON_EXTENSION;
+                inArgo.getId() + File.separator + HISTORY_PATH + File.separator + "import" + File.separator + inImportHistory.getExportDate() + JSON_EXTENSION;
         saveDataToFS(importHistoryFile, inImportHistory, Boolean.FALSE);
     }
 
@@ -25,7 +26,10 @@ public class ImportHistoryDao extends EntitiesDao {
         ImportHistory history = getDataFromFS(dataFile, ImportHistory.class);
         for(Map.Entry<String, Set<String>> entry: history.getExportedEnitites().entrySet()) {
             Set<Object> baseEntitySet = new HashSet<>();
-            String jsonDataFile = history.getExportSystemId() + File.separator + "export/entities/json" + File.separator + entry.getKey();
+            String jsonDataFile = history.getExportSystemId() + File.separator + history.getExportSystemVisitDate() + File.separator + "export/entities/json" + File.separator + entry.getKey();
+            if(jsonDataFile.contains(CommonConstants.VISIT_DATE_PATTERN)) {
+                jsonDataFile = jsonDataFile.replace(CommonConstants.VISIT_DATE_PATTERN, history.getExportSystemVisitDate());
+            }
             for(String key: entry.getValue()) {
                 String jsonFile = jsonDataFile + File.separator + key + JSON_EXTENSION;
                 Object object = getDataFromFS(jsonFile, Object.class);

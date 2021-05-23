@@ -7,6 +7,7 @@ import java.util.Set;
 public class ExportHistory extends BaseEntity {
 
     private String exportSystemId;
+    private String exportSystemVisitDate;
     private List<String> importSystemList;
     private Map<String, Set<String>> exportedEnitites;
     private String exportDate;
@@ -17,6 +18,14 @@ public class ExportHistory extends BaseEntity {
 
     public void setExportSystemId(String exportSystemId) {
         this.exportSystemId = exportSystemId;
+    }
+
+    public String getExportSystemVisitDate() {
+        return exportSystemVisitDate;
+    }
+
+    public void setExportSystemVisitDate(String exportSystemVisitDate) {
+        this.exportSystemVisitDate = exportSystemVisitDate;
     }
 
     public List<String> getImportSystemList() {

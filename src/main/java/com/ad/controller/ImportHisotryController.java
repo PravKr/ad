@@ -1,5 +1,6 @@
 package com.ad.controller;
 
+import com.ad.constants.CommonConstants;
 import com.ad.constants.OperationContants;
 import com.ad.dao.*;
 import com.ad.models.ExportHistory;
@@ -38,69 +39,23 @@ public class ImportHisotryController {
     @RequestMapping(value = "/{systemId}", method = RequestMethod.POST)
     @ResponseBody
     public List<String> getHistory(@PathVariable String systemId) {
-        controllerr.intilizeDataDir(requestHeader, systemId, OperationContants.IMPORT_STRING, null);
-        if(OperationContants.IMPORT_STRING.equalsIgnoreCase(OperationContants.IMPORT_STRING)) {
-            return importHistoryDao.getHistory();
-        } else if(OperationContants.EXPORT_STRING.equalsIgnoreCase(OperationContants.IMPORT_STRING)) {
-            return exportHistoryDao.getHistory();
-        }
-        return null;
+        controllerr.intilizeDataDir(requestHeader, systemId, OperationContants.IMPORT_STRING);
+        return importHistoryDao.getHistory();
     }
 
-    @RequestMapping(value = "/{systemType}/{systemId}/{date}", method = RequestMethod.POST)
+    @RequestMapping(value = "/{systemId}/{date}", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Set<Object>> getHistoryByDate(@PathVariable String systemId,
                                                     @PathVariable String date) {
-        controllerr.intilizeDataDir(requestHeader, systemId, OperationContants.IMPORT_STRING, null);
-        if(OperationContants.IMPORT_STRING.equalsIgnoreCase(OperationContants.IMPORT_STRING)) {
-            return importHistoryDao.getHistoryByDate(date);
-        } else if(OperationContants.EXPORT_STRING.equalsIgnoreCase(OperationContants.IMPORT_STRING)) {
-            return exportHistoryDao.getHistoryByDate(date);
-        }
-        return null;
+        controllerr.intilizeDataDir(requestHeader, systemId, OperationContants.IMPORT_STRING, CommonConstants.VISIT_DATE_PATTERN);
+        return importHistoryDao.getHistoryByDate(date);
     }
 
     @RequestMapping(value = "/{systemType}/{systemId}/importedSystem/{date}", method = RequestMethod.POST)
     @ResponseBody
     public List<String> getImportedSystemByDate(@PathVariable String systemId,
                                                      @PathVariable String date) {
-        controllerr.intilizeDataDir(requestHeader, systemId, OperationContants.IMPORT_STRING, null);
+        controllerr.intilizeDataDir(requestHeader, systemId, OperationContants.IMPORT_STRING);
         return exportHistoryDao.getImportSystemListByDate(date);
-    }
-
-    @RequestMapping(value = "/{systemType}/{systemId}/{date}/export", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<byte[]> exportSelectedHistoryDate(@PathVariable String systemId,
-                                                         @PathVariable String date) {
-        controllerr.intilizeDataDir(requestHeader, systemId, OperationContants.IMPORT_STRING, null);
-        ImportHistory importHistory = new ImportHistory();
-        ExportHistory exportHistory = new ExportHistory();
-        controllerr.createImportAndExportHistory(importHistory, exportHistory, null, systemId);
-
-        String xml = operationHandler.exportFromHistory(importHistory, exportHistory, OperationContants.IMPORT_STRING, date);
-        byte[] isr = xml.getBytes();
-        HttpHeaders respHeaders = new HttpHeaders();
-        respHeaders.setContentLength(isr.length);
-        respHeaders.setContentType(new MediaType("text", "xml"));
-        respHeaders.setCacheControl("must-revalidate, post-check=0, pre-check=0");
-        respHeaders.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=entities.xml");
-        return new ResponseEntity<byte[]>(isr, respHeaders, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/{systemType}/{systemId}/{date}/import", method = RequestMethod.POST)
-    @ResponseBody
-    public String importSelectedHistoryByDate(@PathVariable String systemId,
-                                       @PathVariable String date,
-                                       @RequestBody List<String> argoIdList) {
-        controllerr.intilizeDataDir(requestHeader, systemId, OperationContants.IMPORT_STRING, null);
-        ImportHistory importHistory = new ImportHistory();
-        ExportHistory exportHistory = new ExportHistory();
-        controllerr.createImportAndExportHistory(importHistory, exportHistory, argoIdList, OperationContants.IMPORT_STRING);
-        boolean isImported = operationHandler.importFromHistory(argoIdList, importHistory, exportHistory, OperationContants.IMPORT_STRING, date);
-        if(isImported) {
-            return "Import Successfull";
-        } else {
-            return "Import is not Successfull";
-        }
     }
 }
