@@ -12,7 +12,6 @@ import java.util.*;
 
 @Component
 public class ImportHistoryDao extends EntitiesDao {
-    public static final String HISTORY_PATH = "history";
 
     public void createOrSaveHistory(Argo inArgo, ImportHistory inImportHistory) {
         String importHistoryFile =
@@ -24,14 +23,12 @@ public class ImportHistoryDao extends EntitiesDao {
         Map<String, Set<Object>> inEntityMap = new HashMap<>();
         String dataFile = controllerr.HISTORY_DIR + File.separator + addExtensionToFile(date);
         ImportHistory history = getDataFromFS(dataFile, ImportHistory.class);
+        String jsonDataFile = history.getExportSystemId() + File.separator + HISTORY_PATH +
+                File.separator + history.getExportSystemVisitDate() + File.separator + "export/entities/json" + File.separator;
         for(Map.Entry<String, Set<String>> entry: history.getExportedEnitites().entrySet()) {
             Set<Object> baseEntitySet = new HashSet<>();
-            String jsonDataFile = history.getExportSystemId() + File.separator + history.getExportSystemVisitDate() + File.separator + "export/entities/json" + File.separator + entry.getKey();
-            if(jsonDataFile.contains(CommonConstants.VISIT_DATE_PATTERN)) {
-                jsonDataFile = jsonDataFile.replace(CommonConstants.VISIT_DATE_PATTERN, history.getExportSystemVisitDate());
-            }
             for(String key: entry.getValue()) {
-                String jsonFile = jsonDataFile + File.separator + key + JSON_EXTENSION;
+                String jsonFile = jsonDataFile + entry.getKey() + File.separator + key + JSON_EXTENSION;
                 Object object = getDataFromFS(jsonFile, Object.class);
                 baseEntitySet.add(object);
             }
@@ -58,12 +55,12 @@ public class ImportHistoryDao extends EntitiesDao {
         if(inExportHistory != null) {
             inExportHistory.setExportedEnitites(inEntityMap);
         }
-
+        String xmlDataFile = history.getExportSystemId() + File.separator + HISTORY_PATH + File.separator + history.getExportSystemVisitDate()
+                + File.separator + "export/entities/xml" + File.separator;
         for (Map.Entry<String, Set<String>> entry : inEntityMap.entrySet()) {
-            String xmlDataFile = history.getExportSystemId() + File.separator + "export/entities/xml" + File.separator + entry.getKey() + File.separator;
             List<String> contents = new ArrayList<>();
             for (String elementIndex : entry.getValue()) {
-                contents.add(getDataFromFS(xmlDataFile + elementIndex + XML_EXTENSION, String.class));
+                contents.add(getDataFromFS(xmlDataFile + entry.getKey() + File.separator + elementIndex + XML_EXTENSION, String.class));
             }
             allEntities.put(entry.getKey(), contents);
         }

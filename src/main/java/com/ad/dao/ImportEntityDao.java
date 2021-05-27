@@ -37,6 +37,9 @@ public class ImportEntityDao extends EntitiesDao {
         return allEntities;
     }
 
+    public void renameOfSystemWithDateFolder() {
+
+    }
     public List<BaseEntity> allRecordsFromEntityByWildcardChar(String wildcardString){
         return null;
     }

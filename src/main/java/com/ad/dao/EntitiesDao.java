@@ -2,6 +2,7 @@ package com.ad.dao;
 
 import com.ad.models.BaseEntity;
 import com.ad.util.XMLUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -11,11 +12,11 @@ import java.util.Map;
 @Component
 public abstract class EntitiesDao extends BaseDao {
 
-        protected XMLUtil xmlUtil1 = new XMLUtil();
-
+        @Autowired
+        public XMLUtil xmlUtil1;
         public static final String JSON_EXTENSION = ".json";
-
         public static final String XML_EXTENSION = ".xml";
+        public static final String HISTORY_PATH = "history";
 
         public List<String> removeExtensionFromFile(List<String> inListString) {
                 List<String> stringList = new ArrayList<>();

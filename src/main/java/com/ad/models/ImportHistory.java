@@ -1,6 +1,6 @@
 package com.ad.models;
 
-import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -8,6 +8,7 @@ public class ImportHistory  extends BaseEntity {
 
     private String exportSystemId;
     private String exportSystemVisitDate;
+    private List<String> importSystemList;
     private Map<String, Set<String>> exportedEnitites;
     private String exportDate;
 
@@ -25,6 +26,14 @@ public class ImportHistory  extends BaseEntity {
 
     public void setExportSystemVisitDate(String exportSystemVisitDate) {
         this.exportSystemVisitDate = exportSystemVisitDate;
+    }
+
+    public List<String> getImportSystemList() {
+        return importSystemList;
+    }
+
+    public void setImportSystemList(List<String> importSystemList) {
+        this.importSystemList = importSystemList;
     }
 
     public Map<String, Set<String>> getExportedEnitites() {

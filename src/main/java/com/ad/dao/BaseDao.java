@@ -4,7 +4,6 @@ import com.ad.controller.Controllerr;
 import com.ad.util.DateUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-//import com.shl.exam.util.DateUtil;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,13 +11,9 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
+import java.nio.file.*;
 import java.util.*;
 import java.util.function.Predicate;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Component
@@ -127,9 +122,12 @@ public class BaseDao {
         String fullFileName=dataDir.concat("/").concat(fileName);
         try {
             FileUtils.cleanDirectory(new File(fullFileName));
+            try{
+                Thread.sleep(2000);
+            } catch (Exception e) {}
             return Boolean.TRUE;
         } catch (IOException e) {
-            System.out.println("some problem occured");
+            System.out.println("some problem occured while delete Directory");
             return Boolean.FALSE;
         }
     }
@@ -172,25 +170,32 @@ public class BaseDao {
         return 0;
     }
 
-    public Map<String,String> getAnswerMap(String strResult){
-        return Pattern.compile("\\s*,\\s*")
-                .splitAsStream(strResult.trim())
-                .map(s -> s.split(":", 2))
-                .collect(Collectors.toMap(a -> a[0].replace("q",""), a -> a.length>1? a[1]: ""))
-                .entrySet().stream()
-                .sorted(Map.Entry.comparingByKey())
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
-                        (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+    //Change the name of system folder
+    public void moveFiles(String srcDir, String destDir) {
+        String fullSrcDirPath=dataDir.concat("/").concat(srcDir);
+        String fullDestDirPath=dataDir.concat("/").concat(destDir);
+        try {
+            File srcFile = new File(fullSrcDirPath);
+            File destFile = new File(fullDestDirPath);
+            FileUtils.copyDirectory(srcFile, destFile);
+        } catch (FileAlreadyExistsException ex) {
+            System.out.println("Target file already exists");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            System.out.format("I/O error: %s%n", ex);
+        }
     }
 
-    public String getValidUserName(String userName){
-        return userName.replaceAll("([a-zA-Z0-9._-]*)(@)([a-zA-Z0-9.]+)","$1")
-                .replace(".","-");
+    public void deleteDir(String dir) {
+        String dirPath=dataDir.concat("/").concat(dir);
+        try {
+            File srcFile = new File(dirPath);
+            FileUtils.deleteDirectory(srcFile);
+        } catch (FileAlreadyExistsException ex) {
+            System.out.println("Target file already exists");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            System.out.format("I/O error: %s%n", ex);
+        }
     }
-
-    public String getUserKey(String validUserName) {
-        //write logic to replace the token
-        return validUserName;
-    }
-
 }

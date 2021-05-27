@@ -1,5 +1,6 @@
 package com.ad.request.handler;
 
+import com.ad.constants.CommonConstants;
 import com.ad.constants.OperationContants;
 import com.ad.dao.*;
 import com.ad.models.Argo;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.util.*;
 
 /*
@@ -110,6 +112,10 @@ public class OperationHandler {
                 startImport(argo, importXml);
                 importHistoryDao.createOrSaveHistory(argo, inImportHistory);
                 exportHistoryDao.createOrSaveHistory(inExportHistory);
+                String srcPath = argo.getId() + File.separator + inImportHistory.getExportSystemVisitDate();
+                String destPath = argo.getId() + File.separator + "history" + File.separator + inImportHistory.getExportSystemVisitDate();
+                importHistoryDao.moveFiles(srcPath, destPath);
+                importHistoryDao.deleteDir(srcPath);
             }
             return Boolean.TRUE;
         } catch(Exception e) {
@@ -118,20 +124,22 @@ public class OperationHandler {
 
     }
 
-    public boolean importFromHistory(List<String> inArgoList,
-                                    ImportHistory inImportHistory,
-                                    ExportHistory inExportHistory,
-                                    String systemType,
-                                    String date) {
+    public boolean importtFromHistory(List<String> inArgoList,
+                                      ImportHistory inImportHistory,
+                                      ExportHistory inExportHistory,
+                                      String date,
+                                      String type) {
         try {
-            Map<String, List<String>> allEntities = new HashMap<>();
-            if(OperationContants.IMPORT_STRING.equalsIgnoreCase(systemType)) {
+            Map<String, List<String>> allEntities = null;
+            if(OperationContants.IMPORT_STRING.equalsIgnoreCase(type)) {
                 allEntities = importHistoryDao.getListOfEntitiesHistory(inImportHistory, inExportHistory, date);
-            } else if(OperationContants.EXPORT_STRING.equalsIgnoreCase(systemType)) {
+            }
+            if(OperationContants.EXPORT_STRING.equalsIgnoreCase(type)) {
                 allEntities = exportHistoryDao.getListOfEntitiesHistory(inImportHistory, inExportHistory, date);
             }
+
             for(String argoId: inArgoList) {
-                Argo argo = argoDao.getArgo(systemType, argoId);
+                Argo argo = argoDao.getArgo(OperationContants.IMPORT_STRING, argoId);
                 String importXml = xmlUtil.convertListToSNX(allEntities, argo);
                 startImport(argo, importXml);
                 importHistoryDao.createOrSaveHistory(argo, inImportHistory);
@@ -141,6 +149,7 @@ public class OperationHandler {
         } catch(Exception e) {
             return Boolean.FALSE;
         }
+
     }
 
     public String export(ImportHistory inImportHistory, ExportHistory inExportHistory) {
@@ -148,11 +157,12 @@ public class OperationHandler {
         return xmlUtil.convertListToSNX(allEntities, null);
     }
 
-    public String exportFromHistory(ImportHistory inImportHistory, ExportHistory inExportHistory, String systemType, String date) {
-        Map<String, List<String>> allEntities = new HashMap<>();
-        if(OperationContants.IMPORT_STRING.equalsIgnoreCase(systemType)) {
+    public String exportFromHistory(ImportHistory inImportHistory, ExportHistory inExportHistory, String date, String type) {
+        Map<String, List<String>> allEntities = null;
+        if(OperationContants.IMPORT_STRING.equalsIgnoreCase(type)) {
             allEntities = importHistoryDao.getListOfEntitiesHistory(inImportHistory, inExportHistory, date);
-        } else if(OperationContants.EXPORT_STRING.equalsIgnoreCase(systemType)) {
+        }
+        if(OperationContants.EXPORT_STRING.equalsIgnoreCase(type)) {
             allEntities = exportHistoryDao.getListOfEntitiesHistory(inImportHistory, inExportHistory, date);
         }
 

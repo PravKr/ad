@@ -29,14 +29,13 @@ public class ExportHistoryDao extends EntitiesDao {
         Map<String, Set<Object>> inEntityMap = new HashMap<>();
         String dataFile = controllerr.HISTORY_DIR + File.separator + addExtensionToFile(date);
         ExportHistory history = getDataFromFS(dataFile, ExportHistory.class);
+
+        String jsonDataFile = history.getExportSystemId() + File.separator + HISTORY_PATH +
+                File.separator + history.getExportSystemVisitDate() + File.separator + "export/entities/json" + File.separator;
         for(Map.Entry<String, Set<String>> entry: history.getExportedEnitites().entrySet()) {
             Set<Object> baseEntitySet = new HashSet<>();
-            String jsonDataFile = controllerr.ENTITY_JSON_DIR + File.separator + entry.getKey();
-            if(jsonDataFile.contains(CommonConstants.VISIT_DATE_PATTERN)) {
-                jsonDataFile = jsonDataFile.replace(CommonConstants.VISIT_DATE_PATTERN, history.getExportSystemVisitDate());
-            }
             for(String key: entry.getValue()) {
-                String jsonFile = jsonDataFile + File.separator + key + JSON_EXTENSION;
+                String jsonFile = jsonDataFile + File.separator + entry.getKey() + File.separator + key + JSON_EXTENSION;
                 Object object = getDataFromFS(jsonFile, Object.class);
                 baseEntitySet.add(object);
             }
@@ -60,11 +59,12 @@ public class ExportHistoryDao extends EntitiesDao {
             inExportHistory.setExportedEnitites(inEntityMap);
         }
 
+        String xmlDataFile = history.getExportSystemId() + File.separator + HISTORY_PATH + File.separator + history.getExportSystemVisitDate()
+                + File.separator + "export/entities/xml" + File.separator ;
         for (Map.Entry<String, Set<String>> entry : inEntityMap.entrySet()) {
-            String xmlDataFile = controllerr.ENTITY_JSON_DIR + File.separator + entry.getKey() + File.separator;
             List<String> contents = new ArrayList<>();
             for (String elementIndex : entry.getValue()) {
-                contents.add(getDataFromFS(xmlDataFile + elementIndex + XML_EXTENSION, String.class)/*getFileContentById(dataFile + elementIndex + ".txt")*/);
+                contents.add(getDataFromFS(xmlDataFile + entry.getKey() + File.separator + elementIndex + XML_EXTENSION, String.class));
             }
             allEntities.put(entry.getKey(), contents);
         }
