@@ -62,7 +62,7 @@ public class EntitiesController {
     public Set<String> getVisitHistory(@PathVariable String systemType,
                                       @PathVariable String systemId) {
         controllerr.intilizeDataDir(requestHeader, systemId, systemType);
-        return systemDao.getVisitedHistory();
+        return systemDao.getVisitedHistory(systemId);
     }
 
     @RequestMapping(value = "/{systemType}/{systemId}/{visitDate}", method = RequestMethod.POST)
@@ -76,6 +76,7 @@ public class EntitiesController {
             Map<String, List<BaseEntity>> entityMap = new HashMap<>();
             Argo argo = argoDao.getArgo(systemType, systemId);
             operationHandler.startExport(argo, entityMap);
+            systemDao.saveToSystem(systemId, visitNowDate);
             return entityMap.keySet();
         } else {
             controllerr.intilizeDataDir(requestHeader, systemId, systemType, visitDate);
@@ -121,6 +122,7 @@ public class EntitiesController {
         controllerr.createImportAndExportHistory(importHistory, exportHistory, argoIdList, systemId, visitDate);
         boolean isImported = operationHandler.importt(argoIdList, importHistory, exportHistory);
         if(isImported) {
+            systemDao.removeFromSystem(systemId, visitDate);
             return "Import Successfull";
         } else {
             return "Import is not Successfull";

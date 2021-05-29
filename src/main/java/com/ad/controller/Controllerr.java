@@ -41,6 +41,7 @@ public class Controllerr {
             HISTORY_DIR = systemId + File.separator + "history" + File.separator + type;
         } else {
             String encodedUserPass = auth.substring("Basic ".length());
+            SYSTEM_DIR = encodedUserPass + File.separator + systemId + File.separator + visitedDate;
             ARGO_DIR = encodedUserPass + File.separator + type + File.separator + "argo";
             CART_DIR = encodedUserPass + File.separator + systemId + File.separator + visitedDate + File.separator + type + File.separator + "cart";
             ENTITY_XML_DIR = encodedUserPass + File.separator + systemId + File.separator + visitedDate + File.separator + type + File.separator + "entities/xml";

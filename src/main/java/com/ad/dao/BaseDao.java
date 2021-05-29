@@ -4,7 +4,9 @@ import com.ad.controller.Controllerr;
 import com.ad.util.DateUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.io.FileDeleteStrategy;
 import org.apache.commons.io.FileUtils;
+import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -22,9 +24,6 @@ public class BaseDao {
     public String dataDir;
 
     @Autowired
-    public DateUtil dateUtil;
-
-    @Autowired
     Controllerr controllerr;
 
     ObjectMapper objectMapper = new ObjectMapper();
@@ -36,7 +35,6 @@ public class BaseDao {
                     .filter(x->x.getFileName().toString().matches(filePattern))
                     .map(x-> x.getFileName().toString())
                     .collect(Collectors.toList());
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -74,7 +72,6 @@ public class BaseDao {
                     .filter(Files::isDirectory)
                     .map(x-> x.getFileName().toString())
                     .collect(Collectors.toSet());
-
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -122,9 +119,6 @@ public class BaseDao {
         String fullFileName=dataDir.concat("/").concat(fileName);
         try {
             FileUtils.cleanDirectory(new File(fullFileName));
-            try{
-                Thread.sleep(2000);
-            } catch (Exception e) {}
             return Boolean.TRUE;
         } catch (IOException e) {
             System.out.println("some problem occured while delete Directory");
@@ -187,15 +181,6 @@ public class BaseDao {
     }
 
     public void deleteDir(String dir) {
-        String dirPath=dataDir.concat("/").concat(dir);
-        try {
-            File srcFile = new File(dirPath);
-            FileUtils.deleteDirectory(srcFile);
-        } catch (FileAlreadyExistsException ex) {
-            System.out.println("Target file already exists");
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            System.out.format("I/O error: %s%n", ex);
-        }
+        deleteDirFromFs(dir);
     }
 }

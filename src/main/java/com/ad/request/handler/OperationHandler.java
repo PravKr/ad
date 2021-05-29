@@ -112,16 +112,11 @@ public class OperationHandler {
                 startImport(argo, importXml);
                 importHistoryDao.createOrSaveHistory(argo, inImportHistory);
                 exportHistoryDao.createOrSaveHistory(inExportHistory);
-                String srcPath = argo.getId() + File.separator + inImportHistory.getExportSystemVisitDate();
-                String destPath = argo.getId() + File.separator + "history" + File.separator + inImportHistory.getExportSystemVisitDate();
-                importHistoryDao.moveFiles(srcPath, destPath);
-                importHistoryDao.deleteDir(srcPath);
             }
             return Boolean.TRUE;
         } catch(Exception e) {
             return Boolean.FALSE;
         }
-
     }
 
     public boolean importtFromHistory(List<String> inArgoList,

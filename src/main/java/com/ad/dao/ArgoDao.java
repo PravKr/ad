@@ -3,7 +3,6 @@ package com.ad.dao;
 import com.ad.constants.ErrorEnum;
 import com.ad.core.SMException;
 import com.ad.models.Argo;
-import com.ad.models.BaseEntity;
 import org.springframework.stereotype.Component;
 
 import java.io.File;

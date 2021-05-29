@@ -23,8 +23,7 @@ public class ImportHistoryDao extends EntitiesDao {
         Map<String, Set<Object>> inEntityMap = new HashMap<>();
         String dataFile = controllerr.HISTORY_DIR + File.separator + addExtensionToFile(date);
         ImportHistory history = getDataFromFS(dataFile, ImportHistory.class);
-        String jsonDataFile = history.getExportSystemId() + File.separator + HISTORY_PATH +
-                File.separator + history.getExportSystemVisitDate() + File.separator + "export/entities/json" + File.separator;
+        String jsonDataFile = history.getExportSystemId() + File.separator + history.getExportSystemVisitDate() + File.separator + "export/entities/json" + File.separator;
         for(Map.Entry<String, Set<String>> entry: history.getExportedEnitites().entrySet()) {
             Set<Object> baseEntitySet = new HashSet<>();
             for(String key: entry.getValue()) {
@@ -55,7 +54,7 @@ public class ImportHistoryDao extends EntitiesDao {
         if(inExportHistory != null) {
             inExportHistory.setExportedEnitites(inEntityMap);
         }
-        String xmlDataFile = history.getExportSystemId() + File.separator + HISTORY_PATH + File.separator + history.getExportSystemVisitDate()
+        String xmlDataFile = history.getExportSystemId() + File.separator + history.getExportSystemVisitDate()
                 + File.separator + "export/entities/xml" + File.separator;
         for (Map.Entry<String, Set<String>> entry : inEntityMap.entrySet()) {
             List<String> contents = new ArrayList<>();
