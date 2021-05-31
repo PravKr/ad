@@ -1,5 +1,6 @@
 package com.ad.dao;
 
+import com.ad.constants.CommonConstants;
 import com.ad.models.User;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +15,7 @@ public class UserDao extends BaseDao  {
 
     public Set<User> getUsers() {
         Set<User> userSet = new HashSet<>();
-        List<String> allFiles = getAllFileNames(USER_DIR);
+        List<String> allFiles = getAllFileNames(USER_DIR, CommonConstants.JSON_EXTENSION);
         for(String file: allFiles) {
             User user = getDataFromFS(USER_DIR + File.separator + file, User.class);
             userSet.add(user);

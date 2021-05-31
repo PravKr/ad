@@ -1,5 +1,6 @@
 package com.ad.dao;
 
+import com.ad.constants.CommonConstants;
 import com.ad.models.BaseEntity;
 import com.ad.models.EventType;
 import com.ad.models.GeneralNotice;
@@ -32,9 +33,9 @@ public class GeneralNoticeDao extends EntitiesDao {
                     generalNotice.setBusinessEntity(ele.getAttributeValue("business-entity"));
                     generalNotice.setEventType(ele.getAttributeValue("event-type"));
                     digitalAssetList.add(generalNotice);
-                    String xmlFile = controllerr.ENTITY_XML_DIR + File.separator + ENTITY_NAME + File.separator + elementIndex + XML_EXTENSION;
+                    String xmlFile = controllerr.ENTITY_XML_DIR + File.separator + ENTITY_NAME + File.separator + elementIndex + CommonConstants.XML_EXTENSION;
                     saveDataToFS(xmlFile, xmlUtil1.convertToString(ele, true), Boolean.FALSE);
-                    String jsonFile = controllerr.ENTITY_JSON_DIR + File.separator + ENTITY_NAME + File.separator + elementIndex + JSON_EXTENSION;
+                    String jsonFile = controllerr.ENTITY_JSON_DIR + File.separator + ENTITY_NAME + File.separator + elementIndex + CommonConstants.JSON_EXTENSION;
                     saveDataToFS(jsonFile, generalNotice, Boolean.FALSE);
                 }
             }
@@ -47,7 +48,7 @@ public class GeneralNoticeDao extends EntitiesDao {
 
     public List<BaseEntity> allRecordsFromEntity(){
         String jsonFile = controllerr.ENTITY_JSON_DIR + File.separator + ENTITY_NAME;
-        List<String> allFiles = getAllFileNames(jsonFile);
+        List<String> allFiles = getAllFileNames(jsonFile, CommonConstants.JSON_EXTENSION);
         List<BaseEntity> records = new ArrayList<>();
         for(String file: allFiles) {
             GeneralNotice generalNotice = getDataFromFS(jsonFile + File.separator + file, GeneralNotice.class);
@@ -58,7 +59,7 @@ public class GeneralNoticeDao extends EntitiesDao {
 
     public List<BaseEntity> allRecordsFromEntityByWildcardChar(String wildcardString){
         String jsonFile = controllerr.ENTITY_JSON_DIR + File.separator + ENTITY_NAME;
-        List<String> allFiles = getAllFileNames(jsonFile);
+        List<String> allFiles = getAllFileNames(jsonFile, CommonConstants.JSON_EXTENSION);
         List<BaseEntity> records = new ArrayList<>();
         for(String file: allFiles) {
             GeneralNotice generalNotice = getDataFromFS(jsonFile + File.separator + file, GeneralNotice.class);

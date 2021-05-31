@@ -1,5 +1,6 @@
 package com.ad.dao;
 
+import com.ad.constants.CommonConstants;
 import com.ad.models.BaseEntity;
 import org.springframework.stereotype.Component;
 
@@ -43,7 +44,7 @@ public class CartDao extends EntitiesDao {
 
     public Map<String, Set<String>> getEntitiesFromCart() {
         Map<String, Set<String>> inEntityMap = new HashMap<>();
-        List<String> allFiles = getAllFileNames(controllerr.CART_DIR);
+        List<String> allFiles = getAllFileNames(controllerr.CART_DIR, CommonConstants.JSON_EXTENSION);
         String dataFile = controllerr.CART_DIR + File.separator;
         for(String file: allFiles) {
             Set<String> set = getDataFromFS(dataFile + File.separator + file, Set.class);
@@ -54,14 +55,14 @@ public class CartDao extends EntitiesDao {
 
     public Map<String, Set<Object>> getEntitiesFromCartWithDetails() {
         Map<String, Set<Object>> inEntityMap = new HashMap<>();
-        List<String> allFiles = getAllFileNames(controllerr.CART_DIR);
+        List<String> allFiles = getAllFileNames(controllerr.CART_DIR, CommonConstants.JSON_EXTENSION);
         String dataFile = controllerr.CART_DIR + File.separator;
         for(String file: allFiles) {
             Set<Object> baseEntitySet = new HashSet<>();
             Set<String> set = getDataFromFS(dataFile + File.separator + file, Set.class);
             String entityName = file.substring(0, file.indexOf("."));
             for(String key: set) {
-                String jsonFile = controllerr.ENTITY_JSON_DIR + File.separator + entityName + File.separator + key + JSON_EXTENSION;
+                String jsonFile = controllerr.ENTITY_JSON_DIR + File.separator + entityName + File.separator + key + CommonConstants.JSON_EXTENSION;
                 Object object = getDataFromFS(jsonFile, Object.class);
                 baseEntitySet.add(object);
             }

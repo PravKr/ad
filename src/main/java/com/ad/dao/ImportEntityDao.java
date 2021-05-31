@@ -1,5 +1,6 @@
 package com.ad.dao;
 
+import com.ad.constants.CommonConstants;
 import com.ad.models.BaseEntity;
 import com.ad.models.ExportHistory;
 import com.ad.models.ImportHistory;
@@ -30,7 +31,7 @@ public class ImportEntityDao extends EntitiesDao {
             String dataFile = controllerr.ENTITY_XML_DIR + File.separator + entry.getKey() + File.separator;
             List<String> contents = new ArrayList<>();
             for (String elementIndex : entry.getValue()) {
-                contents.add(getDataFromFS(dataFile + elementIndex + XML_EXTENSION, String.class)/*getFileContentById(dataFile + elementIndex + ".txt")*/);
+                contents.add(getDataFromFS(dataFile + elementIndex + CommonConstants.XML_EXTENSION, String.class)/*getFileContentById(dataFile + elementIndex + ".txt")*/);
             }
             allEntities.put(entry.getKey(), contents);
         }

@@ -41,16 +41,16 @@ public class BaseDao {
         return null;
     }
 
-    public List<String> getAllFileNames(String dir){
-        return  getAllFileNames(dir,x->true);
+    public List<String> getAllFileNames(String dir, String fileExtension){
+        return  getAllFileNames(dir, fileExtension, x->true);
     }
 
-    public List<String> getAllFileNames(String dir,Predicate<Path> predicate) {
+    public List<String> getAllFileNames(String dir, String fileExtension, Predicate<Path> predicate) {
         String fullFileName=dataDir.concat("/").concat(dir);
         try {
             return Files.list(Paths.get(fullFileName))
                     .filter(Files::isRegularFile)
-                    .filter(x->x.getFileName().toString().endsWith(".json"))
+                    .filter(x->x.getFileName().toString().endsWith(fileExtension))
                     .filter(predicate)
                     .map(x-> x.getFileName().toString())
                     .collect(Collectors.toList());

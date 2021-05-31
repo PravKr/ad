@@ -15,7 +15,7 @@ public class ImportHistoryDao extends EntitiesDao {
 
     public void createOrSaveHistory(Argo inArgo, ImportHistory inImportHistory) {
         String importHistoryFile =
-                inArgo.getId() + File.separator + HISTORY_PATH + File.separator + "import" + File.separator + inImportHistory.getExportDate() + JSON_EXTENSION;
+                inArgo.getId() + File.separator + HISTORY_PATH + File.separator + "import" + File.separator + inImportHistory.getExportDate() + CommonConstants.JSON_EXTENSION;
         saveDataToFS(importHistoryFile, inImportHistory, Boolean.FALSE);
     }
 
@@ -27,7 +27,7 @@ public class ImportHistoryDao extends EntitiesDao {
         for(Map.Entry<String, Set<String>> entry: history.getExportedEnitites().entrySet()) {
             Set<Object> baseEntitySet = new HashSet<>();
             for(String key: entry.getValue()) {
-                String jsonFile = jsonDataFile + entry.getKey() + File.separator + key + JSON_EXTENSION;
+                String jsonFile = jsonDataFile + entry.getKey() + File.separator + key + CommonConstants.JSON_EXTENSION;
                 Object object = getDataFromFS(jsonFile, Object.class);
                 baseEntitySet.add(object);
             }
@@ -39,7 +39,7 @@ public class ImportHistoryDao extends EntitiesDao {
     }
 
     public List<String> getHistory() {
-        return removeExtensionFromFile(getAllFileNames(controllerr.HISTORY_DIR));
+        return removeExtensionFromFile(getAllFileNames(controllerr.HISTORY_DIR, CommonConstants.JSON_EXTENSION));
     }
 
     public Map<String, List<String>> getListOfEntitiesHistory(ImportHistory inImportHistory, ExportHistory inExportHistory, String date) {
@@ -59,7 +59,7 @@ public class ImportHistoryDao extends EntitiesDao {
         for (Map.Entry<String, Set<String>> entry : inEntityMap.entrySet()) {
             List<String> contents = new ArrayList<>();
             for (String elementIndex : entry.getValue()) {
-                contents.add(getDataFromFS(xmlDataFile + entry.getKey() + File.separator + elementIndex + XML_EXTENSION, String.class));
+                contents.add(getDataFromFS(xmlDataFile + entry.getKey() + File.separator + elementIndex + CommonConstants.XML_EXTENSION, String.class));
             }
             allEntities.put(entry.getKey(), contents);
         }

@@ -119,6 +119,32 @@ public class OperationHandler {
         }
     }
 
+    public boolean rollbackFromHistory(String argoId,
+                                      String date,
+                                      String type) {
+        try {
+            Map<String, List<String>> allEntities = null;
+            /*if(OperationContants.IMPORT_STRING.equalsIgnoreCase(type)) {
+                allEntities = importHistoryDao.getListOfEntitiesHistory(date);
+            }*/
+            if(OperationContants.EXPORT_STRING.equalsIgnoreCase(type)) {
+                allEntities = exportHistoryDao.getAllEntitiesFromHistory(date);
+            }
+
+            //for(String argoId: inArgoList) {
+                Argo argo = argoDao.getArgo(OperationContants.IMPORT_STRING, argoId);
+                String importXml = xmlUtil.convertListToSNX(allEntities, argo);
+                startImport(argo, importXml);
+                //importHistoryDao.createOrSaveHistory(argo, inImportHistory);
+                //exportHistoryDao.createOrSaveHistory(inExportHistory);
+            //}
+            return Boolean.TRUE;
+        } catch(Exception e) {
+            return Boolean.FALSE;
+        }
+
+    }
+
     public boolean importtFromHistory(List<String> inArgoList,
                                       ImportHistory inImportHistory,
                                       ExportHistory inExportHistory,

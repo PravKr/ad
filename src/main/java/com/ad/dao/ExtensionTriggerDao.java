@@ -1,5 +1,6 @@
 package com.ad.dao;
 
+import com.ad.constants.CommonConstants;
 import com.ad.models.BaseEntity;
 import com.ad.models.DatabaseVariform;
 import org.slf4j.Logger;
@@ -44,7 +45,7 @@ public class ExtensionTriggerDao extends EntitiesDao {
 
     public List<BaseEntity> allRecordsFromEntity(){
         String jsonFile = controllerr.ENTITY_JSON_DIR + File.separator + ENTITY_NAME;
-        List<String> allFiles = getAllFileNames(jsonFile);
+        List<String> allFiles = getAllFileNames(jsonFile, CommonConstants.JSON_EXTENSION);
         List<BaseEntity> records = new ArrayList<>();
         for(String file: allFiles) {
             DatabaseVariform databaseVariform = getDataFromFS(jsonFile + File.separator + file, DatabaseVariform.class);

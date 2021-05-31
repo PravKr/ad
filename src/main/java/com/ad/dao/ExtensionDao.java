@@ -1,5 +1,6 @@
 package com.ad.dao;
 
+import com.ad.constants.CommonConstants;
 import com.ad.models.BaseEntity;
 import com.ad.models.Extension;
 import org.jdom.Document;
@@ -29,9 +30,9 @@ public class ExtensionDao extends EntitiesDao {
                     extension.setScope(ele.getAttributeValue("scope"));
                     extension.setType(ele.getAttributeValue("type"));
                     extensionList.add(extension);
-                    String dataFile = controllerr.ENTITY_XML_DIR + File.separator + ENTITY_NAME + File.separator + elementIndex + XML_EXTENSION;
+                    String dataFile = controllerr.ENTITY_XML_DIR + File.separator + ENTITY_NAME + File.separator + elementIndex + CommonConstants.XML_EXTENSION;
                     saveDataToFS(dataFile, xmlUtil1.convertToString(ele, true), Boolean.FALSE);
-                    String jsonFile = controllerr.ENTITY_JSON_DIR + File.separator + ENTITY_NAME + File.separator + elementIndex + JSON_EXTENSION;
+                    String jsonFile = controllerr.ENTITY_JSON_DIR + File.separator + ENTITY_NAME + File.separator + elementIndex + CommonConstants.JSON_EXTENSION;
                     saveDataToFS(jsonFile, extension, Boolean.FALSE);
                 }
             }
@@ -44,7 +45,7 @@ public class ExtensionDao extends EntitiesDao {
 
     public List<BaseEntity> allRecordsFromEntity(){
         String jsonFile = controllerr.ENTITY_JSON_DIR + File.separator + ENTITY_NAME;
-        List<String> allFiles = getAllFileNames(jsonFile);
+        List<String> allFiles = getAllFileNames(jsonFile, CommonConstants.JSON_EXTENSION);
         List<BaseEntity> records = new ArrayList<>();
         for(String file: allFiles) {
             Extension extension = getDataFromFS(jsonFile + File.separator + file, Extension.class);
@@ -55,7 +56,7 @@ public class ExtensionDao extends EntitiesDao {
 
     public List<BaseEntity> allRecordsFromEntityByWildcardChar(String wildcardString){
         String jsonFile = controllerr.ENTITY_JSON_DIR + File.separator + ENTITY_NAME;
-        List<String> allFiles = getAllFileNames(jsonFile);
+        List<String> allFiles = getAllFileNames(jsonFile, CommonConstants.JSON_EXTENSION);
         List<BaseEntity> records = new ArrayList<>();
         for(String file: allFiles) {
             Extension extension = getDataFromFS(jsonFile + File.separator + file, Extension.class);

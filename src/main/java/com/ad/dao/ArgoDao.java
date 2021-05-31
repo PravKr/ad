@@ -1,5 +1,6 @@
 package com.ad.dao;
 
+import com.ad.constants.CommonConstants;
 import com.ad.constants.ErrorEnum;
 import com.ad.core.SMException;
 import com.ad.models.Argo;
@@ -37,7 +38,7 @@ public class ArgoDao extends BaseDao {
 
     public List<Argo> getAllArgo(String type){
         String dirName = controllerr.ARGO_DIR + "/" + type;
-        List<String> files = getAllFileNames(dirName);
+        List<String> files = getAllFileNames(dirName, CommonConstants.JSON_EXTENSION);
         if(null==files){
             throw new SMException(ErrorEnum.NOT_FOUND);
         }

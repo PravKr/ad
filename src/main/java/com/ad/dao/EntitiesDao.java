@@ -1,5 +1,6 @@
 package com.ad.dao;
 
+import com.ad.constants.CommonConstants;
 import com.ad.models.BaseEntity;
 import com.ad.util.XMLUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +15,6 @@ public abstract class EntitiesDao extends BaseDao {
 
         @Autowired
         public XMLUtil xmlUtil1;
-        public static final String JSON_EXTENSION = ".json";
-        public static final String XML_EXTENSION = ".xml";
         public static final String HISTORY_PATH = "history";
 
         public List<String> removeExtensionFromFile(List<String> inListString) {
@@ -27,7 +26,7 @@ public abstract class EntitiesDao extends BaseDao {
         }
 
         public String addExtensionToFile(String inFileName) {
-                return inFileName + JSON_EXTENSION;
+                return inFileName + CommonConstants.JSON_EXTENSION;
         }
 
         // Check if a string matches with a given wildcard pattern

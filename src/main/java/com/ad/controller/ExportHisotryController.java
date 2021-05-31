@@ -4,6 +4,7 @@ import com.ad.constants.CommonConstants;
 import com.ad.constants.OperationContants;
 import com.ad.dao.ExportHistoryDao;
 import com.ad.dao.ImportHistoryDao;
+import com.ad.models.Argo;
 import com.ad.models.ExportHistory;
 import com.ad.models.ImportHistory;
 import com.ad.request.handler.OperationHandler;
@@ -68,6 +69,23 @@ public class ExportHisotryController {
         ExportHistory exportHistory = new ExportHistory();
         controllerr.createImportAndExportHistory(importHistory, exportHistory, argoIdList, systemId, null);
         boolean isImported = operationHandler.importtFromHistory(argoIdList, importHistory, exportHistory, date, OperationContants.EXPORT_STRING);
+        if(isImported) {
+            return "Import Successfull";
+        } else {
+            return "Import is not Successfull";
+        }
+    }
+
+    @RequestMapping(value = "/{systemId}/{date}/rollback", method = RequestMethod.POST)
+    @ResponseBody
+    public String rollback(@PathVariable String systemId,
+                           @PathVariable String date,
+                           @RequestBody Argo argo) {
+        controllerr.intilizeDataDir(requestHeader, systemId, OperationContants.EXPORT_STRING, date);
+        /*ImportHistory importHistory = new ImportHistory();
+        ExportHistory exportHistory = new ExportHistory();
+        controllerr.createImportAndExportHistory(importHistory, exportHistory, argoIdList, systemId, null);*/
+        boolean isImported = operationHandler.rollbackFromHistory(argo.getId(), date, OperationContants.EXPORT_STRING);
         if(isImported) {
             return "Import Successfull";
         } else {

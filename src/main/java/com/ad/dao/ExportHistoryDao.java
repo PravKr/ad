@@ -15,14 +15,14 @@ public class ExportHistoryDao extends EntitiesDao {
 
     public void createOrSaveHistory(ExportHistory inExportHistory) {
         String exportHistoryFile =
-                controllerr.HISTORY_DIR + File.separator + inExportHistory.getExportDate() + JSON_EXTENSION;
+                controllerr.HISTORY_DIR + File.separator + inExportHistory.getExportDate() + CommonConstants.JSON_EXTENSION;
         saveDataToFS(exportHistoryFile, inExportHistory, Boolean.FALSE);
     }
 
     public List<String> getImportSystemListByDate(String date) {
-        String exportHistoryFile =
-                controllerr.HISTORY_DIR + File.separator + addExtensionToFile(date);
-        return getDataFromFS(exportHistoryFile, List.class);
+        String dataFile = controllerr.HISTORY_DIR + File.separator + addExtensionToFile(date);
+        ExportHistory history = getDataFromFS(dataFile, ExportHistory.class);
+        return history.getImportSystemList();
     }
 
     public Map<String, Set<Object>> getHistoryByDate(String date) {
@@ -34,7 +34,7 @@ public class ExportHistoryDao extends EntitiesDao {
         for(Map.Entry<String, Set<String>> entry: history.getExportedEnitites().entrySet()) {
             Set<Object> baseEntitySet = new HashSet<>();
             for(String key: entry.getValue()) {
-                String jsonFile = jsonDataFile + File.separator + entry.getKey() + File.separator + key + JSON_EXTENSION;
+                String jsonFile = jsonDataFile + File.separator + entry.getKey() + File.separator + key + CommonConstants.JSON_EXTENSION;
                 Object object = getDataFromFS(jsonFile, Object.class);
                 baseEntitySet.add(object);
             }
@@ -63,15 +63,30 @@ public class ExportHistoryDao extends EntitiesDao {
         for (Map.Entry<String, Set<String>> entry : inEntityMap.entrySet()) {
             List<String> contents = new ArrayList<>();
             for (String elementIndex : entry.getValue()) {
-                contents.add(getDataFromFS(xmlDataFile + entry.getKey() + File.separator + elementIndex + XML_EXTENSION, String.class));
+                contents.add(getDataFromFS(xmlDataFile + entry.getKey() + File.separator + elementIndex + CommonConstants.XML_EXTENSION, String.class));
             }
             allEntities.put(entry.getKey(), contents);
         }
         return allEntities;
     }
 
+    public Map<String, List<String>> getAllEntitiesFromHistory(String date) {
+        Map<String, List<String>> allEntities = new HashMap<>();
+        Set<String> entitiesDir = getAllDirNames(controllerr.ENTITY_XML_DIR);
+        for(String dir: entitiesDir) {
+            List<String> allXmlFiles = getAllFileNames(controllerr.ENTITY_XML_DIR + File.separator + dir, CommonConstants.XML_EXTENSION);
+            List<String> contents = new ArrayList<>();
+            for(String xmlFile: allXmlFiles) {
+                contents.add(getDataFromFS(controllerr.ENTITY_XML_DIR + File.separator + dir + File.separator + xmlFile, String.class));
+            }
+            allEntities.put(dir, contents);
+        }
+
+        return allEntities;
+    }
+
     public List<String> getHistory() {
-        return removeExtensionFromFile(getAllFileNames(controllerr.HISTORY_DIR));
+        return removeExtensionFromFile(getAllFileNames(controllerr.HISTORY_DIR, CommonConstants.JSON_EXTENSION));
     }
 
     public List<BaseEntity> allRecordsFromEntityByWildcardChar(String wildcardString){

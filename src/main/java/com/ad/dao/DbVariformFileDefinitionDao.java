@@ -1,5 +1,6 @@
 package com.ad.dao;
 
+import com.ad.constants.CommonConstants;
 import com.ad.models.BaseEntity;
 import com.ad.models.DatabaseVariform;
 import org.jdom.Document;
@@ -29,9 +30,9 @@ public class DbVariformFileDefinitionDao extends EntitiesDao {
                     dbVariform.setDescription(ele.getAttributeValue("cfgvar-description"));
                     dbVariform.setEnabled(ele.getAttributeValue("cfgvar-enabled"));
                     dbVariformList.add(dbVariform);
-                    String xmlFile = controllerr.ENTITY_XML_DIR + File.separator + ENTITY_NAME + File.separator + elementIndex + XML_EXTENSION;
+                    String xmlFile = controllerr.ENTITY_XML_DIR + File.separator + ENTITY_NAME + File.separator + elementIndex + CommonConstants.XML_EXTENSION;
                     saveDataToFS(xmlFile, xmlUtil1.convertToString(ele, true), Boolean.FALSE);
-                    String jsonFile = controllerr.ENTITY_JSON_DIR + File.separator + ENTITY_NAME + File.separator + elementIndex + JSON_EXTENSION;
+                    String jsonFile = controllerr.ENTITY_JSON_DIR + File.separator + ENTITY_NAME + File.separator + elementIndex + CommonConstants.JSON_EXTENSION;
                     saveDataToFS(jsonFile, dbVariform, Boolean.FALSE);
                 }
             }
@@ -43,7 +44,7 @@ public class DbVariformFileDefinitionDao extends EntitiesDao {
 
     public List<BaseEntity> allRecordsFromEntity(){
         String jsonFile = controllerr.ENTITY_JSON_DIR + File.separator + ENTITY_NAME;
-        List<String> allFiles = getAllFileNames(jsonFile);
+        List<String> allFiles = getAllFileNames(jsonFile, CommonConstants.JSON_EXTENSION);
         List<BaseEntity> records = new ArrayList<>();
         for(String file: allFiles) {
             DatabaseVariform databaseVariform = getDataFromFS(jsonFile + File.separator + file, DatabaseVariform.class);
@@ -54,7 +55,7 @@ public class DbVariformFileDefinitionDao extends EntitiesDao {
 
     public List<BaseEntity> allRecordsFromEntityByWildcardChar(String wildcardString){
         String jsonFile = controllerr.ENTITY_JSON_DIR + File.separator + ENTITY_NAME;
-        List<String> allFiles = getAllFileNames(jsonFile);
+        List<String> allFiles = getAllFileNames(jsonFile, CommonConstants.JSON_EXTENSION);
         List<BaseEntity> records = new ArrayList<>();
         for(String file: allFiles) {
             DatabaseVariform dbVariform = getDataFromFS(jsonFile + File.separator + file, DatabaseVariform.class);
