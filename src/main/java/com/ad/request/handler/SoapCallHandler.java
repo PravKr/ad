@@ -1,5 +1,6 @@
 package com.ad.request.handler;
 
+import com.ad.constants.CommonConstants;
 import com.ad.models.Argo;
 import com.ad.util.FileUtil;
 import org.apache.commons.io.FileUtils;
@@ -78,17 +79,33 @@ public class SoapCallHandler {
      * @return
      */
     public String executeSoapCall(Map<String,String> soapMap) {
-        readSoapXMLFile("classpath:groovy-extension.txt");
-        substituteVariables(soapMap);
-        prepareSoapRequest();
-        postSoapMessage();
+        String errorMsg = readSoapXMLFile("classpath:groovy-extension.txt");
+        if(errorMsg != null) {
+            return CommonConstants.ERROR_START_WITH + errorMsg;
+        }
+
+        errorMsg = substituteVariables(soapMap);
+        if(errorMsg != null) {
+            return CommonConstants.ERROR_START_WITH + errorMsg;
+        }
+
+        errorMsg = prepareSoapRequest();
+        if(errorMsg != null) {
+            return CommonConstants.ERROR_START_WITH + errorMsg;
+        }
+
+        errorMsg = postSoapMessage();
+        if(errorMsg != null) {
+            return CommonConstants.ERROR_START_WITH + errorMsg;
+        }
+
         return extractResponse();
     }
 
     /**
      * To read Soap xml
      */
-    private void readSoapXMLFile(String inSoapFormat) {
+    private String readSoapXMLFile(String inSoapFormat) {
         //Read xml file
         File file = fileUtil.getFileFromResource(inSoapFormat);
         if (file != null) {
@@ -96,41 +113,43 @@ public class SoapCallHandler {
                 soapRequestFileContent = FileUtils.readFileToString(file);
             }catch(IOException ex){
                 logger.warn(ex.getMessage(), ex);
+                return ex.getMessage();
             }
-        }else {
+        } else {
             logger.debug("argoservice soap request file not found in resource ");
+            return "argoservice soap request file not found in resource ";
         }
+        return null;
     }
 
     /**
      * To substitute variables
      * @param variables
      */
-    private void substituteVariables(Map<String,String> variables) {
+    private String substituteVariables(Map<String,String> variables) {
         //Substitute values for variables
         for(Map.Entry<String,String> entry : variables.entrySet()) {
-            /*if(OperationHandler.snxContents != null && entry.getKey().equalsIgnoreCase("entity-name")) {
-                soapRequestFileContent = soapRequestFileContent.replaceAll("#" + entry.getKey().toString() + "#", OperationHandler.snxContents);
-            } else {*/
             try{
                 soapRequestFileContent = soapRequestFileContent.replaceAll("#" + entry.getKey().toString() + "#", entry.getValue());
             } catch(Exception e) {
+                logger.debug("There was a proble while substitute");
                 e.printStackTrace();
+                return "There was a proble while substitute";
             }
-
-            //}
         }
 
         soapRequestFileContent = soapRequestFileContent.replaceAll("#operator#", operator);
         soapRequestFileContent = soapRequestFileContent.replaceAll("#complex#", complex);
         soapRequestFileContent = soapRequestFileContent.replaceAll("#facility#", facility);
         soapRequestFileContent = soapRequestFileContent.replaceAll("#yard#", yard);
+
+        return null;
     }
 
     /**
      * To prepare soap request
      */
-    private void prepareSoapRequest()
+    private String prepareSoapRequest()
     {
         try {
             MessageFactory factory = MessageFactory.newInstance();
@@ -143,19 +162,22 @@ public class SoapCallHandler {
             logger.debug("Soap Request: " + requestBytes);
         }catch(SOAPException soex){
             logger.warn("Soap Exception occurred while preparing request: " + soex);
+            return soex.getMessage();
         }catch(IOException iex){
             logger.warn("IO Exception occurred while preparing request: " + iex);
+            return iex.getMessage();
         }
 
         String authorization = new sun.misc.BASE64Encoder().encode((username+":"+password).getBytes());
         MimeHeaders headers = soapMessage.getMimeHeaders();
         headers.addHeader("Authorization", "Basic " + authorization);
+        return null;
     }
 
     /**
      * To post soap message
      */
-    private void postSoapMessage() {
+    private String postSoapMessage() {
         //Post message
         try {
             SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
@@ -163,9 +185,14 @@ public class SoapCallHandler {
             String url = endpoint;
             soapResponse = soapConnection.call(soapMessage, url);
             soapConnection.close();
-        }catch(SOAPException soex){
+        } catch(SOAPException soex){
             logger.warn("Soap Exception occurred while posting request: " + soex);
+            return soex.getMessage();
+        } catch (Exception e) {
+            logger.warn("Soap Exception occurred while posting request: " + e.getMessage());
+            return e.getMessage();
         }
+        return null;
     }
 
     /**
@@ -216,8 +243,10 @@ public class SoapCallHandler {
             }
         } catch (SOAPException e) {
             e.printStackTrace();
+            return CommonConstants.ERROR_START_WITH + e.getMessage();
         } catch (IOException e) {
             e.printStackTrace();
+            return CommonConstants.ERROR_START_WITH + e.getMessage();
         }
         return null;
     }

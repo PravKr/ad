@@ -6,4 +6,5 @@ public class CommonConstants {
     public static final String VISIT_DATE_PATTERN = "{VISIT_DATE}";
     public static final String JSON_EXTENSION = ".json";
     public static final String XML_EXTENSION = ".xml";
+    public static final String ERROR_START_WITH = "********ERROR*******";
 }

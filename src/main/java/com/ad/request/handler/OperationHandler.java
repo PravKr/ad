@@ -71,8 +71,8 @@ public class OperationHandler {
         soapCallHandler.initilizeTopology(inArgo);
         String response = soapCallHandler.ping(new HashMap<>());
         LOGGER.error(response);
-        if(response == null) {
-            return "Not successfull";
+        if(response == null || response.startsWith(CommonConstants.ERROR_START_WITH)) {
+            return "Not successfull " + response.replace(CommonConstants.ERROR_START_WITH, CommonConstants.EMPTY_STRING);
         }
         return "Successfull";
     }

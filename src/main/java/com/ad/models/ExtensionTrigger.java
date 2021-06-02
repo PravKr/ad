@@ -4,15 +4,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ExtensionTrigger extends BaseEntity {
     private long gkey;
-    @JsonProperty("name")
-    private String level;
-    @JsonProperty("scope")
-    private String extensionType;
     @JsonProperty("type")
-    private String extension;
-    @JsonProperty("type")
-    private boolean isEnabled;
+    private String type;
+    @JsonProperty("entity-name")
     private String entityName;
+    @JsonProperty("scope")
+    private String scope;
 
     public long getGkey() {
         return gkey;
@@ -22,36 +19,12 @@ public class ExtensionTrigger extends BaseEntity {
         this.gkey = gkey;
     }
 
-    public String getLevel() {
-        return level;
+    public String getType() {
+        return type;
     }
 
-    public void setLevel(String level) {
-        this.level = level;
-    }
-
-    public String getExtensionType() {
-        return extensionType;
-    }
-
-    public void setExtensionType(String extensionType) {
-        this.extensionType = extensionType;
-    }
-
-    public String getExtension() {
-        return extension;
-    }
-
-    public void setExtension(String extension) {
-        this.extension = extension;
-    }
-
-    public boolean isEnabled() {
-        return isEnabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        isEnabled = enabled;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getEntityName() {
@@ -62,15 +35,21 @@ public class ExtensionTrigger extends BaseEntity {
         this.entityName = entityName;
     }
 
+    public String getScope() {
+        return scope;
+    }
+
+    public void setScope(String scope) {
+        this.scope = scope;
+    }
+
     @Override
     public String toString() {
         return "ExtensionTrigger{" +
                 "gkey=" + gkey +
-                ", level='" + level + '\'' +
-                ", extensionType='" + extensionType + '\'' +
-                ", extension='" + extension + '\'' +
-                ", isEnabled=" + isEnabled +
+                ", type='" + type + '\'' +
                 ", entityName='" + entityName + '\'' +
+                ", scope='" + scope + '\'' +
                 '}';
     }
 }
