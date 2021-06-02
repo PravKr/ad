@@ -59,6 +59,7 @@ public class EntitiesController {
         daoMap.put("GroovyJob", "ArgoGroovyJobDefinitionDao");
         daoMap.put("Fields", "DbMetafieldDao");
         daoMap.put("EdiSession", "EdiSessionDao");
+        daoMap.put("EdiMessageType", "EdiMessageTypeDao");
     }
 
     @RequestMapping(value = "/{systemType}/{systemId}", method = RequestMethod.POST)
