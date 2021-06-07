@@ -4,12 +4,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class GeneralNotice  extends BaseEntity{
     private long gkey;
+    @JsonProperty("event-type")
+    private String eventType;
     @JsonProperty("action")
     private String action;
     @JsonProperty("business-entity")
     private String businessEntity;
-    @JsonProperty("event-type")
-    private String eventType;
+    @JsonProperty("description")
+    private String description;
 
     public long getGkey() {
         return gkey;
@@ -43,13 +45,22 @@ public class GeneralNotice  extends BaseEntity{
         this.eventType = eventType;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public String toString() {
         return "GeneralNotice{" +
                 "gkey=" + gkey +
+                ", eventType='" + eventType + '\'' +
                 ", action='" + action + '\'' +
                 ", businessEntity='" + businessEntity + '\'' +
-                ", eventType='" + eventType + '\'' +
+                ", description='" + description + '\'' +
                 '}';
     }
 }

@@ -8,6 +8,10 @@ public class EdiMessageType extends BaseEntity {
     private String id;
     @JsonProperty("class")
     private String classs;
+    @JsonProperty("version")
+    private String version;
+    @JsonProperty("release-nbr")
+    private String releaseNbr;
     @JsonProperty("standard")
     private String standard;
 
@@ -35,6 +39,22 @@ public class EdiMessageType extends BaseEntity {
         this.classs = classs;
     }
 
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
+    public String getReleaseNbr() {
+        return releaseNbr;
+    }
+
+    public void setReleaseNbr(String releaseNbr) {
+        this.releaseNbr = releaseNbr;
+    }
+
     public String getStandard() {
         return standard;
     }
@@ -49,6 +69,8 @@ public class EdiMessageType extends BaseEntity {
                 "gkey=" + gkey +
                 ", id='" + id + '\'' +
                 ", classs='" + classs + '\'' +
+                ", version='" + version + '\'' +
+                ", releaseNbr='" + releaseNbr + '\'' +
                 ", standard='" + standard + '\'' +
                 '}';
     }

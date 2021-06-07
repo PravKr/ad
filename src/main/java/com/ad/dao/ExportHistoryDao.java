@@ -72,12 +72,15 @@ public class ExportHistoryDao extends EntitiesDao {
 
     public Map<String, List<String>> getAllEntitiesFromHistory(String date) {
         Map<String, List<String>> allEntities = new HashMap<>();
-        Set<String> entitiesDir = getAllDirNames(controllerr.ENTITY_XML_DIR);
+        String dataFile = controllerr.HISTORY_DIR + File.separator + addExtensionToFile(date);
+        ExportHistory history = getDataFromFS(dataFile, ExportHistory.class);
+        String xmlFilePath = controllerr.ENTITY_XML_DIR.replace(date, history.getExportSystemVisitDate());
+        Set<String> entitiesDir = getAllDirNames(xmlFilePath);
         for(String dir: entitiesDir) {
-            List<String> allXmlFiles = getAllFileNames(controllerr.ENTITY_XML_DIR + File.separator + dir, CommonConstants.XML_EXTENSION);
+            List<String> allXmlFiles = getAllFileNames(xmlFilePath + File.separator + dir, CommonConstants.XML_EXTENSION);
             List<String> contents = new ArrayList<>();
             for(String xmlFile: allXmlFiles) {
-                contents.add(getDataFromFS(controllerr.ENTITY_XML_DIR + File.separator + dir + File.separator + xmlFile, String.class));
+                contents.add(getDataFromFS(xmlFilePath + File.separator + dir + File.separator + xmlFile, String.class));
             }
             allEntities.put(dir, contents);
         }

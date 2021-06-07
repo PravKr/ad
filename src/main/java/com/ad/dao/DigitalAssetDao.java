@@ -22,6 +22,9 @@ public class DigitalAssetDao extends EntitiesDao {
             if(document != null) {
                 Element element = document.getRootElement();
                 List<Element> elements = element.getChildren("digital-asset");
+                if(elements.size() == 0) {
+                    return;
+                }
                 int elementIndex = 0;
                 for (Element ele: elements) {
                     DigitalAsset digitalAsset = new DigitalAsset();

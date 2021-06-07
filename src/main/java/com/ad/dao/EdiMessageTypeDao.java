@@ -25,12 +25,17 @@ public class EdiMessageTypeDao extends EntitiesDao {
             if(document != null) {
                 Element element = document.getRootElement();
                 List<Element> elements = element.getChildren("edi-message-type");
+                if(elements.size() == 0) {
+                    return;
+                }
                 int elementIndex = 0;
                 for (Element ele: elements) {
                     EdiMessageType ediMessageType = new EdiMessageType();
                     ediMessageType.setGkey(++elementIndex);
                     ediMessageType.setId(ele.getAttributeValue("id"));
                     ediMessageType.setClasss(ele.getAttributeValue("class"));
+                    ediMessageType.setVersion(ele.getAttributeValue("version"));
+                    ediMessageType.setReleaseNbr(ele.getAttributeValue("release-nbr"));
                     ediMessageType.setStandard(ele.getAttributeValue("standard"));
                     ediMessageTypeList.add(ediMessageType);
                     String xmlFile = controllerr.ENTITY_XML_DIR + File.separator + ENTITY_NAME + File.separator + elementIndex + CommonConstants.XML_EXTENSION;

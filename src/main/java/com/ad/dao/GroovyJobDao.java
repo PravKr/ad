@@ -25,6 +25,9 @@ public class GroovyJobDao extends EntitiesDao {
             if(document != null) {
                 Element element = document.getRootElement();
                 List<Element> elements = element.getChildren("ArgoGroovyJobDefinition");
+                if(elements.size() == 0) {
+                    return;
+                }
                 int elementIndex = 0;
                 for (Element ele: elements) {
                     GroovyJob groovyJob = new GroovyJob();

@@ -247,6 +247,9 @@ public class SoapCallHandler {
         } catch (IOException e) {
             e.printStackTrace();
             return CommonConstants.ERROR_START_WITH + e.getMessage();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return CommonConstants.ERROR_START_WITH + e.getMessage();
         }
         return null;
     }

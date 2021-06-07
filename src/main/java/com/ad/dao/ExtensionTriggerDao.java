@@ -22,6 +22,9 @@ public class ExtensionTriggerDao extends EntitiesDao {
             if(document != null) {
                 Element element = document.getRootElement();
                 List<Element> elements = element.getChildren("extension-injection");
+                if(elements.size() == 0) {
+                    return;
+                }
                 int elementIndex = 0;
                 for (Element ele: elements) {
                     ExtensionTrigger extensionTrigger = new ExtensionTrigger();

@@ -22,6 +22,9 @@ public class DbVariformFileDefinitionDao extends EntitiesDao {
             if(document != null) {
                 Element element = document.getRootElement();
                 List<Element> elements = element.getChildren("db-variform-file-definition");
+                if(elements.size() == 0) {
+                    return;
+                }
                 int elementIndex = 0;
                 for (Element ele: elements) {
                     DatabaseVariform dbVariform = new DatabaseVariform();

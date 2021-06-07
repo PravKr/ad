@@ -124,10 +124,10 @@ public class EntitiesController {
         controllerr.intilizeDataDir(requestHeader, systemId, systemType, getVisitedDate(visitDate));
         ImportHistory importHistory = new ImportHistory();
         ExportHistory exportHistory = new ExportHistory();
-        controllerr.createImportAndExportHistory(importHistory, exportHistory, argoIdList, systemId, visitDate);
+        controllerr.createImportAndExportHistory(importHistory, exportHistory, argoIdList, systemId, getVisitedDate(visitDate));
         boolean isImported = operationHandler.importt(argoIdList, importHistory, exportHistory);
         if(isImported) {
-            systemDao.removeFromSystem(systemId, visitDate);
+            systemDao.removeFromSystem(systemId, getVisitedDate(visitDate));
             return "Import Successfull";
         } else {
             return "Import is not Successfull";
@@ -142,7 +142,7 @@ public class EntitiesController {
         controllerr.intilizeDataDir(requestHeader, systemId, systemType, getVisitedDate(visitDate));
         ImportHistory importHistory = new ImportHistory();
         ExportHistory exportHistory = new ExportHistory();
-        controllerr.createImportAndExportHistory(importHistory, exportHistory, null, systemId, visitDate);
+        controllerr.createImportAndExportHistory(importHistory, exportHistory, null, systemId, getVisitedDate(visitDate));
 
         String xml = operationHandler.export(importHistory, exportHistory);
         byte[] isr = xml.getBytes();

@@ -25,13 +25,17 @@ public class GeneralNoticeDao extends EntitiesDao {
             if(document != null) {
                 Element element = document.getRootElement();
                 List<Element> elements = element.getChildren("notice-request");
+                if(elements.size() == 0) {
+                    return;
+                }
                 int elementIndex = 0;
                 for (Element ele: elements) {
                     GeneralNotice generalNotice = new GeneralNotice();
                     generalNotice.setGkey(++elementIndex);
+                    generalNotice.setDescription(ele.getAttributeValue("description"));
+                    generalNotice.setEventType(ele.getAttributeValue("event-type"));
                     generalNotice.setAction(ele.getAttributeValue("action"));
                     generalNotice.setBusinessEntity(ele.getAttributeValue("business-entity"));
-                    generalNotice.setEventType(ele.getAttributeValue("event-type"));
                     digitalAssetList.add(generalNotice);
                     String xmlFile = controllerr.ENTITY_XML_DIR + File.separator + ENTITY_NAME + File.separator + elementIndex + CommonConstants.XML_EXTENSION;
                     saveDataToFS(xmlFile, xmlUtil1.convertToString(ele, true), Boolean.FALSE);
@@ -63,7 +67,7 @@ public class GeneralNoticeDao extends EntitiesDao {
         List<BaseEntity> records = new ArrayList<>();
         for(String file: allFiles) {
             GeneralNotice generalNotice = getDataFromFS(jsonFile + File.separator + file, GeneralNotice.class);
-            if(isMatch(generalNotice.getAction(), wildcardString)) {
+            if(isMatch(generalNotice.getEventType(), wildcardString)) {
                 records.add(generalNotice);
             }
         }

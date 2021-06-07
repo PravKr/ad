@@ -25,6 +25,9 @@ public class DBMetafieldDao extends EntitiesDao {
             if(document != null) {
                 Element element = document.getRootElement();
                 List<Element> elements = element.getChildren("db-metafield");
+                if(elements.size() == 0) {
+                    return;
+                }
                 int elementIndex = 0;
                 for (Element ele: elements) {
                     DBMetafield dbMetafield = new DBMetafield();
