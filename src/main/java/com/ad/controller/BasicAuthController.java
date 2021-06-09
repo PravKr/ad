@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
-@CrossOrigin(origins = "http://localhost:5000")
+@CrossOrigin(origins = "*")
 @Controller
 @RequestMapping("ad/basicauth")
 public class BasicAuthController {
