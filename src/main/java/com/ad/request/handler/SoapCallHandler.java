@@ -66,10 +66,26 @@ public class SoapCallHandler {
      * @return
      */
     public String ping(Map<String,String> soapMap) {
-        readSoapXMLFile("classpath:ping.txt");
-        substituteVariables(soapMap);
-        prepareSoapRequest();
-        postSoapMessage();
+        String errorMsg = readSoapXMLFile("classpath:ping.txt");
+        if(errorMsg != null) {
+            return CommonConstants.ERROR_START_WITH + errorMsg;
+        }
+
+        errorMsg = substituteVariables(soapMap);
+        if(errorMsg != null) {
+            return CommonConstants.ERROR_START_WITH + errorMsg;
+        }
+
+        errorMsg = prepareSoapRequest();
+        if(errorMsg != null) {
+            return CommonConstants.ERROR_START_WITH + errorMsg;
+        }
+
+        errorMsg = postSoapMessage();
+        if(errorMsg != null) {
+            return CommonConstants.ERROR_START_WITH + errorMsg;
+        }
+
         return extractResponse();
     }
 
