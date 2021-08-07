@@ -60,6 +60,9 @@ public class EntitiesController {
         daoMap.put("Fields", "DbMetafieldDao");
         daoMap.put("EdiSession", "EdiSessionDao");
         daoMap.put("EdiMessageType", "EdiMessageTypeDao");
+        daoMap.put("EquipCondition", "EquipConditionDao");
+        daoMap.put("StorageRule", "StorageRuleDao");
+        daoMap.put("HoldPermissionView", "HoldPermissionViewDao");
     }
 
     @RequestMapping(value = "/{systemType}/{systemId}", method = RequestMethod.POST)
