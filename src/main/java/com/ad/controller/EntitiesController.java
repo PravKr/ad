@@ -63,6 +63,10 @@ public class EntitiesController {
         daoMap.put("EquipCondition", "EquipConditionDao");
         daoMap.put("StorageRule", "StorageRuleDao");
         daoMap.put("HoldPermissionView", "HoldPermissionViewDao");
+        daoMap.put("ReportDefinition", "ReportDefinitionDao");
+        daoMap.put("ReportingJobDefinition", "ReportingJobDefinitionDao");
+        daoMap.put("ReportDesign", "ReportDesignDao");
+        daoMap.put("ReportableEntity", "ReportableEntityDao");
     }
 
     @RequestMapping(value = "/{systemType}/{systemId}", method = RequestMethod.POST)
