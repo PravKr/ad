@@ -74,6 +74,7 @@ public class EntitiesController {
         daoMap.put("Printers", "PrinterDao");
         daoMap.put("GateConfiguration", "GateConfigurationDao");
         daoMap.put("Gates", "GateDao");
+        daoMap.put("TradingPartner", "EdiTradingPartnerDao");
     }
 
     @RequestMapping(value = "/{systemType}/{systemId}", method = RequestMethod.POST)

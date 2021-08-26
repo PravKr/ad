@@ -38,11 +38,11 @@ public class ArgoController {
         return operationHandler.ping(argo);
     }
 
-    @RequestMapping(value = "/add/argo/{systemType}", method = RequestMethod.POST)
+    @RequestMapping(value = "/add/argo", method = RequestMethod.POST)
     @ResponseBody
-    public Argo addArgo(@RequestBody Argo argo, @PathVariable String systemType) {
+    public Argo addArgo(@RequestBody Argo argo) {
         controllerr.intilizeDataDir(requestHeader);
-        return argoDao.addArgo(systemType, argo);
+        return argoDao.addArgo(argo);
     }
 
     @RequestMapping(value = "/remove/argo/{systemType}/{systemId}", method = RequestMethod.POST)
@@ -57,11 +57,11 @@ public class ArgoController {
         }
     }
 
-    @RequestMapping(value = "/argo/{systemType}", method = RequestMethod.POST)
+    @RequestMapping(value = "/argo", method = RequestMethod.POST)
     @ResponseBody
-    public List<Argo> getArgosBySystemType(@PathVariable String systemType) {
+    public List<Argo> getArgosBySystemType() {
         controllerr.intilizeDataDir(requestHeader);
-        return argoDao.getAllArgo(systemType);
+        return argoDao.getAllArgo();
     }
 
     @RequestMapping(value = "/argos", method = RequestMethod.POST)
@@ -69,8 +69,8 @@ public class ArgoController {
     public List<Argo> getArgos() {
         controllerr.intilizeDataDir(requestHeader);
         List<Argo> allArgoList = new ArrayList<>();
-        allArgoList.addAll(argoDao.getAllArgo(OperationContants.IMPORT_STRING));
-        allArgoList.addAll(argoDao.getAllArgo(OperationContants.EXPORT_STRING));
+        allArgoList.addAll(argoDao.getAllArgo());
+        allArgoList.addAll(argoDao.getAllArgo());
         return allArgoList;
     }
 }
