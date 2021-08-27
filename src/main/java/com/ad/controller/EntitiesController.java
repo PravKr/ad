@@ -94,7 +94,7 @@ public class EntitiesController {
             visitNowDate = dateUtil.getCurrentIndiaTimeInString();
             controllerr.intilizeDataDir(requestHeader, systemId, systemType, visitNowDate);
             Map<String, List<BaseEntity>> entityMap = new HashMap<>();
-            Argo argo = argoDao.getArgo(systemType, systemId);
+            Argo argo = argoDao.getArgo(systemId);
             operationHandler.startExport(argo, entityMap);
             systemDao.saveToSystem(systemId, visitNowDate);
             return entityMap.keySet();

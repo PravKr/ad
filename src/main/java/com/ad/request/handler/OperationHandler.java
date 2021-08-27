@@ -107,7 +107,7 @@ public class OperationHandler {
         try {
             Map<String, List<String>> allEntities = importEntityDao.getListOfEntities(inImportHistory, inExportHistory);
             for(String argoId: inArgoList) {
-                Argo argo = argoDao.getArgo(OperationContants.IMPORT_STRING, argoId);
+                Argo argo = argoDao.getArgo(argoId);
                 String importXml = xmlUtil.convertListToSNX(allEntities, argo);
                 startImport(argo, importXml);
                 importHistoryDao.createOrSaveHistory(argo, inImportHistory);
@@ -132,7 +132,7 @@ public class OperationHandler {
             }
 
             //for(String argoId: inArgoList) {
-                Argo argo = argoDao.getArgo(OperationContants.IMPORT_STRING, argoId);
+                Argo argo = argoDao.getArgo(argoId);
                 String importXml = xmlUtil.convertListToSNX(allEntities, argo);
                 startImport(argo, importXml);
                 //importHistoryDao.createOrSaveHistory(argo, inImportHistory);
@@ -160,7 +160,7 @@ public class OperationHandler {
             }
 
             for(String argoId: inArgoList) {
-                Argo argo = argoDao.getArgo(OperationContants.IMPORT_STRING, argoId);
+                Argo argo = argoDao.getArgo(argoId);
                 String importXml = xmlUtil.convertListToSNX(allEntities, argo);
                 startImport(argo, importXml);
                 importHistoryDao.createOrSaveHistory(argo, inImportHistory);
@@ -194,7 +194,7 @@ public class OperationHandler {
         Map<String, List<String>> allEntities = importEntityDao.getListOfEntities(inImportHistory, inExportHistory);
         String importXml = null;
         for(String argoId: inArgoIdList) {
-            Argo argo = argoDao.getArgo(OperationContants.IMPORT_STRING, argoId);
+            Argo argo = argoDao.getArgo(argoId);
             importXml = xmlUtil.convertListToSNX(allEntities, argo);
             startImport(argo, importXml);
         }

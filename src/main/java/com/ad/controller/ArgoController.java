@@ -1,6 +1,5 @@
 package com.ad.controller;
 
-import com.ad.constants.OperationContants;
 import com.ad.dao.ArgoDao;
 import com.ad.models.Argo;
 import com.ad.request.handler.OperationHandler;
@@ -9,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -29,12 +27,11 @@ public class ArgoController {
     @Autowired
     OperationHandler operationHandler;
 
-    @RequestMapping(value = "/ping/argo/{systemType}/{systemId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/ping/argo/{systemId}", method = RequestMethod.POST)
     @ResponseBody
-    public String ping(@PathVariable String systemType,
-                       @PathVariable String systemId) {
+    public String ping(@PathVariable String systemId) {
         controllerr.intilizeDataDir(requestHeader);
-        Argo argo = argoDao.getArgo(systemType, systemId);
+        Argo argo = argoDao.getArgo(systemId);
         return operationHandler.ping(argo);
     }
 
@@ -45,12 +42,11 @@ public class ArgoController {
         return argoDao.addArgo(argo);
     }
 
-    @RequestMapping(value = "/remove/argo/{systemType}/{systemId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/remove/argo/{systemId}", method = RequestMethod.POST)
     @ResponseBody
-    public String removeArgo(@PathVariable String systemType,
-                           @PathVariable String systemId) {
+    public String removeArgo(@PathVariable String systemId) {
         controllerr.intilizeDataDir(requestHeader);
-        if(argoDao.removeArgo(systemType, systemId)){
+        if(argoDao.removeArgo(systemId)){
             return "System removed successfully";
         } else {
             return "Some problem happend";
@@ -68,9 +64,6 @@ public class ArgoController {
     @ResponseBody
     public List<Argo> getArgos() {
         controllerr.intilizeDataDir(requestHeader);
-        List<Argo> allArgoList = new ArrayList<>();
-        allArgoList.addAll(argoDao.getAllArgo());
-        allArgoList.addAll(argoDao.getAllArgo());
-        return allArgoList;
+        return argoDao.getAllArgo();
     }
 }
