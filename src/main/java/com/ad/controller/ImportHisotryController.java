@@ -47,7 +47,7 @@ public class ImportHisotryController {
     @ResponseBody
     public Map<String, Set<Object>> getHistoryByDate(@PathVariable String systemId,
                                                     @PathVariable String date) {
-        controllerr.intilizeDataDir(requestHeader, systemId, OperationContants.IMPORT_STRING, CommonConstants.VISIT_DATE_PATTERN);
+        controllerr.intilizeDataDir(requestHeader, systemId, CommonConstants.VISIT_DATE_PATTERN);
         return importHistoryDao.getHistoryByDate(date);
     }
 
@@ -80,7 +80,7 @@ public class ImportHisotryController {
     @ResponseBody
     public ResponseEntity<byte[]> exportSelectedEntities(@PathVariable String systemId,
                                                          @PathVariable String date) {
-        controllerr.intilizeDataDir(requestHeader, systemId, OperationContants.IMPORT_STRING, CommonConstants.VISIT_DATE_PATTERN);
+        controllerr.intilizeDataDir(requestHeader, systemId, CommonConstants.VISIT_DATE_PATTERN);
         ImportHistory importHistory = new ImportHistory();
         ExportHistory exportHistory = new ExportHistory();
         controllerr.createImportAndExportHistory(importHistory, exportHistory, null, systemId, null);

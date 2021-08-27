@@ -29,45 +29,43 @@ public class Controllerr {
 
     public void intilizeDataDir(HttpServletRequest requestHeader,
                                 String systemId,
-                                String type,
                                 String visitedDate) {
         String auth = requestHeader.getHeader("AAAuthorization");
         if(auth == null) {
             ARGO_DIR = "argo";
             SYSTEM_DIR = systemId + File.separator + visitedDate;
-            CART_DIR = systemId + File.separator + visitedDate + File.separator + type + File.separator + "cart";
-            ENTITY_XML_DIR = systemId + File.separator + visitedDate + File.separator + type + File.separator + "entities/xml";
-            ENTITY_JSON_DIR = systemId + File.separator + visitedDate + File.separator + type + File.separator + "entities/json";
-            HISTORY_DIR = systemId + File.separator + "history" + File.separator + type;
+            CART_DIR = systemId + File.separator + visitedDate + File.separator + File.separator + "cart";
+            ENTITY_XML_DIR = systemId + File.separator + visitedDate + File.separator + File.separator + "entities/xml";
+            ENTITY_JSON_DIR = systemId + File.separator + visitedDate + File.separator + File.separator + "entities/json";
+            HISTORY_DIR = systemId + File.separator + "history" + File.separator;
         } else {
             String encodedUserPass = auth.substring("Basic ".length());
             SYSTEM_DIR = encodedUserPass + File.separator + systemId + File.separator + visitedDate;
-            ARGO_DIR = encodedUserPass + File.separator + type + File.separator + "argo";
-            CART_DIR = encodedUserPass + File.separator + systemId + File.separator + visitedDate + File.separator + type + File.separator + "cart";
-            ENTITY_XML_DIR = encodedUserPass + File.separator + systemId + File.separator + visitedDate + File.separator + type + File.separator + "entities/xml";
-            ENTITY_JSON_DIR = encodedUserPass + File.separator + systemId + File.separator + visitedDate + File.separator + type + File.separator + "entities/json";
-            HISTORY_DIR = encodedUserPass + File.separator + systemId + File.separator + "history" + File.separator + type;
+            ARGO_DIR = encodedUserPass + File.separator + File.separator + "argo";
+            CART_DIR = encodedUserPass + File.separator + systemId + File.separator + visitedDate + File.separator + File.separator + "cart";
+            ENTITY_XML_DIR = encodedUserPass + File.separator + systemId + File.separator + visitedDate + File.separator + File.separator + "entities/xml";
+            ENTITY_JSON_DIR = encodedUserPass + File.separator + systemId + File.separator + visitedDate + File.separator + File.separator + "entities/json";
+            HISTORY_DIR = encodedUserPass + File.separator + systemId + File.separator + "history" + File.separator;
         }
     }
 
     public void intilizeDataDir(HttpServletRequest requestHeader,
-                                String systemId,
-                                String type) {
+                                String systemId) {
         String auth = requestHeader.getHeader("AAAuthorization");
         if(auth == null) {
             ARGO_DIR = "argo";
             SYSTEM_DIR = systemId;
-            CART_DIR = systemId + File.separator + type + File.separator + "cart";
-            ENTITY_XML_DIR = systemId + File.separator + type + File.separator + "entities/xml";
-            ENTITY_JSON_DIR = systemId + File.separator + type + File.separator + "entities/json";
-            HISTORY_DIR = systemId + File.separator + "history" + File.separator + type;
+            CART_DIR = systemId + File.separator + File.separator + "cart";
+            ENTITY_XML_DIR = systemId + File.separator + File.separator + "entities/xml";
+            ENTITY_JSON_DIR = systemId + File.separator + File.separator + "entities/json";
+            HISTORY_DIR = systemId + File.separator + "history" + File.separator;
         } else {
             String encodedUserPass = auth.substring("Basic ".length());
-            ARGO_DIR = encodedUserPass + File.separator + type + File.separator + "argo";
-            CART_DIR = encodedUserPass + File.separator + systemId + File.separator + type + File.separator + "cart";
-            ENTITY_XML_DIR = encodedUserPass + File.separator + systemId + File.separator + type + File.separator + "entities/xml";
-            ENTITY_JSON_DIR = encodedUserPass + File.separator + systemId + File.separator + type + File.separator + "entities/json";
-            HISTORY_DIR = encodedUserPass + File.separator + systemId + File.separator + "history" + File.separator + type;
+            ARGO_DIR = encodedUserPass + File.separator + File.separator + "argo";
+            CART_DIR = encodedUserPass + File.separator + systemId + File.separator + File.separator + "cart";
+            ENTITY_XML_DIR = encodedUserPass + File.separator + systemId + File.separator + File.separator + "entities/xml";
+            ENTITY_JSON_DIR = encodedUserPass + File.separator + systemId + File.separator + File.separator + "entities/json";
+            HISTORY_DIR = encodedUserPass + File.separator + systemId + File.separator + "history" + File.separator;
         }
     }
 

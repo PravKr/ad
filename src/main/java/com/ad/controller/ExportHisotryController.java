@@ -47,7 +47,7 @@ public class ExportHisotryController {
     @ResponseBody
     public Map<String, Set<Object>> getHistoryByDate(@PathVariable String systemId,
                                                      @PathVariable String date) {
-        controllerr.intilizeDataDir(requestHeader, systemId, OperationContants.EXPORT_STRING, CommonConstants.VISIT_DATE_PATTERN);
+        controllerr.intilizeDataDir(requestHeader, systemId, CommonConstants.VISIT_DATE_PATTERN);
         return exportHistoryDao.getHistoryByDate(date);
     }
 
@@ -81,7 +81,7 @@ public class ExportHisotryController {
     public String rollback(@PathVariable String systemId,
                            @PathVariable String date,
                            @RequestBody Argo argo) {
-        controllerr.intilizeDataDir(requestHeader, systemId, OperationContants.EXPORT_STRING, date);
+        controllerr.intilizeDataDir(requestHeader, systemId, date);
         /*ImportHistory importHistory = new ImportHistory();
         ExportHistory exportHistory = new ExportHistory();
         controllerr.createImportAndExportHistory(importHistory, exportHistory, argoIdList, systemId, null);*/
@@ -97,7 +97,7 @@ public class ExportHisotryController {
     @ResponseBody
     public ResponseEntity<byte[]> exportSelectedEntities(@PathVariable String systemId,
                                                          @PathVariable String date) {
-        controllerr.intilizeDataDir(requestHeader, systemId, OperationContants.EXPORT_STRING, CommonConstants.VISIT_DATE_PATTERN);
+        controllerr.intilizeDataDir(requestHeader, systemId, CommonConstants.VISIT_DATE_PATTERN);
         ImportHistory importHistory = new ImportHistory();
         ExportHistory exportHistory = new ExportHistory();
         controllerr.createImportAndExportHistory(importHistory, exportHistory, null, systemId, date);
