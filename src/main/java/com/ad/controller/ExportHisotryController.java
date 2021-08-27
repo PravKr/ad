@@ -23,7 +23,7 @@ import java.util.Set;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @Controller
-@RequestMapping("ad/history/export")
+@RequestMapping("ad/history")
 public class ExportHisotryController {
     @Autowired
     OperationHandler operationHandler;
@@ -36,35 +36,39 @@ public class ExportHisotryController {
     @Autowired
     ExportHistoryDao exportHistoryDao;
 
-    @RequestMapping(value = "/{systemId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/{operation}/{systemId}", method = RequestMethod.POST)
     @ResponseBody
-    public List<String> getHistory(@PathVariable String systemId) {
-        controllerr.intilizeDataDir(requestHeader, systemId, OperationContants.EXPORT_STRING);
+    public List<String> getHistory(@PathVariable String operation,
+                                   @PathVariable String systemId) {
+        controllerr.intilizeDataDir(requestHeader, systemId, operation);
         return exportHistoryDao.getHistory();
     }
 
-    @RequestMapping(value = "/{systemId}/{date}", method = RequestMethod.POST)
+    @RequestMapping(value = "/{operation}/{systemId}/{date}", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Set<Object>> getHistoryByDate(@PathVariable String systemId,
+    public Map<String, Set<Object>> getHistoryByDate(@PathVariable String operation,
+                                                     @PathVariable String systemId,
                                                      @PathVariable String date) {
-        controllerr.intilizeDataDir(requestHeader, systemId, CommonConstants.VISIT_DATE_PATTERN);
+        controllerr.intilizeDataDir(requestHeader, systemId, operation);
         return exportHistoryDao.getHistoryByDate(date);
     }
 
-    @RequestMapping(value = "/{systemId}/importedSystem/{date}", method = RequestMethod.POST)
+    @RequestMapping(value = "/{operation}/{systemId}/importedSystem/{date}", method = RequestMethod.POST)
     @ResponseBody
-    public List<String> getImportedSystemByDate(@PathVariable String systemId,
+    public List<String> getImportedSystemByDate(@PathVariable String operation,
+                                                @PathVariable String systemId,
                                                 @PathVariable String date) {
-        controllerr.intilizeDataDir(requestHeader, systemId, OperationContants.EXPORT_STRING);
+        controllerr.intilizeDataDir(requestHeader, systemId, operation);
         return exportHistoryDao.getImportSystemListByDate(date);
     }
 
-    @RequestMapping(value = "/{systemId}/{date}/import", method = RequestMethod.POST)
+    @RequestMapping(value = "/{operation}/{systemId}/{date}/import", method = RequestMethod.POST)
     @ResponseBody
-    public String importSelectedEntities(@PathVariable String systemId,
+    public String importSelectedEntities(@PathVariable String operation,
+                                         @PathVariable String systemId,
                                          @PathVariable String date,
                                          @RequestBody List<String> argoIdList) {
-        controllerr.intilizeDataDir(requestHeader, systemId, OperationContants.EXPORT_STRING);
+        controllerr.intilizeDataDir(requestHeader, systemId, operation);
         ImportHistory importHistory = new ImportHistory();
         ExportHistory exportHistory = new ExportHistory();
         controllerr.createImportAndExportHistory(importHistory, exportHistory, argoIdList, systemId, null);
