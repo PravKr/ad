@@ -62,6 +62,15 @@ public class ExportHisotryController {
         return exportHistoryDao.getImportSystemListByDate(date);
     }
 
+    @RequestMapping(value = "/{operation}/{systemId}/exportedSystem/{date}", method = RequestMethod.POST)
+    @ResponseBody
+    public List<String> getExportedSystemByDate(@PathVariable String operation,
+                                                @PathVariable String systemId,
+                                                @PathVariable String date) {
+        controllerr.intilizeDataDir(requestHeader, systemId, operation);
+        return exportHistoryDao.getExportedSystemIdByDate(date);
+    }
+
     @RequestMapping(value = "/{operation}/{systemId}/{date}/import", method = RequestMethod.POST)
     @ResponseBody
     public String importSelectedEntities(@PathVariable String operation,

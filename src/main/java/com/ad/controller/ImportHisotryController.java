@@ -23,7 +23,7 @@ import java.util.Set;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @Controller
-@RequestMapping("ad/history/import")
+@RequestMapping("ad/historyyy")
 public class ImportHisotryController {
     @Autowired
     OperationHandler operationHandler;

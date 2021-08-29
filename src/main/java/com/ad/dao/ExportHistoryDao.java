@@ -25,6 +25,12 @@ public class ExportHistoryDao extends EntitiesDao {
         return history.getImportSystemList();
     }
 
+    public List<String> getExportedSystemIdByDate(String date) {
+        String dataFile = controllerr.HISTORY_DIR + File.separator + addExtensionToFile(date);
+        ImportHistory history = getDataFromFS(dataFile, ImportHistory.class);
+        return Arrays.asList(history.getExportSystemId());
+    }
+
     public Map<String, Set<Object>> getHistoryByDate(String date) {
         Map<String, Set<Object>> inEntityMap = new HashMap<>();
         String dataFile = controllerr.HISTORY_DIR + File.separator + addExtensionToFile(date);
