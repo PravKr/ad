@@ -111,7 +111,7 @@ public class OperationHandler {
                 String importXml = xmlUtil.convertListToSNX(allEntities, argo);
                 startImport(argo, importXml);
                 importHistoryDao.createOrSaveHistory(argo, inImportHistory);
-                exportHistoryDao.createOrSaveHistory(inExportHistory);
+                exportHistoryDao.createOrSaveHistory(argo, inExportHistory);
             }
             return Boolean.TRUE;
         } catch(Exception e) {
@@ -164,7 +164,7 @@ public class OperationHandler {
                 String importXml = xmlUtil.convertListToSNX(allEntities, argo);
                 startImport(argo, importXml);
                 importHistoryDao.createOrSaveHistory(argo, inImportHistory);
-                exportHistoryDao.createOrSaveHistory(inExportHistory);
+                exportHistoryDao.createOrSaveHistory(argo, inExportHistory);
             }
             return Boolean.TRUE;
         } catch(Exception e) {

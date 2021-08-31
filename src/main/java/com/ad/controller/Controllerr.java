@@ -37,7 +37,7 @@ public class Controllerr {
             CART_DIR = systemId + File.separator + visitedDate + File.separator + File.separator + "cart";
             ENTITY_XML_DIR = systemId + File.separator + visitedDate + File.separator + File.separator + "entities/xml";
             ENTITY_JSON_DIR = systemId + File.separator + visitedDate + File.separator + File.separator + "entities/json";
-            HISTORY_DIR = systemId + File.separator + "history" + File.separator + visitedDate + File.separator;
+            HISTORY_DIR = systemId + File.separator + "history" + File.separator + visitedDate;
         } else {
             String encodedUserPass = auth.substring("Basic ".length());
             SYSTEM_DIR = encodedUserPass + File.separator + systemId + File.separator + visitedDate;
@@ -45,7 +45,7 @@ public class Controllerr {
             CART_DIR = encodedUserPass + File.separator + systemId + File.separator + visitedDate + File.separator + File.separator + "cart";
             ENTITY_XML_DIR = encodedUserPass + File.separator + systemId + File.separator + visitedDate + File.separator + File.separator + "entities/xml";
             ENTITY_JSON_DIR = encodedUserPass + File.separator + systemId + File.separator + visitedDate + File.separator + File.separator + "entities/json";
-            HISTORY_DIR = encodedUserPass + File.separator + systemId + File.separator + "history" + File.separator + visitedDate + File.separator;
+            HISTORY_DIR = encodedUserPass + File.separator + systemId + File.separator + "history" + File.separator + visitedDate;
         }
     }
 
@@ -58,14 +58,14 @@ public class Controllerr {
             CART_DIR = systemId + File.separator + File.separator + "cart";
             ENTITY_XML_DIR = systemId + File.separator + File.separator + "entities/xml";
             ENTITY_JSON_DIR = systemId + File.separator + File.separator + "entities/json";
-            HISTORY_DIR = systemId + File.separator + "history" + File.separator;
+            HISTORY_DIR = systemId + File.separator + "history";
         } else {
             String encodedUserPass = auth.substring("Basic ".length());
             ARGO_DIR = encodedUserPass + File.separator + File.separator + "argo";
             CART_DIR = encodedUserPass + File.separator + systemId + File.separator + File.separator + "cart";
             ENTITY_XML_DIR = encodedUserPass + File.separator + systemId + File.separator + File.separator + "entities/xml";
             ENTITY_JSON_DIR = encodedUserPass + File.separator + systemId + File.separator + File.separator + "entities/json";
-            HISTORY_DIR = encodedUserPass + File.separator + systemId + File.separator + "history" + File.separator;
+            HISTORY_DIR = encodedUserPass + File.separator + systemId + File.separator + "history";
         }
     }
 

@@ -13,9 +13,9 @@ import java.util.*;
 @Component
 public class ExportHistoryDao extends EntitiesDao {
 
-    public void createOrSaveHistory(ExportHistory inExportHistory) {
+    public void createOrSaveHistory(Argo inArgo, ExportHistory inExportHistory) {
         String exportHistoryFile =
-                controllerr.HISTORY_DIR + File.separator + inExportHistory.getExportDate() + CommonConstants.JSON_EXTENSION;
+                inArgo.getId() + File.separator + HISTORY_PATH + File.separator + "export" + File.separator + inExportHistory.getExportDate() + CommonConstants.JSON_EXTENSION;
         saveDataToFS(exportHistoryFile, inExportHistory, Boolean.FALSE);
     }
 
@@ -36,7 +36,7 @@ public class ExportHistoryDao extends EntitiesDao {
         String dataFile = controllerr.HISTORY_DIR + File.separator + addExtensionToFile(date);
         ExportHistory history = getDataFromFS(dataFile, ExportHistory.class);
 
-        String jsonDataFile = history.getExportSystemId() + File.separator + history.getExportSystemVisitDate() + File.separator + "export/entities/json" + File.separator;
+        String jsonDataFile = history.getExportSystemId() + File.separator + history.getExportSystemVisitDate() + File.separator + "entities/json" + File.separator;
         for(Map.Entry<String, Set<String>> entry: history.getExportedEnitites().entrySet()) {
             Set<Object> baseEntitySet = new HashSet<>();
             for(String key: entry.getValue()) {
