@@ -106,11 +106,12 @@ public class ExportHisotryController {
         }
     }
 
-    @RequestMapping(value = "/{systemId}/{date}/export", method = RequestMethod.POST)
+    @RequestMapping(value = "/{operation}/{systemId}/{date}/export", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<byte[]> exportSelectedEntities(@PathVariable String systemId,
+    public ResponseEntity<byte[]> exportSelectedEntities(@PathVariable String operation,
+                                                         @PathVariable String systemId,
                                                          @PathVariable String date) {
-        controllerr.intilizeDataDir(requestHeader, systemId, CommonConstants.VISIT_DATE_PATTERN);
+        controllerr.intilizeDataDir(requestHeader, systemId, operation);
         ImportHistory importHistory = new ImportHistory();
         ExportHistory exportHistory = new ExportHistory();
         controllerr.createImportAndExportHistory(importHistory, exportHistory, null, systemId, date);

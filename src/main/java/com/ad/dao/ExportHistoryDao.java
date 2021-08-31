@@ -65,8 +65,9 @@ public class ExportHistoryDao extends EntitiesDao {
         }
 
         String xmlDataFile = history.getExportSystemId() + File.separator + history.getExportSystemVisitDate()
-                + File.separator + "export/entities/xml" + File.separator ;
+                + File.separator + "entities/xml" + File.separator ;
         for (Map.Entry<String, Set<String>> entry : inEntityMap.entrySet()) {
+            if(entry.getValue().size() == 0) continue;
             List<String> contents = new ArrayList<>();
             for (String elementIndex : entry.getValue()) {
                 contents.add(getDataFromFS(xmlDataFile + entry.getKey() + File.separator + elementIndex + CommonConstants.XML_EXTENSION, String.class));
