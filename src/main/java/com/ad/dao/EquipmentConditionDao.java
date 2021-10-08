@@ -35,6 +35,7 @@ public class EquipmentConditionDao extends EntitiesDao {
                     equipmentCondition.setId(ele.getAttributeValue("id"));
                     equipmentCondition.setClasss(ele.getAttributeValue("class"));
                     equipmentCondition.setDescription(ele.getAttributeValue("description"));
+                    equipmentCondition.setIsPersist(ele.getAttributeValue("is-persist"));
                     extensionList.add(equipmentCondition);
                     String dataFile = controllerr.ENTITY_XML_DIR + File.separator + ENTITY_NAME + File.separator + elementIndex + CommonConstants.XML_EXTENSION;
                     saveDataToFS(dataFile, xmlUtil1.convertToString(ele, true), Boolean.FALSE);

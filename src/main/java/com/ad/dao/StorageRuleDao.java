@@ -33,6 +33,7 @@ public class StorageRuleDao extends EntitiesDao {
                     StorageRule storageRule = new StorageRule();
                     storageRule.setGkey(++elementIndex);
                     storageRule.setRuleId(ele.getAttributeValue("rule-id"));
+                    storageRule.setIsRuleForPower(ele.getAttributeValue("is-rule-for-power"));
                     storageRule.setStartDayRule(ele.getAttributeValue("start-day-rule"));
                     storageRule.setEndDayRule(ele.getAttributeValue("end-day-rule"));
                     extensionList.add(storageRule);

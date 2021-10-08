@@ -10,6 +10,8 @@ public class EquipmentCondition  extends BaseEntity {
     private String classs;
     @JsonProperty("description")
     private String description;
+    @JsonProperty("is-persist")
+    private String isPersist;
 
     public long getGkey() {
         return gkey;
@@ -41,6 +43,14 @@ public class EquipmentCondition  extends BaseEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getIsPersist() {
+        return isPersist;
+    }
+
+    public void setIsPersist(String isPersist) {
+        this.isPersist = isPersist;
     }
 
     @Override

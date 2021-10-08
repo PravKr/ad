@@ -6,6 +6,8 @@ public class StorageRule extends BaseEntity {
     private long gkey;
     @JsonProperty("rule-id")
     private String ruleId;
+    @JsonProperty("is-rule-for-power")
+    private String isRuleForPower;
     @JsonProperty("start-day-rule")
     private String startDayRule;
     @JsonProperty("end-day-rule")
@@ -25,6 +27,14 @@ public class StorageRule extends BaseEntity {
 
     public void setRuleId(String ruleId) {
         this.ruleId = ruleId;
+    }
+
+    public String getIsRuleForPower() {
+        return isRuleForPower;
+    }
+
+    public void setIsRuleForPower(String isRuleForPower) {
+        this.isRuleForPower = isRuleForPower;
     }
 
     public String getStartDayRule() {
